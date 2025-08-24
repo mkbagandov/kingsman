@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 // Removed useParams as userID will come from JWT on the backend
 import { getUserProfile, getUserLoyaltyProfile, getUserDiscountCard, getUserQRCode } from '../api/api';
+import { FaUserCircle, FaStar, FaCreditCard, FaQrcode, FaEnvelope, FaPhone, FaAward, FaHistory } from 'react-icons/fa';
 
 function UserProfile() {
   // const { userID } = useParams(); // No longer needed
@@ -41,41 +42,76 @@ function UserProfile() {
       }
     };
     fetchData();
-  }, []); // Empty dependency array as userID is no longer a prop/param
+  }, []); // Empty dependency array as userID is handled by backend JWT
 
-  if (loading) return <div>Loading user profile...</div>;
-  if (error) return <div>Error: {error}</div>;
-  if (!userProfile) return <div>User profile not found.</div>;
+  if (loading) return <div className="user-profile-page">Loading user profile...</div>;
+  if (error) return <div className="user-profile-page">Error: {error}</div>;
+  if (!userProfile) return <div className="user-profile-page">User profile not found.</div>;
 
   return (
-    <div>
-      <h1>User Profile: {userProfile.username}</h1>
-      <p>Email: {userProfile.email}</p>
+    <div className="user-profile-page">
+      <h1><FaUserCircle /> Профиль пользователя: {userProfile.username}</h1>
 
-      <h2>Loyalty Information</h2>
-      {loyaltyProfile ? (
-        <div>
-          <p>Points: {loyaltyProfile.points}</p>
-          <p>Tier: {loyaltyProfile.tier}</p>
-          {/* Display other loyalty details */}
+      <div className="profile-section">
+        <h2>Персональная информация</h2>
+        <p><FaEnvelope /> Email: {userProfile.email}</p>
+        <p><FaPhone /> Телефон: {userProfile.phone_number}</p>
+      </div>
+
+      <div className="profile-section">
+        <h2>Информация о лояльности <FaStar /></h2>
+        {loyaltyProfile ? (
+          <div>
+            <p>Текущие баллы: {loyaltyProfile.current_points}</p>
+            <p>Статус лояльности: {loyaltyProfile.loyalty_status}</p>
+            {loyaltyProfile.current_tier && (
+              <div className="loyalty-tier-details">
+                <h3><FaAward /> Текущий уровень: {loyaltyProfile.current_tier.name}</h3>
+                <p>Мин. баллов для этого уровня: {loyaltyProfile.current_tier.min_points}</p>
+                <p>Описание: {loyaltyProfile.current_tier.description}</p>
+                <p>Преимущества: {loyaltyProfile.current_tier.benefits}</p>
+              </div>
+            )}
+
+            {loyaltyProfile.loyalty_activities && loyaltyProfile.loyalty_activities.length > 0 && (
+              <div className="loyalty-activities">
+                <h3><FaHistory /> Последние действия лояльности:</h3>
+                <ul>
+                  {loyaltyProfile.loyalty_activities.map((activity) => (
+                    <li key={activity.id}>
+                      <strong>{activity.type}:</strong> {activity.description} ({new Date(activity.created_at).toLocaleString()})
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+        ) : (
+          <p>Информация о лояльности недоступна.</p>
+        )}
+      </div>
+
+      <div className="profile-section">
+        <h2>Дисконтная карта <FaCreditCard /></h2>
+        {discountCard ? (
+          <div className="discount-card-mock">
+            <h3>MR.KINGSMAN</h3>
+            <p>ДИСКОНТНАЯ КАРТА</p>
+            <p>Уровень: {discountCard.discount_level}</p>
+            <p>Прогресс: {discountCard.progress_to_next_level}% до следующего уровня</p>
+            {/* Add more discount card details as needed */}
+          </div>
+        ) : (
+          <p>Информация о дисконтной карте недоступна.</p>
+        )}
+      </div>
+
+      {qrCode && (
+        <div className="qr-code-container profile-section">
+          <h2>Ваш QR-код <FaQrcode /></h2>
+          <img src={qrCode} alt="QR Code" />
         </div>
-      ) : (
-        <p>No loyalty information available.</p>
       )}
-
-      <h2>Discount Card</h2>
-      {discountCard ? (
-        <div>
-          <p>Discount Level: {discountCard.discount_level}</p>
-          <p>Progress to Next Level: {discountCard.progress_to_next_level}%</p>
-          {/* Display other discount card details */}
-        </div>
-      ) : (
-        <p>No discount card information available.</p>
-      )}
-
-      <h2>QR Code</h2>
-      {qrCode && <img src={qrCode} alt="QR Code" />}
     </div>
   );
 }

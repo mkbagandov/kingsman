@@ -1,9 +1,9 @@
 .product-card {
-  border: 1px solid #ddd;
+  border: 1px solid var(--primary-blue);
   border-radius: 8px;
   padding: 15px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: var(--text-light);
   display: flex;
   flex-direction: column;
   text-align: center;
@@ -11,40 +11,43 @@
 
 .product-image {
   max-width: 100%;
-  height: 150px; /* Fixed height for consistency */
-  object-fit: cover; /* Cover the area, crop if necessary */
+  height: 150px;
+  object-fit: cover;
   border-radius: 4px;
   margin-bottom: 10px;
 }
 
 .product-name {
-  font-size: 1.2em;
+  font-family: var(--font-main);
+  font-size: 1.3em;
   margin-top: 10px;
   margin-bottom: 5px;
-  color: #333;
+  color: var(--primary-blue);
 }
 
 .product-description {
+  font-family: var(--font-secondary);
   font-size: 0.9em;
-  color: #666;
-  flex-grow: 1; /* Allows description to take available space */
+  color: var(--text-dark);
+  flex-grow: 1;
   margin-bottom: 10px;
 }
 
 .product-details p {
   display: flex;
   align-items: center;
-  justify-content: center; /* Center icons and text */
+  justify-content: center;
   margin-bottom: 5px;
   font-size: 0.9em;
-  color: #555;
+  color: var(--text-dark);
+  font-family: var(--font-secondary);
 }
 
 .product-details .icon {
   margin-right: 8px;
-  color: #28a745; /* Green for price/category */
+  color: var(--primary-blue);
 }
 
 .product-price .icon {
-  color: #007bff; /* Blue for price */
+  color: #28a745; /* Keep green for price, or change to primary-blue if preferred */
 }

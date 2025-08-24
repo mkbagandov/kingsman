@@ -11,10 +11,10 @@ function StoreCard({ store }) {
         <Link to={`/stores/${store.id}`}>{store.name}</Link>
       </h2>
       <p className="store-card-address">
-        <FaMapMarkerAlt className="icon" /> {store.address}
+        <FaMapMarkerAlt className="icon" /> Адрес: {store.address}
       </p>
       <p className="store-card-phone">
-        <FaPhone className="icon" /> {store.phone}
+        <FaPhone className="icon" /> Телефон: {store.phone}
       </p>
       {/* Add more store details as needed */}
     </div>

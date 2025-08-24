@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { loginUser, setAuthToken } from '../api/api';
+import { loginUser } from '../api/api';
 import { useNavigate } from 'react-router-dom';
 
 function Login() {
@@ -12,30 +12,30 @@ function Login() {
     e.preventDefault();
     try {
       const response = await loginUser({ email, password });
-      // Token is already set by loginUser in api.js
       setMessage(`Login successful: ${response.data.message}`);
-      // Redirect to home or profile page
-      navigate('/'); // Redirect to home page
+      navigate('/');
     } catch (error) {
       setMessage(`Login failed: ${error.response?.data?.error || error.message}`);
     }
   };
 
   return (
-    <div>
-      <h1>Login</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Email:</label>
-          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-        </div>
-        <div>
-          <label>Password:</label>
-          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-        </div>
-        <button type="submit">Login</button>
-      </form>
-      {message && <p>{message}</p>}
+    <div className="auth-page">
+      <div className="auth-form-container">
+        <h1>Вход</h1>
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label htmlFor="login-email">Email:</label>
+            <input type="email" id="login-email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+          </div>
+          <div className="form-group">
+            <label htmlFor="login-password">Пароль:</label>
+            <input type="password" id="login-password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+          </div>
+          <button type="submit">Войти</button>
+        </form>
+        {message && <p className="message">{message.includes('Login successful') ? message.replace('Login successful', 'Вход выполнен успешно') : message.replace('Login failed', 'Ошибка входа')}</p>}
+      </div>
     </div>
   );
 }

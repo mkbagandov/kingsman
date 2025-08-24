@@ -22,15 +22,15 @@ function StoreDetail() {
     fetchStore();
   }, [storeID]);
 
-  if (loading) return <div>Loading store details...</div>;
-  if (error) return <div>Error: {error}</div>;
-  if (!store) return <div>Store not found.</div>;
+  if (loading) return <div>Загрузка информации о магазине...</div>;
+  if (error) return <div>Ошибка: {error}</div>;
+  if (!store) return <div>Магазин не найден.</div>;
 
   return (
     <div>
       <h1>{store.name}</h1>
-      <p>Address: {store.address}</p>
-      <p>Phone: {store.phone}</p>
+      <p>Адрес: {store.address}</p>
+      <p>Телефон: {store.phone}</p>
       {/* Display other store details */}
     </div>
   );

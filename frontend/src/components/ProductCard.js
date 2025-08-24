@@ -4,7 +4,7 @@ import './ProductCard.css'; // Assuming you'll create this CSS file
 
 function ProductCard({ product, categories }) {
   const category = categories.find(cat => cat.id === product.category_id);
-  const categoryName = category ? category.name : 'Unknown';
+  const categoryName = category ? category.name : 'Неизвестно';
 
   return (
     <div className="product-card">
@@ -14,7 +14,7 @@ function ProductCard({ product, categories }) {
       <div className="product-details">
         <p className="product-price"><FaDollarSign className="icon" /> {product.price.toFixed(2)}</p>
         <p className="product-category"><FaTag className="icon" /> {categoryName}</p>
-        <p className="product-quantity"><FaBoxes className="icon" /> Quantity: {product.quantity}</p>
+        <p className="product-quantity"><FaBoxes className="icon" /> Количество: {product.quantity}</p>
       </div>
     </div>
   );

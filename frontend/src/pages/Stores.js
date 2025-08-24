@@ -22,12 +22,12 @@ function Stores() {
     fetchStores();
   }, []);
 
-  if (loading) return <div>Loading stores...</div>;
-  if (error) return <div>Error: {error}</div>;
+  if (loading) return <div>Загрузка магазинов...</div>;
+  if (error) return <div>Ошибка: {error}</div>;
 
   return (
     <div className="stores-page">
-      <h1>Our Stores</h1>
+      <h1>Наши Магазины</h1>
       <div className="stores-grid">
         {stores.map((store) => (
           <StoreCard key={store.id} store={store} />

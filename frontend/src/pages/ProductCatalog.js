@@ -48,17 +48,17 @@ function ProductCatalog() {
     fetchProducts();
   };
 
-  if (loading) return <div>Loading products...</div>;
-  if (error) return <div>Error: {error}</div>;
+  if (loading) return <div>Загрузка товаров...</div>;
+  if (error) return <div>Ошибка: {error}</div>;
 
   return (
     <div className="product-catalog-page">
-      <h1>Product Catalog</h1>
+      <h1>Каталог Продуктов</h1>
       <form onSubmit={handleSearch} className="product-filter-form">
         <div className="form-group">
-          <label htmlFor="category-select">Category:</label>
+          <label htmlFor="category-select">Категория:</label>
           <select id="category-select" value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)}>
-            <option value="">All Categories</option>
+            <option value="">Все Категории</option>
             {categories.map((cat) => (
               <option key={cat.id} value={cat.id}>
                 {cat.name}
@@ -67,14 +67,14 @@ function ProductCatalog() {
           </select>
         </div>
         <div className="form-group">
-          <label htmlFor="min-price">Min Price:</label>
+          <label htmlFor="min-price">Мин. Цена:</label>
           <input id="min-price" type="number" value={minPrice} onChange={(e) => setMinPrice(e.target.value)} />
         </div>
         <div className="form-group">
-          <label htmlFor="max-price">Max Price:</label>
+          <label htmlFor="max-price">Макс. Цена:</label>
           <input id="max-price" type="number" value={maxPrice} onChange={(e) => setMaxPrice(e.target.value)} />
         </div>
-        <button type="submit" className="filter-button">Filter Products</button>
+        <button type="submit" className="filter-button">Фильтровать Продукты</button>
       </form>
 
       <div className="products-grid">

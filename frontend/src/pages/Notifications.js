@@ -21,12 +21,12 @@ function Notifications() {
     fetchNotifications();
   }, []);
 
-  if (loading) return <div>Loading notifications...</div>;
-  if (error) return <div>Error: {error}</div>;
+  if (loading) return <div>Загрузка уведомлений...</div>;
+  if (error) return <div>Ошибка: {error}</div>;
 
   return (
     <div className="notifications-page">
-      <h1>Your Notifications</h1>
+      <h1>Ваши Уведомления</h1>
       {notifications.length > 0 ? (
         <div className="notifications-list">
           {notifications.map((notification) => (
@@ -34,7 +34,7 @@ function Notifications() {
           ))}
         </div>
       ) : (
-        <p>No notifications found.</p>
+        <p>Уведомлений не найдено.</p>
       )}
     </div>
   );

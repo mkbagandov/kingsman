@@ -22,7 +22,7 @@ function NotificationCard({ notification }) {
       <div className="notification-content">
         <h3 className="notification-title">{notification.title}</h3>
         <p className="notification-message">{notification.message}</p>
-        <span className="notification-timestamp">{new Date(notification.createdAt).toLocaleString()}</span>
+        <span className="notification-timestamp">{new Date(notification.created_at).toLocaleString()}</span>
       </div>
     </div>
   );

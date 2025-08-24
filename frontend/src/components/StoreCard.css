@@ -1,41 +1,47 @@
 .store-card {
-  border: 1px solid #ddd;
+  border: 1px solid var(--primary-blue);
   border-radius: 8px;
   padding: 20px;
   margin-bottom: 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: var(--text-light);
 }
 
 .store-card-name {
-  font-size: 1.5em;
+  font-size: 1.6em; /* Slightly larger */
   margin-top: 0;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
   display: flex;
   align-items: center;
+  font-family: var(--font-main);
+  color: var(--primary-blue);
 }
 
 .store-card-name a {
   text-decoration: none;
-  color: #333;
-  margin-left: 10px; /* Space between icon and text */
+  color: var(--primary-blue);
+  margin-left: 10px;
+  transition: color 0.3s ease;
 }
 
 .store-card-name a:hover {
-  color: #007bff;
+  color: var(--accent-black);
 }
 
 .store-card-address,
 .store-card-phone {
   display: flex;
   align-items: center;
-  margin-bottom: 5px;
-  color: #555;
+  margin-bottom: 8px; /* Slightly more space */
+  color: var(--text-dark);
+  font-family: var(--font-secondary);
+  font-size: 0.95em;
 }
 
 .store-card-address .icon,
 .store-card-phone .icon,
 .store-card-name .store-icon {
-  margin-right: 8px;
-  color: #007bff; /* Icon color */
+  margin-right: 10px; /* Slightly more space */
+  color: var(--primary-blue);
+  font-size: 1.1em;
 }

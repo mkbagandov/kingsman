@@ -152,6 +152,7 @@ func (uc *UserUseCase) LoginUser(ctx context.Context, req *LoginUserRequest) (*L
 type GetUserProfileResponse struct {
 	ID                  string                    `json:"id"`
 	PhoneNumber         string                    `json:"phone_number"`
+	Email               string                    `json:"email"`
 	DiscountLevel       int                       `json:"discount_level"`
 	ProgressToNextLevel float64                   `json:"progress_to_next_level"`
 	QRCode              *string                   `json:"qr_code"` // Changed to *string to match domain.User
@@ -214,6 +215,7 @@ func (uc *UserUseCase) GetUserProfile(ctx context.Context, userID string) (*GetU
 	response := &GetUserProfileResponse{
 		ID:                  strconv.Itoa(user.ID),
 		PhoneNumber:         user.PhoneNumber,
+		Email:               user.Email,
 		DiscountLevel:       user.DiscountLevel,
 		ProgressToNextLevel: user.ProgressToNextLevel,
 		QRCode:              user.QRCode,

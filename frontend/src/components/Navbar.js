@@ -1,19 +1,24 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import './Navbar.css'; // Import the new CSS file
 
 function Navbar() {
   return (
-    <nav style={{ background: '#333', padding: '10px 20px', color: '#fff', display: 'flex', justifyContent: 'space-between' }}>
+    <nav className="navbar">
       <div className="nav-left">
-        <Link to="/" style={{ color: '#fff', textDecoration: 'none', marginRight: '20px' }}>Home</Link>
-        <Link to="/products" style={{ color: '#fff', textDecoration: 'none', marginRight: '20px' }}>Products</Link>
-        <Link to="/stores" style={{ color: '#fff', textDecoration: 'none', marginRight: '20px' }}>Stores</Link>
-        <Link to="/users/profile" style={{ color: '#fff', textDecoration: 'none', marginRight: '20px' }}>Profile</Link>
-        <Link to="/notifications" style={{ color: '#fff', textDecoration: 'none' }}>Notifications</Link>
+        <Link to="/" className="navbar-logo">MR.KINGSMAN</Link>
+        <div className="navbar-links">
+          <Link to="/products">Продукты</Link>
+          <Link to="/stores">Магазины</Link>
+          <Link to="/users/profile">Профиль</Link>
+          <Link to="/notifications">Уведомления</Link>
+        </div>
       </div>
       <div className="nav-right">
-        <Link to="/login" style={{ color: '#fff', textDecoration: 'none', marginRight: '20px' }}>Login</Link>
-        <Link to="/register" style={{ color: '#fff', textDecoration: 'none' }}>Register</Link>
+        <div className="auth-links">
+          <Link to="/login">Войти</Link>
+          <Link to="/register">Регистрация</Link>
+        </div>
       </div>
     </nav>
   );

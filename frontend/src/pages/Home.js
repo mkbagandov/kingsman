@@ -3,8 +3,8 @@ import React from 'react';
 function Home() {
   return (
     <div>
-      <h1>Welcome to Kingsman App</h1>
-      <p>This is the homepage.</p>
+      <h1>Добро пожаловать в приложение Kingsman</h1>
+      <p>Это домашняя страница.</p>
     </div>
   );
 }
