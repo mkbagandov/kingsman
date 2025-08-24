@@ -1,38 +1,23 @@
-.navbar {
-  background-color: var(--primary-blue);
-  padding: 10px 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  color: var(--text-light);
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-}
-
-.navbar-logo {
-  font-family: var(--font-main);
-  font-size: 1.8em;
-  color: var(--text-light);
-  text-decoration: none;
-  font-weight: bold;
-  letter-spacing: 1px;
-}
+/* Remove or modify conflicting styles */
+/* .navbar is now globally styled in index.css */
+/* .navbar-logo is now globally styled in index.css */
 
 .navbar-links {
-  display: flex;
-  gap: 25px;
+  /* display: flex; (already handled globally) */
+  /* gap: 25px; (already handled globally) */
 }
 
 .navbar-links a {
-  color: var(--text-light);
-  text-decoration: none;
-  font-family: var(--font-secondary);
-  font-size: 1em;
+  /* color: var(--text-light); (already handled globally) */
+  /* text-decoration: none; (already handled globally) */
+  /* font-family: var(--font-secondary); (already handled globally) */
+  /* font-size: 1em; (already handled globally) */
   padding: 5px 0;
   position: relative;
 }
 
 .navbar-links a:hover {
-  color: var(--secondary-beige);
+  /* color: var(--secondary-beige); (already handled globally) */
 }
 
 .navbar-links a::after {
@@ -42,7 +27,7 @@
   bottom: 0;
   width: 0;
   height: 2px;
-  background-color: var(--secondary-beige);
+  background-color: var(--accent-gold); /* Use accent gold for underline */
   transition: width 0.3s ease-in-out;
 }
 
@@ -50,23 +35,4 @@
   width: 100%;
 }
 
-.navbar-right .auth-links {
-  display: flex;
-  gap: 20px;
-}
-
-.navbar-right .auth-links a {
-  color: var(--text-light);
-  text-decoration: none;
-  font-family: var(--font-secondary);
-  font-size: 1em;
-  padding: 8px 15px;
-  border: 1px solid var(--text-light);
-  border-radius: 4px;
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.navbar-right .auth-links a:hover {
-  background-color: var(--text-light);
-  color: var(--primary-blue);
-}
+/* Auth links are now globally styled in index.css */

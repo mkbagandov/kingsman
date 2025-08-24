@@ -35,6 +35,9 @@ function Login() {
           <button type="submit">Войти</button>
         </form>
         {message && <p className="message">{message.includes('Login successful') ? message.replace('Login successful', 'Вход выполнен успешно') : message.replace('Login failed', 'Ошибка входа')}</p>}
+        <p style={{ marginTop: '20px' }}>
+          Ещё нет аккаунта? <a href="/register" style={{ color: 'var(--primary-dark-blue)', textDecoration: 'none', fontWeight: 'bold' }}>Зарегистрироваться</a>
+        </p>
       </div>
     </div>
   );

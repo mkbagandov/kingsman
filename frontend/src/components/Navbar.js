@@ -1,23 +1,48 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { FaUserCircle } from 'react-icons/fa'; // Import a user icon
 import './Navbar.css'; // Import the new CSS file
 
 function Navbar() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    const checkAuth = () => {
+      const token = localStorage.getItem('token');
+      setIsAuthenticated(!!token);
+    };
+
+    checkAuth(); // Check auth status on component mount
+
+    // Listen for changes in localStorage across tabs/windows
+    window.addEventListener('storage', checkAuth);
+
+    return () => {
+      window.removeEventListener('storage', checkAuth);
+    };
+  }, []);
+
   return (
     <nav className="navbar">
       <div className="nav-left">
         <Link to="/" className="navbar-logo">MR.KINGSMAN</Link>
         <div className="navbar-links">
-          <Link to="/products">Продукты</Link>
-          <Link to="/stores">Магазины</Link>
-          <Link to="/users/profile">Профиль</Link>
+          <Link to="/">Главная</Link>
+          <Link to="/products">Каталог</Link>
+          <Link to="/about">О нас</Link>
+          <Link to="/contacts">Контакты</Link>
           <Link to="/notifications">Уведомления</Link>
         </div>
       </div>
       <div className="nav-right">
         <div className="auth-links">
-          <Link to="/login">Войти</Link>
-          <Link to="/register">Регистрация</Link>
+          {isAuthenticated ? (
+            <Link to="/profile" className="profile-icon">
+              <FaUserCircle size={30} color="var(--text-light)" />
+            </Link>
+          ) : (
+            <Link to="/login" className="btn-login">Войти</Link>
+          )}
         </div>
       </div>
     </nav>
