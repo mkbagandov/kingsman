@@ -7,9 +7,74 @@
 .page-title {
   text-align: center;
   font-size: 2.5em;
-  color: var(--primary-blue);
-  margin-bottom: 40px;
-  font-family: var(--font-main);
+  color: var(--primary-dark-blue);
+  margin-bottom: 30px; /* Reduced margin */
+  font-family: var(--font-heading);
+  text-transform: uppercase; /* Uppercase as in the image */
+  letter-spacing: 2px; /* Add some letter spacing */
+}
+
+.category-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #eee; /* Subtle separator */
+  padding-bottom: 15px;
+}
+
+.category-tab {
+  background-color: transparent;
+  border: 1px solid #ccc; /* Light border */
+  border-radius: 20px; /* More rounded tabs */
+  padding: 8px 18px;
+  font-size: 0.95em;
+  color: var(--dark-charcoal);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: var(--font-body);
+}
+
+.category-tab:hover {
+  border-color: var(--primary-dark-blue);
+  color: var(--primary-dark-blue);
+  background-color: var(--light-grey);
+}
+
+.category-tab.active {
+  background-color: var(--primary-dark-blue);
+  color: var(--text-light);
+  border-color: var(--primary-dark-blue);
+}
+
+.catalog-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  padding: 0 10px;
+}
+
+.filter-button,
+.sort-button {
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 1em;
+  color: var(--dark-charcoal);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.filter-button:hover,
+.sort-button:hover {
+  border-color: var(--primary-dark-blue);
+  color: var(--primary-dark-blue);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 }
 
 .filter-form {
@@ -72,6 +137,66 @@
   background-color: var(--accent-black);
 }
 
+.filter-form-expanded {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  align-items: flex-end;
+  margin-bottom: 40px;
+  padding: 25px;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+.filter-form-expanded .form-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.filter-form-expanded label {
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: var(--dark-charcoal);
+  font-size: 0.95em;
+  font-family: var(--font-body);
+}
+
+.filter-form-expanded .filter-select,
+.filter-form-expanded .filter-input {
+  padding: 10px 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1em;
+  color: var(--dark-charcoal);
+  background-color: #f9f9f9;
+  min-width: 150px;
+  max-width: 200px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.filter-form-expanded .filter-input::placeholder {
+  color: #aaa;
+}
+
+.apply-filter-button {
+  background-color: var(--primary-dark-blue);
+  color: white;
+  padding: 10px 25px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.apply-filter-button:hover {
+  background-color: var(--accent-gold);
+}
+
 .products-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -114,6 +239,32 @@
   }
 
   .filter-button {
+    width: 100%;
+  }
+
+  .catalog-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .filter-button,
+  .sort-button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .filter-form-expanded {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filter-form-expanded .filter-select,
+  .filter-form-expanded .filter-input {
+    min-width: unset;
+    max-width: 100%;
+  }
+
+  .apply-filter-button {
     width: 100%;
   }
 }

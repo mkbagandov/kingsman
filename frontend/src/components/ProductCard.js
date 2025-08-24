@@ -1,13 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { FaTag, FaDollarSign, FaBoxes, FaImage } from 'react-icons/fa'; // Import FaImage for placeholder
+import { FaTag, FaDollarSign, FaBoxes, FaImage, FaHeart } from 'react-icons/fa'; // Import FaHeart icon
 import './ProductCard.css';
 
 function ProductCard({ product, categories }) {
   const category = categories.find(cat => cat.id === product.category_id);
   const categoryName = category ? category.name : 'Неизвестно';
 
-  const imageUrl = product.ImageURL || "placeholder"; // Use a string 'placeholder' if no image URL
+  const imageUrl = product.ImageURL || "placeholder"; 
+  const discount = product.discount || null; // Assuming product might have a discount field
 
   return (
     <div className="product-card">
@@ -18,6 +19,8 @@ function ProductCard({ product, categories }) {
           ) : (
             <FaImage className="product-placeholder-icon" />
           )}
+          {discount && <div className="discount-badge">-{discount}%</div>}
+          <div className="favorite-icon"><FaHeart /></div>
         </div>
         <div className="product-info">
           <h2 className="product-name">{product.name}</h2>
