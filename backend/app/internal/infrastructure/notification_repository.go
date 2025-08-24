@@ -25,7 +25,7 @@ func (r *PostgreSQLNotificationRepository) CreateNotification(ctx context.Contex
 	return nil
 }
 
-func (r *PostgreSQLNotificationRepository) GetNotificationsByUserID(ctx context.Context, userID string) ([]*domain.Notification, error) {
+func (r *PostgreSQLNotificationRepository) GetNotificationsByUserID(ctx context.Context, userID int) ([]*domain.Notification, error) {
 	query := `SELECT id, user_id, type, title, message, created_at FROM notifications WHERE user_id = $1 ORDER BY created_at DESC`
 	rows, err := r.db.QueryContext(ctx, query, userID)
 	if err != nil {

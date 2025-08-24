@@ -33,6 +33,23 @@ func (h *UserHandler) RegisterUser(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(resp)
 }
 
+func (h *UserHandler) LoginUser(w http.ResponseWriter, r *http.Request) {
+	var req usecase.LoginUserRequest
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	resp, err := h.userUseCase.LoginUser(r.Context(), &req)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusUnauthorized)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(resp)
+}
+
 func (h *UserHandler) GetUserProfile(w http.ResponseWriter, r *http.Request) {
 	userID := chi.URLParam(r, "userID")
 	if userID == "" {

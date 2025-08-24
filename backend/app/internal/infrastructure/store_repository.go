@@ -40,7 +40,7 @@ func (r *PostgreSQLStoreRepository) GetStores(ctx context.Context) ([]*domain.St
 	return stores, nil
 }
 
-func (r *PostgreSQLStoreRepository) GetStoreByID(ctx context.Context, id string) (*domain.Store, error) {
+func (r *PostgreSQLStoreRepository) GetStoreByID(ctx context.Context, id int) (*domain.Store, error) {
 	store := &domain.Store{}
 	query := `SELECT id, name, address, location, phone FROM stores WHERE id = $1`
 	err := r.db.QueryRowContext(ctx, query, id).Scan(&store.ID, &store.Name, &store.Address, &store.Location, &store.Phone)
