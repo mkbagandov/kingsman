@@ -68,7 +68,7 @@ function ProductCatalog() {
           className={`category-tab ${selectedCategory === '' ? 'active' : ''}`}
           onClick={() => handleCategoryTabClick('')}
         >
-          Все Категории
+          Все категории
         </button>
         {categories.map((cat) => (
           <button 
@@ -82,7 +82,7 @@ function ProductCatalog() {
       </div>
 
       <div className="catalog-actions">
-        <button className="filter-button" onClick={() => setShowFilter(!showFilter)}>
+        <button className="filter-button" onClick={() => setShowFilter(!showFilter)} style={{backgroundColor: 'white', color: 'black'}}>
           <FaFilter /> Фильтр
         </button>
         <button className="sort-button">
@@ -111,7 +111,7 @@ function ProductCatalog() {
             <label htmlFor="max-price">Макс. Цена:</label>
             <input id="max-price" type="number" value={maxPrice} onChange={(e) => setMaxPrice(e.target.value)} className="filter-input" placeholder="1000" />
           </div>
-          <button type="submit" className="apply-filter-button">Применить Фильтры</button>
+          <button type="submit" className="apply-filter-button">Найти</button>
         </form>
       )}
 

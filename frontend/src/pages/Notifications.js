@@ -26,7 +26,7 @@ function Notifications() {
 
   return (
     <div className="notifications-page">
-      <h1>Ваши Уведомления</h1>
+
       {notifications.length > 0 ? (
         <div className="notifications-list">
           {notifications.map((notification) => (
