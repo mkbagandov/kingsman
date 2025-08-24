@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { getNotifications } from '../api/api';
-// Removed useParams as userID will come from JWT on the backend
+import NotificationCard from '../components/NotificationCard'; // Import the new NotificationCard component
 
 function Notifications() {
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  // const { userID } = useParams(); // No longer needed for notifications
 
   useEffect(() => {
     const fetchNotifications = async () => {
       try {
-        const response = await getNotifications(); // No userID parameter
+        const response = await getNotifications();
         setNotifications(response.data.notifications);
       } catch (err) {
         setError(err.response?.data?.error || err.message);
@@ -20,22 +19,20 @@ function Notifications() {
       }
     };
     fetchNotifications();
-  }, []); // Empty dependency array as userID is handled by backend JWT
+  }, []);
 
   if (loading) return <div>Loading notifications...</div>;
   if (error) return <div>Error: {error}</div>;
 
   return (
-    <div>
+    <div className="notifications-page">
       <h1>Your Notifications</h1>
       {notifications.length > 0 ? (
-        <ul>
+        <div className="notifications-list">
           {notifications.map((notification) => (
-            <li key={notification.id}>
-              <strong>{notification.type}:</strong> {notification.message} - {new Date(notification.createdAt).toLocaleString()}
-            </li>
+            <NotificationCard key={notification.id} notification={notification} />
           ))}
-        </ul>
+        </div>
       ) : (
         <p>No notifications found.</p>
       )}

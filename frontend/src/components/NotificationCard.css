@@ -1,0 +1,60 @@
+.notification-card {
+  display: flex;
+  align-items: flex-start;
+  padding: 15px;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.notification-icon-container {
+  flex-shrink: 0;
+  margin-right: 15px;
+  padding: 10px;
+  border-radius: 50%;
+  background-color: #f0f0f0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.notification-icon-container .icon {
+  font-size: 1.5em;
+  color: #555;
+}
+
+.notification-icon-container .icon.promotion {
+  color: #ffc107; /* Yellow for promotions */
+}
+
+.notification-icon-container .icon.new-arrival {
+  color: #17a2b8; /* Teal for new arrivals */
+}
+
+.notification-icon-container .icon.info {
+  color: #007bff; /* Blue for general info */
+}
+
+.notification-content {
+  flex-grow: 1;
+}
+
+.notification-title {
+  font-size: 1.2em;
+  margin-top: 0;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+.notification-message {
+  font-size: 0.95em;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.notification-timestamp {
+  font-size: 0.8em;
+  color: #999;
+}

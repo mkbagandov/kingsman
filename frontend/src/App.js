@@ -9,6 +9,7 @@ import Stores from './pages/Stores';
 import StoreDetail from './pages/StoreDetail';
 import UserProfile from './pages/UserProfile';
 import Notifications from './pages/Notifications';
+import ProductDetail from './pages/ProductDetail';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/products" element={<ProductCatalog />} />
+          <Route path="/products/:productID" element={<ProductDetail />} />
           <Route path="/stores" element={<Stores />} />
           <Route path="/stores/:storeID" element={<StoreDetail />} />
           <Route path="/users/profile" element={<UserProfile />} />

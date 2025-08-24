@@ -45,9 +45,9 @@ export const loginUser = async (credentials) => {
 };
 export const getUserProfile = () => api.get('/users/profile');
 export const getUserLoyaltyProfile = () => api.get('/users/loyalty');
-export const addLoyaltyPoints = (data) => api.post('/users/loyalty/points', data);
-export const addLoyaltyActivity = (data) => api.post('/users/loyalty/activity', data);
-export const getLoyaltyTiers = () => api.get('/loyalty/tiers');
+export const addLoyaltyPoints = (data) => api.post('/users/loyalty-points', data);
+export const addLoyaltyActivity = (data) => api.post('/users/loyalty-activity', data);
+export const getLoyaltyTiers = () => api.get('/loyalty-tiers');
 export const getUserDiscountCard = () => api.get('/users/discount-card');
 export const updateUserDiscountCard = (data) => api.put('/users/discount-card', data);
 export const getUserQRCode = () => api.get('/users/qrcode', { responseType: 'arraybuffer' }); // For image data
@@ -65,6 +65,6 @@ export const getCategories = () => api.get('/categories');
 
 // Notification Endpoints
 export const sendNotification = (notificationData) => api.post('/notifications', notificationData);
-export const getNotifications = () => api.get('/notifications');
+export const getNotifications = () => api.get('/users/notifications');
 
 export default api;
