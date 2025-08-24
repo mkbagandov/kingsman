@@ -53,7 +53,7 @@ function ProductCatalog() {
 
   return (
     <div className="product-catalog-page">
-      <h1>Каталог Продуктов</h1>
+      <h1>Каталог</h1>
       <form onSubmit={handleSearch} className="product-filter-form">
         <div className="form-group">
           <label htmlFor="category-select">Категория:</label>
