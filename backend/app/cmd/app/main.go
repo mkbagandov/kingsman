@@ -12,6 +12,7 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+	"github.com/go-chi/cors" // Import the CORS package
 
 	// "github.com/golang-migrate/migrate/v4"                     // Added golang-migrate
 	// _ "github.com/golang-migrate/migrate/v4/database/postgres" // PostgreSQL driver for migrate
@@ -26,7 +27,7 @@ import (
 	"github.com/mkbagandov/kingsman/backend/app/internal/usecase"
 )
 
-var jwtKey = []byte("YOUR_ULTRA_SECURE_SECRET_KEY") // TODO: Load from environment variable
+var jwtKey = []byte("YOUR_SECRET_KEY") // TODO: Load from environment variable
 
 func jwtAuthMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -36,8 +37,7 @@ func jwtAuthMiddleware(next http.Handler) http.Handler {
 			return
 		}
 
-		tokenString = tokenString[len("Bearer "):] // Remove "Bearer " prefix
-
+		tokenString = tokenString[len("Bearer "):]
 		claims := &domain.Claims{}
 
 		token, err := jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (interface{}, error) {
@@ -58,8 +58,8 @@ func jwtAuthMiddleware(next http.Handler) http.Handler {
 		}
 
 		// Add user ID to context for subsequent handlers
-		ctx := context.WithValue(r.Context(), "userID", claims.UserID)
-		r.WithContext(ctx)
+		ctx := context.WithValue(r.Context(), domain.UserContextKey, claims.UserID)
+		r = r.WithContext(ctx)
 
 		next.ServeHTTP(w, r)
 	})
@@ -136,6 +136,17 @@ func main() {
 	// Setup HTTP router
 	r := chi.NewRouter()
 
+	// Configure CORS middleware
+	corsHandler := cors.Handler(cors.Options{
+		AllowedOrigins:   []string{"*"},
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token"},
+		ExposedHeaders:   []string{"Link"},
+		AllowCredentials: true,
+		MaxAge:           300, // Maximum value not ignored by any of major browsers
+	})
+
+	r.Use(corsHandler) // Apply the CORS middleware
 	r.Use(middleware.RequestID)
 	r.Use(middleware.Logger)
 	r.Use(middleware.Recoverer)
@@ -146,23 +157,23 @@ func main() {
 	})
 
 	// Public routes (registration and login)
-	r.Post("/register", userHandler.RegisterUser)
-	r.Post("/login", userHandler.LoginUser)
+	r.Post("/users/register", userHandler.RegisterUser)
+	r.Post("/users/login", userHandler.LoginUser)
 
 	// Protected routes
 	r.Group(func(r chi.Router) {
 		r.Use(jwtAuthMiddleware)
 
 		// User routes
-		r.Get("/users/{userID}", userHandler.GetUserProfile)
-		r.Get("/users/{userID}/discount-card", userHandler.GetUserDiscountCard)
-		r.Put("/users/{userID}/discount-card", userHandler.UpdateUserDiscountCard)
-		r.Get("/users/{userID}/qrcode", userHandler.GetUserQRCode)
+		r.Get("/users/profile", userHandler.GetUserProfile)
+		r.Get("/users/discount-card", userHandler.GetUserDiscountCard)
+		r.Put("/users/discount-card", userHandler.UpdateUserDiscountCard)
+		r.Get("/users/qrcode", userHandler.GetUserQRCode)
 
 		// Loyalty routes
-		r.Get("/users/{userID}/loyalty-profile", userHandler.GetUserLoyaltyProfile)
-		r.Post("/users/{userID}/loyalty-points", userHandler.AddLoyaltyPoints)
-		r.Post("/users/{userID}/loyalty-activity", userHandler.AddLoyaltyActivity)
+		r.Get("/users/loyalty", userHandler.GetUserLoyaltyProfile)
+		r.Post("/users/loyalty-points", userHandler.AddLoyaltyPoints)
+		r.Post("/users/loyalty-activity", userHandler.AddLoyaltyActivity)
 		r.Get("/loyalty-tiers", userHandler.GetLoyaltyTiers)
 
 		// Store routes
@@ -178,7 +189,7 @@ func main() {
 
 		// Notification routes
 		r.Post("/notifications", notificationHandler.SendNotification)
-		r.Get("/users/{userID}/notifications", notificationHandler.GetNotifications)
+		r.Get("/users/notifications", notificationHandler.GetNotifications)
 	})
 
 	// Start HTTP server

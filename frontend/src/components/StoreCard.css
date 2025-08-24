@@ -1,0 +1,41 @@
+.store-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+}
+
+.store-card-name {
+  font-size: 1.5em;
+  margin-top: 0;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.store-card-name a {
+  text-decoration: none;
+  color: #333;
+  margin-left: 10px; /* Space between icon and text */
+}
+
+.store-card-name a:hover {
+  color: #007bff;
+}
+
+.store-card-address,
+.store-card-phone {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+  color: #555;
+}
+
+.store-card-address .icon,
+.store-card-phone .icon,
+.store-card-name .store-icon {
+  margin-right: 8px;
+  color: #007bff; /* Icon color */
+}

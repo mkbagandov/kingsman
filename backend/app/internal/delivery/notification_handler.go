@@ -4,7 +4,8 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/go-chi/chi/v5"
+	// "github.com/go-chi/chi/v5"
+	"github.com/mkbagandov/kingsman/backend/app/internal/domain" // Import the domain package to access UserContextKey
 	"github.com/mkbagandov/kingsman/backend/app/internal/usecase"
 )
 
@@ -32,11 +33,12 @@ func (h *NotificationHandler) SendNotification(w http.ResponseWriter, r *http.Re
 }
 
 func (h *NotificationHandler) GetNotifications(w http.ResponseWriter, r *http.Request) {
-	userID := chi.URLParam(r, "userID")
-	if userID == "" {
-		http.Error(w, "User ID is required", http.StatusBadRequest)
+	ctxUserID := r.Context().Value(domain.UserContextKey)
+	if ctxUserID == nil {
+		http.Error(w, "User ID not found in context", http.StatusUnauthorized)
 		return
 	}
+	userID := ctxUserID.(string)
 
 	resp, err := h.notificationUseCase.GetNotifications(r.Context(), userID)
 	if err != nil {

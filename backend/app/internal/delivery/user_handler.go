@@ -5,7 +5,8 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/go-chi/chi/v5"
+	// "github.com/go-chi/chi/v5"
+	"github.com/mkbagandov/kingsman/backend/app/internal/domain" // Import the domain package to access UserContextKey
 	"github.com/mkbagandov/kingsman/backend/app/internal/usecase"
 )
 
@@ -53,11 +54,12 @@ func (h *UserHandler) LoginUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *UserHandler) GetUserProfile(w http.ResponseWriter, r *http.Request) {
-	userID := chi.URLParam(r, "userID")
-	if userID == "" {
-		http.Error(w, "User ID is required", http.StatusBadRequest)
+	ctxUserID := r.Context().Value(domain.UserContextKey)
+	if ctxUserID == nil {
+		http.Error(w, "User ID not found in context", http.StatusUnauthorized)
 		return
 	}
+	userID := ctxUserID.(string)
 
 	resp, err := h.userUseCase.GetUserProfile(r.Context(), userID)
 	if err != nil {
@@ -71,15 +73,16 @@ func (h *UserHandler) GetUserProfile(w http.ResponseWriter, r *http.Request) {
 
 // GetUserLoyaltyProfile handles the request to get a user's loyalty profile.
 func (h *UserHandler) GetUserLoyaltyProfile(w http.ResponseWriter, r *http.Request) {
-	userIDStr := chi.URLParam(r, "userID")
-	if userIDStr == "" {
-		http.Error(w, "User ID is required", http.StatusBadRequest)
+	ctxUserID := r.Context().Value(domain.UserContextKey)
+	if ctxUserID == nil {
+		http.Error(w, "User ID not found in context", http.StatusUnauthorized)
 		return
 	}
+	userIDStr := ctxUserID.(string)
 
 	userID, err := strconv.Atoi(userIDStr)
 	if err != nil {
-		http.Error(w, "Invalid User ID format", http.StatusBadRequest)
+		http.Error(w, "Invalid User ID format in JWT", http.StatusBadRequest)
 		return
 	}
 
@@ -100,15 +103,16 @@ type AddLoyaltyPointsRequest struct {
 
 // AddLoyaltyPoints handles the request to add loyalty points to a user.
 func (h *UserHandler) AddLoyaltyPoints(w http.ResponseWriter, r *http.Request) {
-	userIDStr := chi.URLParam(r, "userID")
-	if userIDStr == "" {
-		http.Error(w, "User ID is required", http.StatusBadRequest)
+	ctxUserID := r.Context().Value(domain.UserContextKey)
+	if ctxUserID == nil {
+		http.Error(w, "User ID not found in context", http.StatusUnauthorized)
 		return
 	}
+	userIDStr := ctxUserID.(string)
 
 	userID, err := strconv.Atoi(userIDStr)
 	if err != nil {
-		http.Error(w, "Invalid User ID format", http.StatusBadRequest)
+		http.Error(w, "Invalid User ID format in JWT", http.StatusBadRequest)
 		return
 	}
 
@@ -133,15 +137,16 @@ type AddLoyaltyActivityRequest struct {
 
 // AddLoyaltyActivity handles the request to record a loyalty activity for a user.
 func (h *UserHandler) AddLoyaltyActivity(w http.ResponseWriter, r *http.Request) {
-	userIDStr := chi.URLParam(r, "userID")
-	if userIDStr == "" {
-		http.Error(w, "User ID is required", http.StatusBadRequest)
+	ctxUserID := r.Context().Value(domain.UserContextKey)
+	if ctxUserID == nil {
+		http.Error(w, "User ID not found in context", http.StatusUnauthorized)
 		return
 	}
+	userIDStr := ctxUserID.(string)
 
 	userID, err := strconv.Atoi(userIDStr)
 	if err != nil {
-		http.Error(w, "Invalid User ID format", http.StatusBadRequest)
+		http.Error(w, "Invalid User ID format in JWT", http.StatusBadRequest)
 		return
 	}
 
@@ -173,11 +178,12 @@ func (h *UserHandler) GetLoyaltyTiers(w http.ResponseWriter, r *http.Request) {
 
 // GetUserDiscountCard handles the request to get a user's discount card information.
 func (h *UserHandler) GetUserDiscountCard(w http.ResponseWriter, r *http.Request) {
-	userID := chi.URLParam(r, "userID")
-	if userID == "" {
-		http.Error(w, "User ID is required", http.StatusBadRequest)
+	ctxUserID := r.Context().Value(domain.UserContextKey)
+	if ctxUserID == nil {
+		http.Error(w, "User ID not found in context", http.StatusUnauthorized)
 		return
 	}
+	userID := ctxUserID.(string)
 
 	resp, err := h.userUseCase.GetUserDiscountCard(r.Context(), userID)
 	if err != nil {
@@ -196,11 +202,12 @@ type UpdateUserDiscountCardRequest struct {
 
 // UpdateUserDiscountCard handles the request to update a user's discount card information.
 func (h *UserHandler) UpdateUserDiscountCard(w http.ResponseWriter, r *http.Request) {
-	userID := chi.URLParam(r, "userID")
-	if userID == "" {
-		http.Error(w, "User ID is required", http.StatusBadRequest)
+	ctxUserID := r.Context().Value(domain.UserContextKey)
+	if ctxUserID == nil {
+		http.Error(w, "User ID not found in context", http.StatusUnauthorized)
 		return
 	}
+	userID := ctxUserID.(string)
 
 	var req UpdateUserDiscountCardRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
@@ -218,11 +225,12 @@ func (h *UserHandler) UpdateUserDiscountCard(w http.ResponseWriter, r *http.Requ
 
 // GetUserQRCode handles the request to get a user's QR code image.
 func (h *UserHandler) GetUserQRCode(w http.ResponseWriter, r *http.Request) {
-	userID := chi.URLParam(r, "userID")
-	if userID == "" {
-		http.Error(w, "User ID is required", http.StatusBadRequest)
+	ctxUserID := r.Context().Value(domain.UserContextKey)
+	if ctxUserID == nil {
+		http.Error(w, "User ID not found in context", http.StatusUnauthorized)
 		return
 	}
+	userID := ctxUserID.(string)
 
 	qrCodeImage, err := h.userUseCase.GenerateQRCodeImage(r.Context(), userID)
 	if err != nil {

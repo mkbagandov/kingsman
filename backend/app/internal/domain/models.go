@@ -4,6 +4,7 @@ import "github.com/golang-jwt/jwt/v5"
 
 type User struct {
 	ID                  int     `json:"id"`
+	Username            string  `json:"username"` // New field for username
 	PhoneNumber         string  `json:"phone_number"`
 	Email               string  `json:"email,omitempty"`     // New field for user email
 	PasswordHash        string  `json:"-"`                   // New field for storing hashed password, omit from JSON
@@ -14,6 +15,12 @@ type User struct {
 	LoyaltyStatus       string  `json:"loyalty_status"` // New field for user loyalty status
 	CurrentPoints       int     `json:"current_points"`
 }
+
+// Define a custom type for context keys to avoid collisions.
+type contextKey string
+
+// UserContextKey is the key used to store and retrieve the user ID from the context.
+const UserContextKey contextKey = "userID"
 
 type Store struct {
 	ID       int    `json:"id"`

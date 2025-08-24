@@ -19,8 +19,8 @@ func NewPostgreSQLUserRepository(db *sql.DB) *PostgreSQLUserRepository {
 }
 
 func (r *PostgreSQLUserRepository) CreateUser(ctx context.Context, user *domain.User) error {
-	query := `INSERT INTO users (phone_number, email, password_hash, social_id, discount_level, progress_to_next_level, qr_code, loyalty_status, current_points) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING id`
-	err := r.db.QueryRowContext(ctx, query, user.PhoneNumber, user.Email, user.PasswordHash, user.SocialID, user.DiscountLevel, user.ProgressToNextLevel, user.QRCode, user.LoyaltyStatus, user.CurrentPoints).Scan(&user.ID)
+	query := `INSERT INTO users (username, phone_number, email, password_hash, social_id, discount_level, progress_to_next_level, qr_code, loyalty_status, current_points) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING id`
+	err := r.db.QueryRowContext(ctx, query, user.Username, user.PhoneNumber, user.Email, user.PasswordHash, user.SocialID, user.DiscountLevel, user.ProgressToNextLevel, user.QRCode, user.LoyaltyStatus, user.CurrentPoints).Scan(&user.ID)
 	if err != nil {
 		if pqErr, ok := err.(*pq.Error); ok && pqErr.Code.Name() == "unique_violation" {
 			// Check if the unique violation is for phone_number or email
@@ -37,8 +37,8 @@ func (r *PostgreSQLUserRepository) CreateUser(ctx context.Context, user *domain.
 
 func (r *PostgreSQLUserRepository) GetUserByID(ctx context.Context, id int) (*domain.User, error) {
 	user := &domain.User{}
-	query := `SELECT id, phone_number, email, password_hash, social_id, discount_level, progress_to_next_level, qr_code, loyalty_status, current_points FROM users WHERE id = $1`
-	err := r.db.QueryRowContext(ctx, query, id).Scan(&user.ID, &user.PhoneNumber, &user.Email, &user.PasswordHash, &user.SocialID, &user.DiscountLevel, &user.ProgressToNextLevel, &user.QRCode, &user.LoyaltyStatus, &user.CurrentPoints)
+	query := `SELECT id, username, phone_number, email, password_hash, social_id, discount_level, progress_to_next_level, qr_code, loyalty_status, current_points FROM users WHERE id = $1`
+	err := r.db.QueryRowContext(ctx, query, id).Scan(&user.ID, &user.Username, &user.PhoneNumber, &user.Email, &user.PasswordHash, &user.SocialID, &user.DiscountLevel, &user.ProgressToNextLevel, &user.QRCode, &user.LoyaltyStatus, &user.CurrentPoints)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return nil, fmt.Errorf("user not found")
@@ -49,9 +49,11 @@ func (r *PostgreSQLUserRepository) GetUserByID(ctx context.Context, id int) (*do
 }
 
 func (r *PostgreSQLUserRepository) GetUserByPhoneNumber(ctx context.Context, phoneNumber string) (*domain.User, error) {
+	fmt.Println(phoneNumber)
+
 	user := &domain.User{}
-	query := `SELECT id, phone_number, email, password_hash, social_id, discount_level, progress_to_next_level, qr_code, loyalty_status, current_points FROM users WHERE phone_number = $1`
-	err := r.db.QueryRowContext(ctx, query, phoneNumber).Scan(&user.ID, &user.PhoneNumber, &user.Email, &user.PasswordHash, &user.SocialID, &user.DiscountLevel, &user.ProgressToNextLevel, &user.QRCode, &user.LoyaltyStatus, &user.CurrentPoints)
+	query := `SELECT id, username, phone_number, email, password_hash, social_id, discount_level, progress_to_next_level, qr_code, loyalty_status, current_points FROM users WHERE phone_number = $1`
+	err := r.db.QueryRowContext(ctx, query, phoneNumber).Scan(&user.ID, &user.Username, &user.PhoneNumber, &user.Email, &user.PasswordHash, &user.SocialID, &user.DiscountLevel, &user.ProgressToNextLevel, &user.QRCode, &user.LoyaltyStatus, &user.CurrentPoints)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return nil, fmt.Errorf("user not found")
@@ -63,8 +65,8 @@ func (r *PostgreSQLUserRepository) GetUserByPhoneNumber(ctx context.Context, pho
 
 func (r *PostgreSQLUserRepository) GetUserByEmail(ctx context.Context, email string) (*domain.User, error) {
 	user := &domain.User{}
-	query := `SELECT id, phone_number, email, password_hash, social_id, discount_level, progress_to_next_level, qr_code, loyalty_status, current_points FROM users WHERE email = $1`
-	err := r.db.QueryRowContext(ctx, query, email).Scan(&user.ID, &user.PhoneNumber, &user.Email, &user.PasswordHash, &user.SocialID, &user.DiscountLevel, &user.ProgressToNextLevel, &user.QRCode, &user.LoyaltyStatus, &user.CurrentPoints)
+	query := `SELECT id, username, phone_number, email, password_hash, social_id, discount_level, progress_to_next_level, qr_code, loyalty_status, current_points FROM users WHERE email = $1`
+	err := r.db.QueryRowContext(ctx, query, email).Scan(&user.ID, &user.Username, &user.PhoneNumber, &user.Email, &user.PasswordHash, &user.SocialID, &user.DiscountLevel, &user.ProgressToNextLevel, &user.QRCode, &user.LoyaltyStatus, &user.CurrentPoints)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return nil, fmt.Errorf("user not found")
@@ -75,8 +77,8 @@ func (r *PostgreSQLUserRepository) GetUserByEmail(ctx context.Context, email str
 }
 
 func (r *PostgreSQLUserRepository) UpdateUser(ctx context.Context, user *domain.User) error {
-	query := `UPDATE users SET phone_number = $2, email = $3, password_hash = $4, social_id = $5, discount_level = $6, progress_to_next_level = $7, qr_code = $8, loyalty_status = $9, current_points = $10 WHERE id = $1`
-	_, err := r.db.ExecContext(ctx, query, user.ID, user.PhoneNumber, user.Email, user.PasswordHash, user.SocialID, user.DiscountLevel, user.ProgressToNextLevel, user.QRCode, user.LoyaltyStatus, user.CurrentPoints)
+	query := `UPDATE users SET username = $2, phone_number = $3, email = $4, password_hash = $5, social_id = $6, discount_level = $7, progress_to_next_level = $8, qr_code = $9, loyalty_status = $10, current_points = $11 WHERE id = $1`
+	_, err := r.db.ExecContext(ctx, query, user.ID, user.Username, user.PhoneNumber, user.Email, user.PasswordHash, user.SocialID, user.DiscountLevel, user.ProgressToNextLevel, user.QRCode, user.LoyaltyStatus, user.CurrentPoints)
 	if err != nil {
 		return fmt.Errorf("failed to update user: %w", err)
 	}

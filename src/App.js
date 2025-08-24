@@ -1,0 +1,33 @@
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Navbar from './components/Navbar';
+import Home from './pages/Home';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import ProductCatalog from './pages/ProductCatalog';
+import Stores from './pages/Stores';
+import StoreDetail from './pages/StoreDetail';
+import UserProfile from './pages/UserProfile';
+import Notifications from './pages/Notifications';
+
+function App() {
+  return (
+    <Router>
+      <Navbar />
+      <div className="container" style={{ padding: '20px' }}>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/products" element={<ProductCatalog />} />
+          <Route path="/stores" element={<Stores />} />
+          <Route path="/stores/:storeID" element={<StoreDetail />} />
+          <Route path="/profile/:userID" element={<UserProfile />} />
+          <Route path="/notifications/:userID" element={<Notifications />} />
+        </Routes>
+      </div>
+    </Router>
+  );
+}
+
+export default App;
