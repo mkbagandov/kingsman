@@ -11,6 +11,8 @@ type User struct {
 	DiscountLevel       int     `json:"discount_level"`
 	ProgressToNextLevel float64 `json:"progress_to_next_level"`
 	QRCode              *string `json:"qr_code,omitempty"`
+	LoyaltyStatus       string  `json:"loyalty_status"` // New field for user loyalty status
+	CurrentPoints       int     `json:"current_points"`
 }
 
 type Store struct {
@@ -50,4 +52,35 @@ type Product struct {
 type Claims struct {
 	UserID string `json:"user_id"`
 	jwt.RegisteredClaims
+}
+
+type LoyaltyPoint struct {
+	ID        int    `json:"id"`
+	UserID    int    `json:"user_id"`
+	Points    int    `json:"points"`
+	Type      string `json:"type"` // e.g., "purchase", "referral", "bonus"
+	CreatedAt string `json:"created_at"`
+}
+
+type LoyaltyTier struct {
+	ID          int    `json:"id"`
+	Name        string `json:"name"` // e.g., "Bronze", "Silver", "Gold", "Platinum"
+	MinPoints   int    `json:"min_points"`
+	Description string `json:"description"`
+	Benefits    string `json:"benefits"` // e.g., JSON string or comma-separated list of benefits
+}
+
+type LoyaltyActivity struct {
+	ID          int    `json:"id"`
+	UserID      int    `json:"user_id"`
+	Type        string `json:"type"` // e.g., "badge_earned", "challenge_completed", "reward_redeemed"
+	Description string `json:"description"`
+	CreatedAt   string `json:"created_at"`
+}
+
+type UserLoyalty struct {
+	UserID         int    `json:"user_id"`
+	CurrentPoints  int    `json:"current_points"`
+	CurrentTierID  int    `json:"current_tier_id"`
+	LastActivityAt string `json:"last_activity_at"`
 }

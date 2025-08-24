@@ -10,6 +10,20 @@ type UserRepository interface {
 	UpdateUser(ctx context.Context, user *User) error
 	UpdateUserDiscountCard(ctx context.Context, userID int, level int, progress float64) error
 	GetUserDiscountCard(ctx context.Context, userID int) (*User, error) // Can return a User with only discount card fields populated
+
+	// Loyalty Program methods
+	CreateLoyaltyPoint(ctx context.Context, point *LoyaltyPoint) error
+	GetLoyaltyPointsByUserID(ctx context.Context, userID int) ([]*LoyaltyPoint, error)
+	GetLoyaltyTierByID(ctx context.Context, id int) (*LoyaltyTier, error)
+	GetLoyaltyTierByName(ctx context.Context, name string) (*LoyaltyTier, error)
+	GetAllLoyaltyTiers(ctx context.Context) ([]*LoyaltyTier, error)
+	CreateLoyaltyTier(ctx context.Context, tier *LoyaltyTier) error
+	UpdateLoyaltyTier(ctx context.Context, tier *LoyaltyTier) error
+	DeleteLoyaltyTier(ctx context.Context, id int) error
+	CreateLoyaltyActivity(ctx context.Context, activity *LoyaltyActivity) error
+	GetLoyaltyActivitiesByUserID(ctx context.Context, userID int) ([]*LoyaltyActivity, error)
+	GetUserLoyalty(ctx context.Context, userID int) (*UserLoyalty, error)
+	UpdateUserLoyalty(ctx context.Context, userLoyalty *UserLoyalty) error
 }
 
 type StoreRepository interface {

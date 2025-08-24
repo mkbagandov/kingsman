@@ -3,17 +3,19 @@ package delivery
 import (
 	"encoding/json"
 	"net/http"
+	"strconv"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/mkbagandov/kingsman/backend/app/internal/usecase"
 )
 
 type UserHandler struct {
-	userUseCase *usecase.UserUseCase
+	userUseCase    *usecase.UserUseCase
+	loyaltyUseCase *usecase.LoyaltyUseCase
 }
 
-func NewUserHandler(userUseCase *usecase.UserUseCase) *UserHandler {
-	return &UserHandler{userUseCase: userUseCase}
+func NewUserHandler(userUseCase *usecase.UserUseCase, loyaltyUseCase *usecase.LoyaltyUseCase) *UserHandler {
+	return &UserHandler{userUseCase: userUseCase, loyaltyUseCase: loyaltyUseCase}
 }
 
 func (h *UserHandler) RegisterUser(w http.ResponseWriter, r *http.Request) {
@@ -58,6 +60,108 @@ func (h *UserHandler) GetUserProfile(w http.ResponseWriter, r *http.Request) {
 	}
 
 	resp, err := h.userUseCase.GetUserProfile(r.Context(), userID)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(resp)
+}
+
+// GetUserLoyaltyProfile handles the request to get a user's loyalty profile.
+func (h *UserHandler) GetUserLoyaltyProfile(w http.ResponseWriter, r *http.Request) {
+	userIDStr := chi.URLParam(r, "userID")
+	if userIDStr == "" {
+		http.Error(w, "User ID is required", http.StatusBadRequest)
+		return
+	}
+
+	userID, err := strconv.Atoi(userIDStr)
+	if err != nil {
+		http.Error(w, "Invalid User ID format", http.StatusBadRequest)
+		return
+	}
+
+	resp, err := h.loyaltyUseCase.GetUserLoyaltyProfile(r.Context(), userID)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(resp)
+}
+
+type AddLoyaltyPointsRequest struct {
+	Points int    `json:"points"`
+	Type   string `json:"type"`
+}
+
+// AddLoyaltyPoints handles the request to add loyalty points to a user.
+func (h *UserHandler) AddLoyaltyPoints(w http.ResponseWriter, r *http.Request) {
+	userIDStr := chi.URLParam(r, "userID")
+	if userIDStr == "" {
+		http.Error(w, "User ID is required", http.StatusBadRequest)
+		return
+	}
+
+	userID, err := strconv.Atoi(userIDStr)
+	if err != nil {
+		http.Error(w, "Invalid User ID format", http.StatusBadRequest)
+		return
+	}
+
+	var req AddLoyaltyPointsRequest
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	if err := h.loyaltyUseCase.AddLoyaltyPoints(r.Context(), userID, req.Points, req.Type); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+}
+
+type AddLoyaltyActivityRequest struct {
+	Type        string `json:"type"`
+	Description string `json:"description"`
+}
+
+// AddLoyaltyActivity handles the request to record a loyalty activity for a user.
+func (h *UserHandler) AddLoyaltyActivity(w http.ResponseWriter, r *http.Request) {
+	userIDStr := chi.URLParam(r, "userID")
+	if userIDStr == "" {
+		http.Error(w, "User ID is required", http.StatusBadRequest)
+		return
+	}
+
+	userID, err := strconv.Atoi(userIDStr)
+	if err != nil {
+		http.Error(w, "Invalid User ID format", http.StatusBadRequest)
+		return
+	}
+
+	var req AddLoyaltyActivityRequest
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	if err := h.loyaltyUseCase.AddLoyaltyActivity(r.Context(), userID, req.Type, req.Description); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+}
+
+// GetLoyaltyTiers handles the request to get all loyalty tiers.
+func (h *UserHandler) GetLoyaltyTiers(w http.ResponseWriter, r *http.Request) {
+	resp, err := h.loyaltyUseCase.GetLoyaltyTiers(r.Context())
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

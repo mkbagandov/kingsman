@@ -124,9 +124,10 @@ func main() {
 	notificationUseCase := usecase.NewNotificationUseCase(notificationRepo)
 	categoryUseCase := usecase.NewCategoryUseCase(categoryRepo)
 	productUseCase := usecase.NewProductUseCase(productRepo)
+	loyaltyUseCase := usecase.NewLoyaltyUseCase(userRepo) // Initialize LoyaltyUseCase
 
 	// Initialize handlers
-	userHandler := delivery.NewUserHandler(userUseCase)
+	userHandler := delivery.NewUserHandler(userUseCase, loyaltyUseCase) // Pass loyaltyUseCase
 	storeHandler := delivery.NewStoreHandler(storeUseCase)
 	notificationHandler := delivery.NewNotificationHandler(notificationUseCase)
 	categoryHandler := delivery.NewCategoryHandler(categoryUseCase)
@@ -157,6 +158,12 @@ func main() {
 		r.Get("/users/{userID}/discount-card", userHandler.GetUserDiscountCard)
 		r.Put("/users/{userID}/discount-card", userHandler.UpdateUserDiscountCard)
 		r.Get("/users/{userID}/qrcode", userHandler.GetUserQRCode)
+
+		// Loyalty routes
+		r.Get("/users/{userID}/loyalty-profile", userHandler.GetUserLoyaltyProfile)
+		r.Post("/users/{userID}/loyalty-points", userHandler.AddLoyaltyPoints)
+		r.Post("/users/{userID}/loyalty-activity", userHandler.AddLoyaltyActivity)
+		r.Get("/loyalty-tiers", userHandler.GetLoyaltyTiers)
 
 		// Store routes
 		r.Get("/stores", storeHandler.GetStores)

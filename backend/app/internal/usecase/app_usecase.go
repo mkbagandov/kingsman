@@ -21,6 +21,16 @@ func NewUserUseCase(userRepo domain.UserRepository) *UserUseCase {
 	return &UserUseCase{userRepo: userRepo}
 }
 
+// LoyaltyUseCase handles loyalty program related business logic.
+type LoyaltyUseCase struct {
+	userRepo domain.UserRepository // Reusing UserRepository for loyalty data
+}
+
+// NewLoyaltyUseCase creates a new LoyaltyUseCase.
+func NewLoyaltyUseCase(userRepo domain.UserRepository) *LoyaltyUseCase {
+	return &LoyaltyUseCase{userRepo: userRepo}
+}
+
 type RegisterUserRequest struct {
 	PhoneNumber string `json:"phone_number"`
 	Email       string `json:"email"`    // New field for email
@@ -78,10 +88,23 @@ func (uc *UserUseCase) RegisterUser(ctx context.Context, req *RegisterUserReques
 		DiscountLevel:       0,             // Initial discount level
 		ProgressToNextLevel: 0.0,           // Initial progress
 		QRCode:              &qrCodeString, // Pointer to the generated QR code string
+		LoyaltyStatus:       "Bronze",      // Initial loyalty status
+		CurrentPoints:       0,             // Initial loyalty points
 	}
 
 	if err := uc.userRepo.CreateUser(ctx, user); err != nil {
 		return nil, fmt.Errorf("failed to create user: %w", err)
+	}
+
+	// Initialize user loyalty entry
+	userLoyalty := &domain.UserLoyalty{
+		UserID:         user.ID,
+		CurrentPoints:  0,
+		CurrentTierID:  0, // Will be updated when tiers are defined and assigned
+		LastActivityAt: time.Now().Format(time.RFC3339),
+	}
+	if err := uc.userRepo.UpdateUserLoyalty(ctx, userLoyalty); err != nil {
+		return nil, fmt.Errorf("failed to initialize user loyalty: %w", err)
 	}
 
 	return &RegisterUserResponse{UserID: strconv.Itoa(user.ID)}, nil
@@ -119,11 +142,23 @@ func (uc *UserUseCase) LoginUser(ctx context.Context, req *LoginUserRequest) (*L
 }
 
 type GetUserProfileResponse struct {
-	ID                  string  `json:"id"`
-	PhoneNumber         string  `json:"phone_number"`
-	DiscountLevel       int     `json:"discount_level"`
-	ProgressToNextLevel float64 `json:"progress_to_next_level"`
-	QRCode              *string `json:"qr_code"` // Changed to *string to match domain.User
+	ID                  string                    `json:"id"`
+	PhoneNumber         string                    `json:"phone_number"`
+	DiscountLevel       int                       `json:"discount_level"`
+	ProgressToNextLevel float64                   `json:"progress_to_next_level"`
+	QRCode              *string                   `json:"qr_code"` // Changed to *string to match domain.User
+	LoyaltyStatus       string                    `json:"loyalty_status"`
+	CurrentPoints       int                       `json:"current_points"`
+	CurrentTier         *LoyaltyTierResponse      `json:"current_tier,omitempty"`
+	LoyaltyActivities   []*domain.LoyaltyActivity `json:"loyalty_activities,omitempty"`
+}
+
+type LoyaltyTierResponse struct {
+	ID          int    `json:"id"`
+	Name        string `json:"name"`
+	MinPoints   int    `json:"min_points"`
+	Description string `json:"description,omitempty"`
+	Benefits    string `json:"benefits,omitempty"`
 }
 
 func (uc *UserUseCase) GetUserProfile(ctx context.Context, userID string) (*GetUserProfileResponse, error) {
@@ -137,13 +172,48 @@ func (uc *UserUseCase) GetUserProfile(ctx context.Context, userID string) (*GetU
 		return nil, fmt.Errorf("failed to get user profile: %w", err)
 	}
 
-	return &GetUserProfileResponse{
+	// Get user loyalty information
+	userLoyalty, err := uc.userRepo.GetUserLoyalty(ctx, id)
+	if err != nil && err.Error() != "user loyalty not found" {
+		return nil, fmt.Errorf("failed to get user loyalty information: %w", err)
+	}
+
+	var currentTier *LoyaltyTierResponse
+	if userLoyalty != nil && userLoyalty.CurrentTierID != 0 {
+		tier, err := uc.userRepo.GetLoyaltyTierByID(ctx, userLoyalty.CurrentTierID)
+		if err != nil && err.Error() != "loyalty tier not found" {
+			return nil, fmt.Errorf("failed to get loyalty tier: %w", err)
+		}
+		if tier != nil {
+			currentTier = &LoyaltyTierResponse{
+				ID:          tier.ID,
+				Name:        tier.Name,
+				MinPoints:   tier.MinPoints,
+				Description: tier.Description,
+				Benefits:    tier.Benefits,
+			}
+		}
+	}
+
+	// Get loyalty activities
+	activities, err := uc.userRepo.GetLoyaltyActivitiesByUserID(ctx, id)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get loyalty activities: %w", err)
+	}
+
+	response := &GetUserProfileResponse{
 		ID:                  strconv.Itoa(user.ID),
 		PhoneNumber:         user.PhoneNumber,
 		DiscountLevel:       user.DiscountLevel,
 		ProgressToNextLevel: user.ProgressToNextLevel,
 		QRCode:              user.QRCode,
-	}, nil
+		LoyaltyStatus:       user.LoyaltyStatus,
+		CurrentPoints:       user.CurrentPoints,
+		CurrentTier:         currentTier,
+		LoyaltyActivities:   activities,
+	}
+
+	return response, nil
 }
 
 // GetUserQRCode retrieves the QR code string for a user.
@@ -375,4 +445,159 @@ func (uc *NotificationUseCase) GetNotifications(ctx context.Context, userID stri
 	}
 
 	return &GetNotificationsResponse{Notifications: notifications}, nil
+}
+
+// AddLoyaltyPoints adds loyalty points to a user and updates their tier if necessary.
+func (uc *LoyaltyUseCase) AddLoyaltyPoints(ctx context.Context, userID int, points int, pointType string) error {
+	// Create loyalty point record
+	point := &domain.LoyaltyPoint{
+		UserID: userID,
+		Points: points,
+		Type:   pointType,
+	}
+	if err := uc.userRepo.CreateLoyaltyPoint(ctx, point); err != nil {
+		return fmt.Errorf("failed to create loyalty point: %w", err)
+	}
+
+	// Get user loyalty and update current points
+	userLoyalty, err := uc.userRepo.GetUserLoyalty(ctx, userID)
+	if err != nil && err.Error() == "user loyalty not found" {
+		// Initialize if not found
+		userLoyalty = &domain.UserLoyalty{
+			UserID:         userID,
+			CurrentPoints:  points,
+			LastActivityAt: time.Now().Format(time.RFC3339),
+		}
+	} else if err != nil {
+		return fmt.Errorf("failed to get user loyalty: %w", err)
+	} else {
+		userLoyalty.CurrentPoints += points
+		userLoyalty.LastActivityAt = time.Now().Format(time.RFC3339)
+	}
+
+	// Determine new tier
+	tiers, err := uc.userRepo.GetAllLoyaltyTiers(ctx)
+	if err != nil {
+		return fmt.Errorf("failed to get all loyalty tiers: %w", err)
+	}
+
+	var newTier *domain.LoyaltyTier
+	for _, tier := range tiers {
+		if userLoyalty.CurrentPoints >= tier.MinPoints {
+			newTier = tier
+		} else {
+			break // Tiers are sorted by min_points, so we can stop.
+		}
+	}
+
+	if newTier != nil && (userLoyalty.CurrentTierID == 0 || userLoyalty.CurrentTierID != newTier.ID) {
+		userLoyalty.CurrentTierID = newTier.ID
+		// Update user's loyalty status in the main user table as well
+		user, err := uc.userRepo.GetUserByID(ctx, userID)
+		if err != nil {
+			return fmt.Errorf("failed to get user for tier update: %w", err)
+		}
+		user.LoyaltyStatus = newTier.Name
+		user.CurrentPoints = userLoyalty.CurrentPoints
+		if err := uc.userRepo.UpdateUser(ctx, user); err != nil {
+			return fmt.Errorf("failed to update user loyalty status: %w", err)
+		}
+		// Add loyalty activity for tier upgrade
+		activity := &domain.LoyaltyActivity{
+			UserID:      userID,
+			Type:        "tier_upgrade",
+			Description: fmt.Sprintf("Upgraded to %s tier", newTier.Name),
+		}
+		if err := uc.userRepo.CreateLoyaltyActivity(ctx, activity); err != nil {
+			return fmt.Errorf("failed to create tier upgrade activity: %w", err)
+		}
+	}
+
+	if err := uc.userRepo.UpdateUserLoyalty(ctx, userLoyalty); err != nil {
+		return fmt.Errorf("failed to update user loyalty: %w", err)
+	}
+
+	return nil
+}
+
+// AddLoyaltyActivity records a loyalty-related activity for a user.
+func (uc *LoyaltyUseCase) AddLoyaltyActivity(ctx context.Context, userID int, activityType, description string) error {
+	activity := &domain.LoyaltyActivity{
+		UserID:      userID,
+		Type:        activityType,
+		Description: description,
+	}
+	if err := uc.userRepo.CreateLoyaltyActivity(ctx, activity); err != nil {
+		return fmt.Errorf("failed to create loyalty activity: %w", err)
+	}
+	return nil
+}
+
+// GetUserLoyaltyProfile retrieves a comprehensive loyalty profile for a user.
+func (uc *LoyaltyUseCase) GetUserLoyaltyProfile(ctx context.Context, userID int) (*GetUserProfileResponse, error) {
+	user, err := uc.userRepo.GetUserByID(ctx, userID)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get user: %w", err)
+	}
+
+	userLoyalty, err := uc.userRepo.GetUserLoyalty(ctx, userID)
+	if err != nil && err.Error() != "user loyalty not found" {
+		return nil, fmt.Errorf("failed to get user loyalty information: %w", err)
+	}
+
+	var currentTier *LoyaltyTierResponse
+	if userLoyalty != nil && userLoyalty.CurrentTierID != 0 {
+		tier, err := uc.userRepo.GetLoyaltyTierByID(ctx, userLoyalty.CurrentTierID)
+		if err != nil && err.Error() != "loyalty tier not found" {
+			return nil, fmt.Errorf("failed to get loyalty tier: %w", err)
+		}
+		if tier != nil {
+			currentTier = &LoyaltyTierResponse{
+				ID:          tier.ID,
+				Name:        tier.Name,
+				MinPoints:   tier.MinPoints,
+				Description: tier.Description,
+				Benefits:    tier.Benefits,
+			}
+		}
+	}
+
+	activities, err := uc.userRepo.GetLoyaltyActivitiesByUserID(ctx, userID)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get loyalty activities: %w", err)
+	}
+
+	response := &GetUserProfileResponse{
+		ID:                  strconv.Itoa(user.ID),
+		PhoneNumber:         user.PhoneNumber,
+		DiscountLevel:       user.DiscountLevel,
+		ProgressToNextLevel: user.ProgressToNextLevel,
+		QRCode:              user.QRCode,
+		LoyaltyStatus:       user.LoyaltyStatus,
+		CurrentPoints:       user.CurrentPoints,
+		CurrentTier:         currentTier,
+		LoyaltyActivities:   activities,
+	}
+
+	return response, nil
+}
+
+// GetLoyaltyTiers retrieves all defined loyalty tiers.
+func (uc *LoyaltyUseCase) GetLoyaltyTiers(ctx context.Context) ([]*LoyaltyTierResponse, error) {
+	tiers, err := uc.userRepo.GetAllLoyaltyTiers(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get all loyalty tiers: %w", err)
+	}
+
+	var tierResponses []*LoyaltyTierResponse
+	for _, tier := range tiers {
+		tierResponses = append(tierResponses, &LoyaltyTierResponse{
+			ID:          tier.ID,
+			Name:        tier.Name,
+			MinPoints:   tier.MinPoints,
+			Description: tier.Description,
+			Benefits:    tier.Benefits,
+		})
+	}
+	return tierResponses, nil
 }
