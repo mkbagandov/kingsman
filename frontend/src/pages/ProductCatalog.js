@@ -95,7 +95,7 @@ function ProductCatalog() {
           <div className="form-group">
             <label htmlFor="category-select">Категория:</label>
             <select id="category-select" value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)} className="filter-select">
-              <option value="">Все Категории</option>
+              <option value="">Все категории</option>
               {categories.map((cat) => (
                 <option key={cat.id} value={cat.id}>
                   {cat.name}
