@@ -5,7 +5,7 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import ProductCatalog from './pages/ProductCatalog';
-import Stores from './pages/Stores';
+import About from './pages/About'; // Changed from Stores
 import StoreDetail from './pages/StoreDetail';
 import UserProfile from './pages/UserProfile';
 import Notifications from './pages/Notifications';
@@ -22,7 +22,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/products" element={<ProductCatalog />} />
           <Route path="/products/:productID" element={<ProductDetail />} />
-          <Route path="/stores" element={<Stores />} />
+          <Route path="/about" element={<About />} /> {/* New route for About page (stores list) */}
           <Route path="/stores/:storeID" element={<StoreDetail />} />
           <Route path="/profile" element={<Navigate to="/users/profile" replace />} />
           <Route path="/users/profile" element={<UserProfile />} />

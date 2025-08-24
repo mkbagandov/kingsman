@@ -1312,3 +1312,70 @@ code {
   transform: translateY(-3px) scale(1.02);
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.35);
 }
+
+.profile-qr-code-card {
+  /* Removed profile-card styles as it's now a child of discount-qr-container */
+  padding: 30px; /* Keep padding consistent with other cards */
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.discount-qr-container {
+  display: flex;
+  flex-wrap: wrap; /* Allow wrapping on smaller screens */
+  gap: 30px;
+  align-items: flex-start; /* Align items to the top */
+  background-color: var(--text-light); /* Background for the whole container */
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  padding: 30px; /* Padding for the entire container */
+}
+
+.profile-discount-card {
+  flex: 1; /* Allow discount card to take available space */
+  min-width: 250px; /* Minimum width before wrapping */
+  /* Remove background, border-radius, box-shadow, padding as they are now on discount-qr-container */
+  background-color: transparent;
+  box-shadow: none;
+  padding: 0; 
+}
+
+.profile-qr-code-card {
+  /* Ensure it doesn't have conflicting styles for flex */
+  background-color: transparent;
+  box-shadow: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.profile-qr-code {
+  width: 180px;
+  height: 180px;
+  object-fit: contain;
+  margin-top: 20px;
+  border: 5px solid var(--primary-dark-blue);
+  border-radius: 8px;
+}
+
+@media (max-width: 768px) {
+  .discount-qr-container {
+    flex-direction: column; /* Stack vertically on small screens */
+    align-items: center;
+    padding: 20px; /* Adjust padding for small screens */
+    gap: 20px;
+  }
+
+  .profile-discount-card {
+    text-align: center; /* Center text on small screens */
+  }
+
+  .profile-qr-code-card {
+    margin-top: 0; /* Remove extra margin */
+  }
+}

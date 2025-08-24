@@ -36,3 +36,58 @@
 }
 
 /* Auth links are now globally styled in index.css */
+
+.profile-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  border-radius: 50%;
+  background-color: var(--secondary-dark-blue);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+  transition: all 0.3s ease;
+  margin-left: 15px; /* Add some margin to separate from notification icon */
+}
+
+.profile-icon:hover {
+  background-color: var(--accent-gold);
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.35);
+}
+
+.notification-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px; /* Smaller padding for notification icon */
+  border-radius: 50%;
+  background-color: transparent; /* Transparent background by default */
+  transition: all 0.3s ease;
+  color: var(--text-light); /* Default color from text-light */
+}
+
+.notification-icon:hover {
+  background-color: rgba(255, 255, 255, 0.1); /* Subtle background on hover */
+  transform: translateY(-2px) scale(1.05);
+  color: var(--accent-gold); /* Accent color on hover */
+}
+
+/* Responsive adjustments for Navbar */
+@media (max-width: 768px) {
+  .nav-right {
+    flex-direction: column; /* Stack icons vertically */
+    gap: 10px;
+    width: 100%;
+    align-items: center;
+  }
+
+  .notification-icon,
+  .profile-icon {
+    margin-left: 0; /* Remove left margin on small screens */
+  }
+
+  .profile-icon {
+    width: unset; /* Allow profile icon to size naturally */
+    padding: 8px;
+  }
+}

@@ -145,26 +145,28 @@ function UserProfile() {
             </div>
           )}
 
-          {/* Discount Card (Moved or adapted) */}
-          {discountCard && (
-            <div className="profile-card profile-discount-card">
-              <h3 className="card-title">Дисконтная карта <FaCreditCard /></h3>
-              <div className="discount-card-mock">
-                <h3>MR.KINGSMAN</h3>
-                <p>ДИСКОНТНАЯ КАРТА</p>
-                <p>Уровень: {discountCard.discount_level}</p>
-                <p>Прогресс: {discountCard.progress_to_next_level}% до следующего уровня</p>
+          <div className="discount-qr-container">
+            {/* Discount Card (Moved or adapted) */}
+            {discountCard && (
+              <div className="profile-card profile-discount-card">
+                <h3 className="card-title">Дисконтная карта <FaCreditCard /></h3>
+                <div className="discount-card-mock">
+                  <h3>MR.KINGSMAN</h3>
+                  <p>ДИСКОНТНАЯ КАРТА</p>
+                  <p>Уровень: {discountCard.discount_level}</p>
+                  <p>Прогресс: {discountCard.progress_to_next_level}% до следующего уровня</p>
+                </div>
               </div>
-            </div>
-          )}
+            )}
 
-          {/* QR Code (Moved or adapted) */}
-          {qrCode && (
-            <div className="profile-card profile-qr-code-card">
-              <h3 className="card-title">Ваш QR-код <FaQrcode /></h3>
-              <img src={qrCode} alt="QR-код" className="profile-qr-code" />
-            </div>
-          )}
+            {/* QR Code (Moved or adapted) */}
+            {qrCode && (
+              <div className="profile-qr-code-card">
+                <img src={qrCode} alt="QR-код" className="profile-qr-code" />
+              </div>
+            )}
+          </div>
+
         </div>
       </div>
     </div>

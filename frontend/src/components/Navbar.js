@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { FaUserCircle } from 'react-icons/fa'; // Import a user icon
-import './Navbar.css'; // Import the new CSS file
+import { FaUserCircle, FaBell } from 'react-icons/fa'; // Import FaBell icon
+import './Navbar.css'; 
 
 function Navbar() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -12,9 +12,8 @@ function Navbar() {
       setIsAuthenticated(!!token);
     };
 
-    checkAuth(); // Check auth status on component mount
+    checkAuth(); 
 
-    // Listen for changes in localStorage across tabs/windows
     window.addEventListener('storage', checkAuth);
 
     return () => {
@@ -31,11 +30,15 @@ function Navbar() {
           <Link to="/products">Каталог</Link>
           <Link to="/about">О нас</Link>
           <Link to="/contacts">Контакты</Link>
-          <Link to="/notifications">Уведомления</Link>
         </div>
       </div>
       <div className="nav-right">
         <div className="auth-links">
+          {/* Notifications Icon */}
+          <Link to="/notifications" className="notification-icon">
+            <FaBell size={24} color="var(--text-light)" />
+          </Link>
+
           {isAuthenticated ? (
             <Link to="/users/profile" className="profile-icon">
               <FaUserCircle size={30} color="var(--text-light)" />
