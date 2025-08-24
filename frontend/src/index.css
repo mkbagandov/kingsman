@@ -769,129 +769,284 @@ code {
   padding: 20px 0;
 }
 
-/* User Profile Page Styling */
-.user-profile-page {
-  padding: 20px;
-  max-width: 900px;
-  margin: 0 auto;
+/* User Profile Page New Styling */
+.user-profile-container {
+  padding: 30px 20px;
+  max-width: 1200px;
+  margin: 20px auto;
 }
 
-.user-profile-page h1 {
-  text-align: center;
-  margin-bottom: 30px;
-  color: var(--primary-dark-blue);
-  font-family: var(--font-heading);
-}
-
-.profile-section {
-  background-color: var(--text-light);
-  border: 1px solid var(--secondary-dark-blue);
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-  padding: 25px;
+.profile-header-breadcrumbs {
+  font-family: var(--font-body);
+  font-size: 0.9em;
+  color: var(--dark-charcoal);
   margin-bottom: 25px;
 }
 
-.profile-section h2 {
-  font-family: var(--font-heading);
+.profile-header-breadcrumbs a {
   color: var(--primary-dark-blue);
-  margin-top: 0;
-  margin-bottom: 20px;
-  border-bottom: 2px solid var(--light-grey);
-  padding-bottom: 10px;
+  text-decoration: none;
 }
 
-.profile-section p {
+.profile-header-breadcrumbs a:hover {
+  text-decoration: underline;
+}
+
+.profile-main-content {
+  display: flex;
+  gap: 30px;
+  flex-wrap: wrap; /* Allow columns to wrap on smaller screens */
+}
+
+.profile-sidebar {
+  flex: 1;
+  min-width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.profile-content-area {
+  flex: 2;
+  min-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.profile-card {
+  background-color: var(--text-light);
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  padding: 30px;
+  transition: all 0.3s ease;
+}
+
+.profile-card:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.profile-info-card {
+  text-align: center;
+}
+
+.profile-avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 20px;
+  border: 4px solid var(--primary-dark-blue);
+}
+
+.profile-avatar-icon {
+  font-size: 100px; /* Adjust size to fit the design */
+  color: var(--primary-dark-blue); /* Color for the icon */
+  background-color: var(--light-grey); /* Background to simulate the circle */
+  border-radius: 50%;
+  padding: 10px; /* Padding around the icon */
+  margin-bottom: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.profile-info-card h2 {
+  font-family: var(--font-heading);
+  font-size: 2em;
+  color: var(--primary-dark-blue);
+  margin-bottom: 8px;
+}
+
+.profile-actions {
+  margin-top: 25px;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.btn-follow,
+.btn-message {
+  padding: 12px 25px;
+  border-radius: 25px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
   font-family: var(--font-body);
-  font-size: 1em;
+  font-size: 0.95em;
+}
+
+.btn-follow {
+  background-color: var(--primary-dark-blue);
+  color: var(--text-light);
+  border: 1px solid var(--primary-dark-blue);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.btn-follow:hover {
+  background-color: var(--accent-gold);
+  border-color: var(--accent-gold);
+  color: var(--primary-dark-blue);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.btn-message {
+  background-color: transparent;
+  color: var(--primary-dark-blue);
+  border: 1px solid var(--primary-dark-blue);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.btn-message:hover {
+  background-color: var(--light-grey);
+  color: var(--primary-dark-blue);
+  border-color: var(--accent-gold);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.profile-social-card .social-link-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #eee; /* Light separator */
+}
+
+.profile-social-card .social-link-item:last-child {
+  border-bottom: none;
+}
+
+.profile-social-card .social-link-item svg {
+  color: var(--primary-dark-blue);
+  margin-right: 15px;
+  font-size: 1.2em;
+}
+
+.profile-social-card .social-link-item span:first-of-type {
+  font-weight: bold;
+  color: var(--dark-charcoal);
+  flex-grow: 1;
+  font-family: var(--font-body);
+}
+
+.profile-social-card .social-link-item a,
+.profile-social-card .social-link-item span:last-of-type {
+  color: var(--secondary-dark-blue);
+  text-decoration: none;
+  font-family: var(--font-body);
+  font-size: 0.95em;
+}
+
+.profile-details-card .card-title {
+  font-family: var(--font-heading);
+  color: var(--primary-dark-blue);
+  font-size: 1.7em;
+  margin-bottom: 25px;
+  border-bottom: 1px solid var(--light-grey);
+  padding-bottom: 15px;
+}
+
+.profile-details-card .detail-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px dashed #eee;
+  font-family: var(--font-body);
+  font-size: 1.05em;
+}
+
+.profile-details-card .detail-item:last-child {
+  border-bottom: none;
+}
+
+.profile-details-card .detail-item span:first-child {
+  font-weight: bold;
+  color: var(--dark-charcoal);
+}
+
+.profile-details-card .detail-item span:last-child {
+  color: var(--secondary-dark-blue);
+}
+
+.profile-project-card .card-subtitle {
+  font-family: var(--font-heading);
+  color: var(--primary-dark-blue);
+  font-size: 1.5em;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.profile-project-card .card-subtitle svg {
+  margin-right: 10px;
+  color: var(--accent-gold);
+}
+
+.project-progress-item {
+  margin-bottom: 20px;
+  font-family: var(--font-body);
+  color: var(--dark-charcoal);
+}
+
+.project-progress-item span {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+.progress-bar-container {
+  background-color: var(--light-grey);
+  border-radius: 5px;
+  height: 10px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  background-color: var(--primary-dark-blue);
+  height: 100%;
+  border-radius: 5px;
+  transition: width 0.5s ease-in-out;
+}
+
+.profile-loyalty-card .card-title,
+.profile-discount-card .card-title,
+.profile-qr-code-card .card-title {
+  font-family: var(--font-heading);
+  color: var(--primary-dark-blue);
+  font-size: 1.5em;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.profile-loyalty-card .card-title svg,
+.profile-discount-card .card-title svg,
+.profile-qr-code-card .card-title svg {
+  margin-right: 10px;
+  color: var(--accent-gold);
+}
+
+.profile-loyalty-card p,
+.profile-discount-card p {
+  font-family: var(--font-body);
   color: var(--dark-charcoal);
   margin-bottom: 10px;
 }
 
-.discount-card-mock {
-  background-color: var(--primary-dark-blue);
-  color: var(--text-light);
-  padding: 25px;
-  border-radius: 8px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  font-family: var(--font-heading);
-  position: relative;
-  overflow: hidden;
-}
-
-.discount-card-mock::before {
-  content: "";
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: rgba(var(--light-grey), 0.1); /* Use new light grey */
-  transform: rotate(45deg);
-  opacity: 0.1;
-}
-
-.discount-card-mock h3 {
-  color: var(--text-light);
-  font-size: 1.8em;
-  margin-bottom: 10px;
-  z-index: 1;
-}
-
-.discount-card-mock p {
-  color: var(--text-light);
+.profile-loyalty-card h4,
+.loyalty-activities h4 {
   font-family: var(--font-body);
-  font-size: 1.1em;
-  margin-bottom: 5px;
-  z-index: 1;
-}
-
-.qr-code-container {
-  text-align: center;
-  margin-top: 30px;
-  background-color: var(--text-light);
-  border: 1px solid var(--primary-dark-blue);
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-  padding: 20px;
-}
-
-.qr-code-container h2 {
-  margin-bottom: 15px;
-}
-
-.qr-code-container img {
-  max-width: 150px;
-  height: auto;
-  border: 5px solid var(--primary-dark-blue);
-  border-radius: 4px;
-}
-
-.loyalty-tier-details,
-.loyalty-activities {
-  margin-top: 20px;
-  padding-top: 15px;
-  border-top: 1px dashed var(--light-grey);
-}
-
-.loyalty-tier-details h3,
-.loyalty-activities h3 {
-  font-family: var(--font-body);
-  font-size: 1.1em;
   color: var(--primary-dark-blue);
+  font-size: 1.1em;
+  margin-top: 15px;
   margin-bottom: 10px;
   display: flex;
   align-items: center;
 }
 
-.loyalty-tier-details h3 .icon,
-.loyalty-activities h3 .icon {
+.profile-loyalty-card h4 svg,
+.loyalty-activities h4 svg {
   margin-right: 8px;
-  color: var(--primary-dark-blue);
+  color: var(--accent-gold);
 }
 
 .loyalty-activities ul {
@@ -905,16 +1060,111 @@ code {
   padding: 10px;
   border-radius: 5px;
   margin-bottom: 8px;
-  font-family: var(--font-body);
   font-size: 0.9em;
-  color: var(--dark-charcoal);
   display: flex;
-  align-items: center;
   justify-content: space-between;
+  align-items: center;
 }
 
 .loyalty-activities li:last-child {
   margin-bottom: 0;
+}
+
+.profile-qr-code {
+  width: 180px;
+  height: 180px;
+  object-fit: contain;
+  margin-top: 20px;
+  border: 5px solid var(--primary-dark-blue);
+  border-radius: 8px;
+}
+
+/* Responsive adjustments for Profile Page */
+@media (max-width: 992px) {
+  .profile-main-content {
+    flex-direction: column; /* Stack columns */
+    align-items: center;
+  }
+
+  .profile-sidebar,
+  .profile-content-area {
+    min-width: unset;
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .user-profile-container {
+    padding: 20px 15px;
+  }
+
+  .profile-card {
+    padding: 25px;
+  }
+
+  .profile-avatar {
+    width: 100px;
+    height: 100px;
+  }
+
+  .profile-info-card h2 {
+    font-size: 1.7em;
+  }
+
+  .btn-follow,
+  .btn-message {
+    padding: 10px 20px;
+    font-size: 0.9em;
+  }
+
+  .profile-details-card .card-title {
+    font-size: 1.5em;
+  }
+
+  .profile-project-card .card-subtitle {
+    font-size: 1.3em;
+  }
+
+  .profile-loyalty-card .card-title,
+  .profile-discount-card .card-title,
+  .profile-qr-code-card .card-title {
+    font-size: 1.3em;
+  }
+
+  .profile-qr-code {
+    width: 150px;
+    height: 150px;
+  }
+}
+
+@media (max-width: 480px) {
+  .profile-card {
+    padding: 20px;
+  }
+
+  .profile-avatar {
+    width: 80px;
+    height: 80px;
+  }
+
+  .profile-info-card h2 {
+    font-size: 1.5em;
+  }
+
+  .profile-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .btn-follow,
+  .btn-message {
+    width: 100%;
+  }
+
+  .profile-qr-code {
+    width: 120px;
+    height: 120px;
+  }
 }
 
 /* Form Styling (Login, Register) */

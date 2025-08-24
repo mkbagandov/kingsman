@@ -8,7 +8,7 @@ function Navbar() {
 
   useEffect(() => {
     const checkAuth = () => {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem('jwtToken');
       setIsAuthenticated(!!token);
     };
 
@@ -37,7 +37,7 @@ function Navbar() {
       <div className="nav-right">
         <div className="auth-links">
           {isAuthenticated ? (
-            <Link to="/profile" className="profile-icon">
+            <Link to="/users/profile" className="profile-icon">
               <FaUserCircle size={30} color="var(--text-light)" />
             </Link>
           ) : (

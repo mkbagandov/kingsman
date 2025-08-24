@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import Login from './pages/Login';
@@ -24,6 +24,7 @@ function App() {
           <Route path="/products/:productID" element={<ProductDetail />} />
           <Route path="/stores" element={<Stores />} />
           <Route path="/stores/:storeID" element={<StoreDetail />} />
+          <Route path="/profile" element={<Navigate to="/users/profile" replace />} />
           <Route path="/users/profile" element={<UserProfile />} />
           <Route path="/notifications" element={<Notifications />} />
         </Routes>
