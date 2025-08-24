@@ -243,7 +243,7 @@ code {
   box-shadow: 0 12px 25px rgba(0, 0, 0, 0.4); /* Deeper shadow */
 }
 
-/* Why MR. KINGSMAN Section */
+/* Why MR. KINGSMAN? Section */
 .why-mrg-section {
   padding: 120px 20px; /* More vertical padding */
   text-align: center;
@@ -440,6 +440,7 @@ code {
   .auth-links {
     flex-direction: column;
     gap: 10px;
+    width: 100%; /* Full width on small screens */
   }
 
   .btn-login, .btn-register {
@@ -518,6 +519,10 @@ code {
 
   .info-card h3 {
     font-size: 22px;
+  }
+
+  .info-card p {
+    font-size: 17px;
   }
 }
 

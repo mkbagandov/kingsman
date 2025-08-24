@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getProductCatalog, getCategories } from '../api/api';
-import ProductCard from '../components/ProductCard'; // Import the new ProductCard component
+import ProductCard from '../components/ProductCard';
+import './ProductCatalog.css'; // Import the new CSS file for ProductCatalog
 
 function ProductCatalog() {
   const [products, setProducts] = useState([]);
@@ -37,7 +38,7 @@ function ProductCatalog() {
   const fetchCategories = async () => {
     try {
       const response = await getCategories();
-      setCategories(response.data.categories); // Adjusting to the expected backend response
+      setCategories(response.data.categories); 
     } catch (err) {
       console.error("Error fetching categories:", err);
     }
@@ -48,16 +49,17 @@ function ProductCatalog() {
     fetchProducts();
   };
 
-  if (loading) return <div>Загрузка товаров...</div>;
-  if (error) return <div>Ошибка: {error}</div>;
+  if (loading) return <div className="loading-message">Загрузка товаров...</div>;
+  if (error) return <div className="error-message">Ошибка: {error}</div>;
 
   return (
     <div className="product-catalog-page">
-      <h1>Каталог</h1>
-      <form onSubmit={handleSearch} className="product-filter-form">
+      <h1 className="page-title">Каталог Продуктов</h1>
+
+      <form onSubmit={handleSearch} className="filter-form">
         <div className="form-group">
           <label htmlFor="category-select">Категория:</label>
-          <select id="category-select" value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)}>
+          <select id="category-select" value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)} className="filter-select">
             <option value="">Все Категории</option>
             {categories.map((cat) => (
               <option key={cat.id} value={cat.id}>
@@ -68,14 +70,18 @@ function ProductCatalog() {
         </div>
         <div className="form-group">
           <label htmlFor="min-price">Мин. Цена:</label>
-          <input id="min-price" type="number" value={minPrice} onChange={(e) => setMinPrice(e.target.value)} />
+          <input id="min-price" type="number" value={minPrice} onChange={(e) => setMinPrice(e.target.value)} className="filter-input" placeholder="0" />
         </div>
         <div className="form-group">
           <label htmlFor="max-price">Макс. Цена:</label>
-          <input id="max-price" type="number" value={maxPrice} onChange={(e) => setMaxPrice(e.target.value)} />
+          <input id="max-price" type="number" value={maxPrice} onChange={(e) => setMaxPrice(e.target.value)} className="filter-input" placeholder="1000" />
         </div>
-        <button type="submit" className="filter-button">Фильтровать Продукты</button>
+        <button type="submit" className="filter-button">Фильтровать</button>
       </form>
+
+      {products.length === 0 && !loading && !error && (
+        <div className="no-products-message">Продукты не найдены.</div>
+      )}
 
       <div className="products-grid">
         {products.map((product) => (

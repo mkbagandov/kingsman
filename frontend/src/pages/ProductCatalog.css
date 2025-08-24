@@ -1,0 +1,119 @@
+.product-catalog-page {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.page-title {
+  text-align: center;
+  font-size: 2.5em;
+  color: var(--primary-blue);
+  margin-bottom: 40px;
+  font-family: var(--font-main);
+}
+
+.filter-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  align-items: flex-end;
+  margin-bottom: 40px;
+  padding: 25px;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.filter-form label {
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: var(--text-dark);
+  font-size: 0.95em;
+  font-family: var(--font-secondary);
+}
+
+.filter-select,
+.filter-input {
+  padding: 10px 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1em;
+  color: var(--text-dark);
+  background-color: #f9f9f9;
+  min-width: 150px;
+  max-width: 200px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.filter-input::placeholder {
+  color: #aaa;
+}
+
+.filter-button {
+  background-color: var(--primary-blue);
+  color: white;
+  padding: 10px 25px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.filter-button:hover {
+  background-color: var(--accent-black);
+}
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 30px;
+  margin-top: 30px;
+}
+
+.loading-message,
+.error-message,
+.no-products-message {
+  text-align: center;
+  font-size: 1.2em;
+  color: var(--text-dark);
+  margin-top: 50px;
+  padding: 20px;
+  background-color: #f0f0f0;
+  border-radius: 8px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.error-message {
+  color: #d9534f; /* Bootstrap's red for errors */
+  background-color: #f2dede;
+  border: 1px solid #ebccd1;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .filter-form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filter-select,
+  .filter-input {
+    min-width: unset;
+    max-width: 100%;
+  }
+
+  .filter-button {
+    width: 100%;
+  }
+}
