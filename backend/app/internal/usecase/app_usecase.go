@@ -152,6 +152,7 @@ func (uc *UserUseCase) LoginUser(ctx context.Context, req *LoginUserRequest) (*L
 type GetUserProfileResponse struct {
 	ID                  string                    `json:"id"`
 	PhoneNumber         string                    `json:"phone_number"`
+	Username            string                    `json:"username"`
 	Email               string                    `json:"email"`
 	DiscountLevel       int                       `json:"discount_level"`
 	ProgressToNextLevel float64                   `json:"progress_to_next_level"`
@@ -214,6 +215,7 @@ func (uc *UserUseCase) GetUserProfile(ctx context.Context, userID string) (*GetU
 
 	response := &GetUserProfileResponse{
 		ID:                  strconv.Itoa(user.ID),
+		Username:            user.Username,
 		PhoneNumber:         user.PhoneNumber,
 		Email:               user.Email,
 		DiscountLevel:       user.DiscountLevel,
@@ -273,6 +275,7 @@ func (uc *UserUseCase) GetUserDiscountCard(ctx context.Context, userID string) (
 
 	return &GetUserProfileResponse{
 		ID:                  strconv.Itoa(user.ID),
+		Username:            user.Username,
 		PhoneNumber:         user.PhoneNumber,
 		DiscountLevel:       user.DiscountLevel,
 		ProgressToNextLevel: user.ProgressToNextLevel,
