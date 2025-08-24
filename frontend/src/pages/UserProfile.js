@@ -110,10 +110,6 @@ function UserProfile() {
               <span>{userProfile.phone_number}</span>
             </div>
             <div className="detail-item">
-              <span>Мобильный</span>
-              <span>+7 (XXX) XXX-XX-XX</span> {/* Placeholder for mobile */}
-            </div>
-            <div className="detail-item">
               <span>Адрес</span>
               <span>Москва, Россия</span> {/* Placeholder for address */}
             </div>

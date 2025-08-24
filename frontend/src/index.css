@@ -134,9 +134,9 @@ code {
   background-image: linear-gradient(135deg, var(--primary-dark-blue) 0%, var(--secondary-dark-blue) 100%); /* Subtle gradient */
   border-radius: 20px; /* Rounded corners */
   margin: 20px auto; /* Push down from navbar and center */
-  max-width: 1200px; /* Constrain width */
+  max-width: 1800px; /* Increased width */
   color: var(--text-light);
-  padding: 120px 0; /* More vertical padding */
+  padding: 150px 0; /* More vertical padding */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -158,6 +158,7 @@ code {
   flex: 1;
   text-align: left;
   padding-right: 60px; /* More space between text and icon */
+  margin: 30px;
 }
 
 .hero-text h1 {
@@ -192,6 +193,7 @@ code {
   font-weight: bold;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.18); /* Stronger shadow */
   transition: all 0.3s ease;
+  margin-left: 30px;
 }
 
 .btn-primary:hover {

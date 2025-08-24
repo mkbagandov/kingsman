@@ -10,7 +10,12 @@ function Home() {
             <h1>MR. KINGSMAN</h1>
             <h2>Премиальная мужская одежда и стильный образ жизни</h2>
             <div className="hero-buttons">
-              <button className="btn-primary">Перейти в каталог</button>
+            <button
+  className="btn-primary"
+  onClick={() => window.location.href = "/products"}
+>
+  Перейти в каталог
+</button>
               <button className="btn-secondary">Узнать больше</button>
             </div>
           </div>
