@@ -1098,6 +1098,14 @@ code {
     min-width: unset;
     width: 100%;
   }
+
+  .profile-info-card,
+  .profile-social-card,
+  .profile-details-card,
+  .profile-loyalty-card,
+  .discount-qr-container {
+    max-width: 100%; /* Ensure cards take full width when stacked */
+  }
 }
 
 @media (max-width: 768px) {
@@ -1109,9 +1117,9 @@ code {
     padding: 25px;
   }
 
-  .profile-avatar {
-    width: 100px;
-    height: 100px;
+  .profile-avatar-icon {
+    font-size: 80px; /* Adjust size for smaller screens */
+    padding: 8px;
   }
 
   .profile-info-card h2 {
@@ -1124,14 +1132,7 @@ code {
     font-size: 0.9em;
   }
 
-  .profile-details-card .card-title {
-    font-size: 1.5em;
-  }
-
-  .profile-project-card .card-subtitle {
-    font-size: 1.3em;
-  }
-
+  .profile-details-card .card-title,
   .profile-loyalty-card .card-title,
   .profile-discount-card .card-title,
   .profile-qr-code-card .card-title {
@@ -1141,6 +1142,20 @@ code {
   .profile-qr-code {
     width: 150px;
     height: 150px;
+    margin-top: 15px;
+  }
+
+  .discount-qr-container {
+    flex-direction: column; /* Stack discount and QR vertically */
+    align-items: center;
+    padding: 20px; /* Adjust padding for small screens */
+    gap: 20px;
+  }
+
+  .profile-discount-card,
+  .profile-qr-code-card {
+    width: 100%; /* Make them take full width */
+    text-align: center; /* Center content */
   }
 }
 
@@ -1149,9 +1164,9 @@ code {
     padding: 20px;
   }
 
-  .profile-avatar {
-    width: 80px;
-    height: 80px;
+  .profile-avatar-icon {
+    font-size: 70px;
+    padding: 6px;
   }
 
   .profile-info-card h2 {
@@ -1171,6 +1186,40 @@ code {
   .profile-qr-code {
     width: 120px;
     height: 120px;
+  }
+  
+  .modal-content {
+    width: 95%;
+    padding: 20px;
+  }
+
+  .modal-header h2 {
+    font-size: 1.5em;
+  }
+
+  .modal-close-button {
+    font-size: 1.8em;
+  }
+
+  .form-group label {
+    font-size: 0.9em;
+  }
+
+  .form-group input {
+    padding: 8px;
+    font-size: 0.9em;
+  }
+
+  .modal-actions {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .btn-save,
+  .btn-cancel {
+    width: 100%;
+    padding: 10px;
+    font-size: 0.9em;
   }
 }
 
