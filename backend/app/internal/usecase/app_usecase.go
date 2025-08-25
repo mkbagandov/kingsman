@@ -415,6 +415,187 @@ func NewNotificationUseCase(notificationRepo domain.NotificationRepository) *Not
 	return &NotificationUseCase{notificationRepo: notificationRepo}
 }
 
+type CartUseCase struct {
+	cartRepo     domain.CartRepository
+	cartItemRepo domain.CartItemRepository
+	productRepo  domain.ProductRepository
+}
+
+func NewCartUseCase(cartRepo domain.CartRepository, cartItemRepo domain.CartItemRepository, productRepo domain.ProductRepository) *CartUseCase {
+	return &CartUseCase{cartRepo: cartRepo, cartItemRepo: cartItemRepo, productRepo: productRepo}
+}
+
+func (uc *CartUseCase) GetCartByUserID(ctx context.Context, userID string) (*domain.Cart, error) {
+	cart, err := uc.cartRepo.GetCartByUserID(ctx, userID)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get cart by user ID: %w", err)
+	}
+
+	// If cart doesn't exist, create one
+	if cart == nil {
+		newCart := &domain.Cart{UserID: userID}
+		err := uc.cartRepo.CreateCart(ctx, newCart)
+		if err != nil {
+			return nil, fmt.Errorf("failed to create new cart for user: %w", err)
+		}
+		cart = newCart
+	}
+
+	return cart, nil
+}
+
+type AddItemToCartRequest struct {
+	UserID    string `json:"user_id"`
+	ProductID string `json:"product_id"`
+	Quantity  int    `json:"quantity"`
+}
+
+func (uc *CartUseCase) AddItemToCart(ctx context.Context, req *AddItemToCartRequest) (*domain.CartItem, error) {
+	cart, err := uc.GetCartByUserID(ctx, req.UserID)
+	if err != nil {
+		return nil, err
+	}
+
+	// Check if the product exists
+	productIDInt, err := strconv.Atoi(req.ProductID)
+	if err != nil {
+		return nil, fmt.Errorf("invalid product ID format: %w", err)
+	}
+
+	product, err := uc.productRepo.GetProductByID(ctx, productIDInt)
+	if err != nil || product == nil {
+		return nil, fmt.Errorf("product with ID %s not found: %w", req.ProductID, err)
+	}
+
+	if req.Quantity <= 0 {
+		return nil, fmt.Errorf("quantity must be greater than 0")
+	}
+
+	// Check if item already in cart
+	cartItems, err := uc.cartItemRepo.GetCartItemsByCartID(ctx, cart.ID)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get cart items: %w", err)
+	}
+
+	for _, item := range cartItems {
+		if item.ProductID == req.ProductID {
+			// Update quantity if item already exists
+			item.Quantity += req.Quantity
+			err := uc.cartItemRepo.UpdateCartItem(ctx, item)
+			if err != nil {
+				return nil, fmt.Errorf("failed to update cart item quantity: %w", err)
+			}
+			return item, nil
+		}
+	}
+
+	// Add new item to cart
+	cartItem := &domain.CartItem{
+		CartID:    cart.ID,
+		ProductID: req.ProductID,
+		Quantity:  req.Quantity,
+	}
+
+	if err := uc.cartItemRepo.CreateCartItem(ctx, cartItem); err != nil {
+		return nil, fmt.Errorf("failed to add item to cart: %w", err)
+	}
+
+	return cartItem, nil
+}
+
+type UpdateCartItemRequest struct {
+	UserID    string `json:"user_id"`
+	ProductID string `json:"product_id"`
+	Quantity  int    `json:"quantity"`
+}
+
+func (uc *CartUseCase) UpdateCartItem(ctx context.Context, req *UpdateCartItemRequest) error {
+	cart, err := uc.GetCartByUserID(ctx, req.UserID)
+	if err != nil {
+		return err
+	}
+
+	if req.Quantity <= 0 {
+		return fmt.Errorf("quantity must be greater than 0")
+	}
+
+	cartItems, err := uc.cartItemRepo.GetCartItemsByCartID(ctx, cart.ID)
+	if err != nil {
+		return fmt.Errorf("failed to get cart items: %w", err)
+	}
+
+	found := false
+	for _, item := range cartItems {
+		if item.ProductID == req.ProductID {
+			item.Quantity = req.Quantity
+			err := uc.cartItemRepo.UpdateCartItem(ctx, item)
+			if err != nil {
+				return fmt.Errorf("failed to update cart item: %w", err)
+			}
+			found = true
+			break
+		}
+	}
+
+	if !found {
+		return fmt.Errorf("product with ID %s not found in cart", req.ProductID)
+	}
+
+	return nil
+}
+
+type RemoveCartItemRequest struct {
+	UserID    string `json:"user_id"`
+	ProductID string `json:"product_id"`
+}
+
+func (uc *CartUseCase) RemoveCartItem(ctx context.Context, req *RemoveCartItemRequest) error {
+	cart, err := uc.GetCartByUserID(ctx, req.UserID)
+	if err != nil {
+		return err
+	}
+
+	err = uc.cartItemRepo.DeleteCartItemByCartIDAndProductID(ctx, cart.ID, req.ProductID)
+	if err != nil {
+		return fmt.Errorf("failed to remove item from cart: %w", err)
+	}
+
+	return nil
+}
+
+type GetCartResponse struct {
+	Cart      *domain.Cart       `json:"cart"`
+	CartItems []*domain.CartItem `json:"cart_items"`
+}
+
+func (uc *CartUseCase) GetUserCart(ctx context.Context, userID string) (*GetCartResponse, error) {
+	cart, err := uc.GetCartByUserID(ctx, userID)
+	if err != nil {
+		return nil, err
+	}
+
+	cartItems, err := uc.cartItemRepo.GetCartItemsByCartID(ctx, cart.ID)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get cart items for user: %w", err)
+	}
+
+	return &GetCartResponse{Cart: cart, CartItems: cartItems}, nil
+}
+
+func (uc *CartUseCase) ClearCart(ctx context.Context, userID string) error {
+	cart, err := uc.GetCartByUserID(ctx, userID)
+	if err != nil {
+		return err
+	}
+
+	err = uc.cartRepo.DeleteCart(ctx, cart.ID)
+	if err != nil {
+		return fmt.Errorf("failed to clear cart: %w", err)
+	}
+
+	return nil
+}
+
 type SendNotificationRequest struct {
 	UserID  string `json:"user_id"`
 	Type    string `json:"type"`

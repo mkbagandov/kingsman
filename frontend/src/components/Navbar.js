@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { FaUserCircle, FaBell } from 'react-icons/fa'; // Import FaBell icon
+import { useSelector } from 'react-redux'; // Import useSelector
+import { FaUserCircle, FaBell, FaShoppingCart } from 'react-icons/fa'; // Import FaBell and FaShoppingCart icons
 import './Navbar.css'; 
 
 function Navbar() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const cartItemsCount = useSelector((state) => state.cart.cartItems.length); // Get cart items count from Redux store
 
   useEffect(() => {
     const checkAuth = () => {
@@ -34,6 +36,12 @@ function Navbar() {
       </div>
       <div className="nav-right">
         <div className="auth-links">
+          {/* Cart Icon */}
+          <Link to="/cart" className="cart-icon">
+            <FaShoppingCart size={24} color="var(--text-light)" />
+            {cartItemsCount > 0 && <span className="cart-badge">{cartItemsCount}</span>}
+          </Link>
+
           {/* Notifications Icon */}
           <Link to="/notifications" className="notification-icon">
             <FaBell size={24} color="var(--text-light)" />

@@ -72,6 +72,39 @@
   color: var(--accent-gold); /* Accent color on hover */
 }
 
+.cart-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border-radius: 50%;
+  background-color: transparent;
+  transition: all 0.3s ease;
+  color: var(--text-light);
+}
+
+.cart-icon:hover {
+  background-color: rgba(255, 255, 255, 0.1); /* Subtle background on hover */
+  transform: translateY(-2px) scale(1.05);
+  color: var(--accent-gold); /* Accent color on hover */
+}
+
+.cart-badge {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background-color: var(--accent-gold); /* Or any other prominent color */
+  color: white;
+  border-radius: 50%;
+  padding: 2px 6px;
+  font-size: 0.75em;
+  font-weight: bold;
+  line-height: 1;
+  min-width: 18px;
+  text-align: center;
+}
+
 /* Responsive adjustments for Navbar */
 @media (max-width: 768px) {
   .nav-right {

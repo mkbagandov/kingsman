@@ -67,4 +67,11 @@ export const getCategories = () => api.get('/categories');
 export const sendNotification = (notificationData) => api.post('/notifications', notificationData);
 export const getNotifications = () => api.get('/users/notifications');
 
+// Cart Endpoints
+export const getCart = () => api.get('/cart');
+export const addItemToCart = (productID, quantity) => api.post('/cart/items', { product_id: productID, quantity });
+export const updateCartItem = (productID, quantity) => api.put('/cart/items', { product_id: productID, quantity });
+export const removeCartItem = (productID) => api.delete(`/cart/items/${productID}`);
+export const clearCart = () => api.delete('/cart/clear');
+
 export default api;

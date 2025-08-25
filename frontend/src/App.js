@@ -10,6 +10,7 @@ import StoreDetail from './pages/StoreDetail';
 import UserProfile from './pages/UserProfile';
 import Notifications from './pages/Notifications';
 import ProductDetail from './pages/ProductDetail';
+import CartPage from './pages/CartPage'; // Import CartPage
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
           <Route path="/profile" element={<Navigate to="/users/profile" replace />} />
           <Route path="/users/profile" element={<UserProfile />} />
           <Route path="/notifications" element={<Notifications />} />
+          <Route path="/cart" element={<CartPage />} /> {/* New route for CartPage */}
         </Routes>
       </div>
     </Router>

@@ -51,3 +51,18 @@ type ProductRepository interface {
 	UpdateProduct(ctx context.Context, product *Product) error
 	DeleteProduct(ctx context.Context, id int) error
 }
+
+type CartRepository interface {
+	CreateCart(ctx context.Context, cart *Cart) error
+	GetCartByUserID(ctx context.Context, userID string) (*Cart, error)
+	UpdateCart(ctx context.Context, cart *Cart) error
+	DeleteCart(ctx context.Context, cartID string) error
+}
+
+type CartItemRepository interface {
+	CreateCartItem(ctx context.Context, cartItem *CartItem) error
+	GetCartItemsByCartID(ctx context.Context, cartID string) ([]*CartItem, error)
+	UpdateCartItem(ctx context.Context, cartItem *CartItem) error
+	DeleteCartItem(ctx context.Context, cartItemID string) error
+	DeleteCartItemByCartIDAndProductID(ctx context.Context, cartID, productID string) error
+}

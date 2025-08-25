@@ -117,6 +117,8 @@ func main() {
 	notificationRepo := infrastructure.NewPostgreSQLNotificationRepository(db)
 	categoryRepo := infrastructure.NewPostgreSQLCategoryRepository(db)
 	productRepo := infrastructure.NewPostgreSQLProductRepository(db)
+	cartRepo := infrastructure.NewCartRepository(db)
+	cartItemRepo := infrastructure.NewCartItemRepository(db)
 
 	// Initialize use cases
 	userUseCase := usecase.NewUserUseCase(userRepo)
@@ -125,6 +127,7 @@ func main() {
 	categoryUseCase := usecase.NewCategoryUseCase(categoryRepo)
 	productUseCase := usecase.NewProductUseCase(productRepo)
 	loyaltyUseCase := usecase.NewLoyaltyUseCase(userRepo) // Initialize LoyaltyUseCase
+	cartUseCase := usecase.NewCartUseCase(cartRepo, cartItemRepo, productRepo)
 
 	// Initialize handlers
 	userHandler := delivery.NewUserHandler(userUseCase, loyaltyUseCase) // Pass loyaltyUseCase
@@ -132,6 +135,7 @@ func main() {
 	notificationHandler := delivery.NewNotificationHandler(notificationUseCase)
 	categoryHandler := delivery.NewCategoryHandler(categoryUseCase)
 	productHandler := delivery.NewProductHandler(productUseCase)
+	cartHandler := delivery.NewCartHandler(cartUseCase)
 
 	// Setup HTTP router
 	r := chi.NewRouter()
@@ -190,6 +194,15 @@ func main() {
 		// Notification routes
 		r.Post("/notifications", notificationHandler.SendNotification)
 		r.Get("/users/notifications", notificationHandler.GetNotifications)
+
+		// Cart routes
+		r.Route("/cart", func(r chi.Router) {
+			r.Post("/items", cartHandler.AddItemToCart)
+			r.Put("/items", cartHandler.UpdateCartItem)
+			r.Delete("/items/{productID}", cartHandler.RemoveCartItem)
+			r.Get("/", cartHandler.GetUserCart)
+			r.Delete("/clear", cartHandler.ClearCart)
+		})
 	})
 
 	// Start HTTP server

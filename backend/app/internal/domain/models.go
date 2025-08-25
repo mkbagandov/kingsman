@@ -91,3 +91,19 @@ type UserLoyalty struct {
 	CurrentTierID  int    `json:"current_tier_id"`
 	LastActivityAt string `json:"last_activity_at"`
 }
+
+type Cart struct {
+	ID        string `json:"id"`
+	UserID    string `json:"user_id"`
+	CreatedAt string `json:"created_at"`
+	UpdatedAt string `json:"updated_at"`
+}
+
+type CartItem struct {
+	ID        string `json:"id"`
+	CartID    string `json:"cart_id"`
+	ProductID string `json:"product_id"`
+	Quantity  int    `json:"quantity"`
+	CreatedAt string `json:"created_at"`
+	UpdatedAt string `json:"updated_at"`
+}

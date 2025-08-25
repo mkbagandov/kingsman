@@ -1379,3 +1379,19 @@ code {
     margin-top: 0; /* Remove extra margin */
   }
 }
+
+.add-to-cart-controls {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+  gap: 15px;
+}
+
+.quantity-input {
+  width: 70px;
+  padding: 10px;
+  border: 1px solid var(--primary-dark-blue);
+  border-radius: 5px;
+  font-size: 1em;
+  text-align: center;
+}
