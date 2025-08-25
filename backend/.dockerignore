@@ -1,0 +1,42 @@
+# Git
+.git
+.gitignore
+
+# Documentation
+README.md
+*.md
+
+# Dependencies
+node_modules/
+
+# Environment files
+.env.local
+.env.development
+.env.test
+.env.production
+
+# Logs
+*.log
+logs
+
+# Temporary files
+tmp/
+temp/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Build artifacts
+main
+*.exe
+
+# Air development files
+tmp/
+build-errors.log
