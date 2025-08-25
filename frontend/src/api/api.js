@@ -73,5 +73,18 @@ export const addItemToCart = (productID, quantity) => api.post('/cart/items', { 
 export const updateCartItem = (productID, quantity) => api.put('/cart/items', { product_id: productID, quantity });
 export const removeCartItem = (productID) => api.delete(`/cart/items/${productID}`);
 export const clearCart = () => api.delete('/cart/clear');
+export const placeOrder = () => api.post('/cart/checkout'); // New: Place an order from the cart
+
+// Order Endpoints
+export const getUserOrders = (paymentStatus = null) => {
+  const params = {};
+  if (paymentStatus) {
+    params.paymentStatus = paymentStatus;
+  }
+  return api.get('/orders', { params });
+}; // New: Get user's order history
+
+// User Profile Update Endpoint
+export const updateUserProfile = (userData) => api.put('/users/profile', userData); // New: Update user profile
 
 export default api;

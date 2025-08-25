@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { getCart, addItemToCart, updateCartItem, removeCartItem, clearCart, getProductByID } from '../api/api'; // Import getProductByID
+import { getCart, addItemToCart, updateCartItem, removeCartItem, clearCart, getProductByID, placeOrder } from '../api/api'; // Import placeOrder
 
 export const fetchCart = createAsyncThunk(
   'cart/fetchCart',
@@ -77,6 +77,18 @@ export const clearUserCart = createAsyncThunk(
   }
 );
 
+export const processPayment = createAsyncThunk(
+  'cart/processPayment',
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await placeOrder();
+      return response.data; // Should contain order ID and a message
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 const cartSlice = createSlice({
   name: 'cart',
   initialState: {
@@ -128,6 +140,19 @@ const cartSlice = createSlice({
         state.status = 'succeeded';
         state.cart = null;
         state.cartItems = [];
+      })
+      .addCase(processPayment.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(processPayment.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.cart = null; // Clear the cart after successful payment
+        state.cartItems = [];
+        // Optionally, you might want to store the order ID or message from action.payload
+      })
+      .addCase(processPayment.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.payload;
       });
   },
 });

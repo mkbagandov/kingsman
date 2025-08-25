@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaInfoCircle, FaGift, FaBell } from 'react-icons/fa';
+import { FaInfoCircle, FaGift, FaBell, FaCheckCircle } from 'react-icons/fa'; // Import FaCheckCircle
 import './NotificationCard.css'; // Assuming you'll create this CSS file
 
 function NotificationCard({ notification }) {
@@ -9,6 +9,8 @@ function NotificationCard({ notification }) {
         return <FaGift className="icon promotion" />;
       case 'new_arrival':
         return <FaBell className="icon new-arrival" />;
+      case 'purchase_confirmation': // New case for purchase confirmation
+        return <FaCheckCircle className="icon success" />;
       default:
         return <FaInfoCircle className="icon info" />;
     }

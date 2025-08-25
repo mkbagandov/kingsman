@@ -11,6 +11,7 @@ import UserProfile from './pages/UserProfile';
 import Notifications from './pages/Notifications';
 import ProductDetail from './pages/ProductDetail';
 import CartPage from './pages/CartPage'; // Import CartPage
+import OrderHistoryPage from './pages/OrderHistoryPage'; // Import OrderHistoryPage
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
           <Route path="/users/profile" element={<UserProfile />} />
           <Route path="/notifications" element={<Notifications />} />
           <Route path="/cart" element={<CartPage />} /> {/* New route for CartPage */}
+          <Route path="/orders" element={<OrderHistoryPage />} /> {/* New route for OrderHistoryPage */}
         </Routes>
       </div>
     </Router>

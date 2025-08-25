@@ -66,3 +66,17 @@ type CartItemRepository interface {
 	DeleteCartItem(ctx context.Context, cartItemID string) error
 	DeleteCartItemByCartIDAndProductID(ctx context.Context, cartID, productID string) error
 }
+
+type OrderRepository interface {
+	CreateOrder(ctx context.Context, order *Order) error
+	GetOrderByID(ctx context.Context, orderID int) (*Order, error)
+	GetOrdersByUserID(ctx context.Context, userID string, paymentStatus *string) ([]*Order, error) // Added paymentStatus filter
+	UpdateOrder(ctx context.Context, order *Order) error
+}
+
+type OrderItemRepository interface {
+	CreateOrderItem(ctx context.Context, orderItem *OrderItem) error
+	GetOrderItemsByOrderID(ctx context.Context, orderID int) ([]*OrderItem, error)
+	UpdateOrderItem(ctx context.Context, orderItem *OrderItem) error
+	DeleteOrderItem(ctx context.Context, orderItemID int) error
+}

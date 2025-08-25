@@ -17,8 +17,8 @@ func NewPostgreSQLNotificationRepository(db *sql.DB) *PostgreSQLNotificationRepo
 }
 
 func (r *PostgreSQLNotificationRepository) CreateNotification(ctx context.Context, notification *domain.Notification) error {
-	query := `INSERT INTO notifications (id, user_id, type, title, message, created_at) VALUES ($1, $2, $3, $4, $5, $6)`
-	_, err := r.db.ExecContext(ctx, query, notification.ID, notification.UserID, notification.Type, notification.Title, notification.Message, notification.CreatedAt)
+	query := `INSERT INTO notifications (user_id, type, title, message, created_at) VALUES ($1, $2, $3, $4, $5)`
+	_, err := r.db.ExecContext(ctx, query, notification.UserID, notification.Type, notification.Title, notification.Message, notification.CreatedAt)
 	if err != nil {
 		return fmt.Errorf("failed to create notification: %w", err)
 	}

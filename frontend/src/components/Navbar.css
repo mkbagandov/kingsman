@@ -37,6 +37,26 @@
 
 /* Auth links are now globally styled in index.css */
 
+.auth-links {
+  display: flex;
+  gap: 15px; /* Space between the two buttons */
+}
+
+.order-history-link {
+  color: var(--text-light);
+  text-decoration: none;
+  font-size: 18px;
+  font-family: var(--font-body);
+  transition: color 0.3s ease;
+  display: flex;
+  align-items: center;
+}
+
+.order-history-link:hover {
+  color: var(--accent-gold);
+  text-shadow: 0 0 5px rgba(184, 134, 11, 0.5);
+}
+
 .profile-icon {
   display: flex;
   align-items: center;

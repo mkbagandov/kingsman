@@ -95,6 +95,7 @@ type UserLoyalty struct {
 type Cart struct {
 	ID        string `json:"id"`
 	UserID    string `json:"user_id"`
+	IsPaid    bool   `json:"is_paid"` // New field for payment status
 	CreatedAt string `json:"created_at"`
 	UpdatedAt string `json:"updated_at"`
 }
@@ -106,4 +107,26 @@ type CartItem struct {
 	Quantity  int    `json:"quantity"`
 	CreatedAt string `json:"created_at"`
 	UpdatedAt string `json:"updated_at"`
+}
+
+type Order struct {
+	ID            int         `json:"id"`
+	UserID        string      `json:"user_id"`
+	OrderDate     string      `json:"order_date"`
+	TotalAmount   float64     `json:"total_amount"`
+	Status        string      `json:"status"`         // e.g., pending, completed, cancelled
+	PaymentStatus string      `json:"payment_status"` // e.g., unpaid, paid, refunded
+	CreatedAt     string      `json:"created_at"`
+	UpdatedAt     string      `json:"updated_at"`
+	Items         []OrderItem `json:"items"` // For embedding order items in the response
+}
+
+type OrderItem struct {
+	ID        int     `json:"id"`
+	OrderID   int     `json:"order_id"`
+	ProductID string  `json:"product_id"`
+	Quantity  int     `json:"quantity"`
+	Price     float64 `json:"price"`
+	CreatedAt string  `json:"created_at"`
+	UpdatedAt string  `json:"updated_at"`
 }

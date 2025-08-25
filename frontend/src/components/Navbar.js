@@ -36,6 +36,9 @@ function Navbar() {
       </div>
       <div className="nav-right">
         <div className="auth-links">
+          {/* Order History Link - visible only if authenticated */}
+          {/* Removed from Navbar to be placed in Cart page */}
+
           {/* Cart Icon */}
           <Link to="/cart" className="cart-icon">
             <FaShoppingCart size={24} color="var(--text-light)" />

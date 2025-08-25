@@ -119,6 +119,8 @@ func main() {
 	productRepo := infrastructure.NewPostgreSQLProductRepository(db)
 	cartRepo := infrastructure.NewCartRepository(db)
 	cartItemRepo := infrastructure.NewCartItemRepository(db)
+	orderRepo := infrastructure.NewOrderRepository(db)         // Initialize OrderRepository
+	orderItemRepo := infrastructure.NewOrderItemRepository(db) // Initialize OrderItemRepository
 
 	// Initialize use cases
 	userUseCase := usecase.NewUserUseCase(userRepo)
@@ -126,8 +128,9 @@ func main() {
 	notificationUseCase := usecase.NewNotificationUseCase(notificationRepo)
 	categoryUseCase := usecase.NewCategoryUseCase(categoryRepo)
 	productUseCase := usecase.NewProductUseCase(productRepo)
-	loyaltyUseCase := usecase.NewLoyaltyUseCase(userRepo) // Initialize LoyaltyUseCase
-	cartUseCase := usecase.NewCartUseCase(cartRepo, cartItemRepo, productRepo)
+	loyaltyUseCase := usecase.NewLoyaltyUseCase(userRepo)                                                                                               // Initialize LoyaltyUseCase
+	cartUseCase := usecase.NewCartUseCase(cartRepo, cartItemRepo, productRepo, orderRepo, orderItemRepo, loyaltyUseCase, notificationUseCase, userRepo) // Updated CartUseCase
+	orderUseCase := usecase.NewOrderUseCase(orderRepo, orderItemRepo, productRepo)                                                                      // Initialize OrderUseCase
 
 	// Initialize handlers
 	userHandler := delivery.NewUserHandler(userUseCase, loyaltyUseCase) // Pass loyaltyUseCase
@@ -136,6 +139,7 @@ func main() {
 	categoryHandler := delivery.NewCategoryHandler(categoryUseCase)
 	productHandler := delivery.NewProductHandler(productUseCase)
 	cartHandler := delivery.NewCartHandler(cartUseCase)
+	orderHandler := delivery.NewOrderHandler(orderUseCase) // Initialize OrderHandler
 
 	// Setup HTTP router
 	r := chi.NewRouter()
@@ -197,11 +201,17 @@ func main() {
 
 		// Cart routes
 		r.Route("/cart", func(r chi.Router) {
+			r.Post("/checkout", cartHandler.PlaceOrder) // New route for placing an order
 			r.Post("/items", cartHandler.AddItemToCart)
 			r.Put("/items", cartHandler.UpdateCartItem)
 			r.Delete("/items/{productID}", cartHandler.RemoveCartItem)
 			r.Get("/", cartHandler.GetUserCart)
 			r.Delete("/clear", cartHandler.ClearCart)
+		})
+
+		// Order routes
+		r.Route("/orders", func(r chi.Router) {
+			r.Get("/", orderHandler.GetUserOrders) // Route to get user's order history
 		})
 	})
 

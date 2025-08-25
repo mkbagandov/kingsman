@@ -20,12 +20,12 @@ func NewCartRepository(db *sql.DB) domain.CartRepository {
 }
 
 func (r *cartRepository) CreateCart(ctx context.Context, cart *domain.Cart) error {
-	query := `INSERT INTO carts (user_id, created_at, updated_at) VALUES ($1, $2, $3) RETURNING id`
+	query := `INSERT INTO carts (user_id, is_paid, created_at, updated_at) VALUES ($1, $2, $3, $4) RETURNING id`
 	cart.ID = uuid.New().String()
 	cart.CreatedAt = time.Now().Format(time.RFC3339)
 	cart.UpdatedAt = time.Now().Format(time.RFC3339)
 
-	err := r.db.QueryRowContext(ctx, query, cart.UserID, cart.CreatedAt, cart.UpdatedAt).Scan(&cart.ID)
+	err := r.db.QueryRowContext(ctx, query, cart.UserID, cart.IsPaid, cart.CreatedAt, cart.UpdatedAt).Scan(&cart.ID)
 	if err != nil {
 		return fmt.Errorf("failed to create cart: %w", err)
 	}
@@ -33,17 +33,18 @@ func (r *cartRepository) CreateCart(ctx context.Context, cart *domain.Cart) erro
 }
 
 func (r *cartRepository) GetCartByUserID(ctx context.Context, userID string) (*domain.Cart, error) {
-	query := `SELECT id, user_id, created_at, updated_at FROM carts WHERE user_id = $1`
+	query := `SELECT id, user_id, is_paid, created_at, updated_at FROM carts WHERE user_id = $1 AND is_paid = FALSE` // Only fetch unpaid carts
 	cart := &domain.Cart{}
 	err := r.db.QueryRowContext(ctx, query, userID).Scan(
 		&cart.ID,
 		&cart.UserID,
+		&cart.IsPaid, // Include is_paid field
 		&cart.CreatedAt,
 		&cart.UpdatedAt,
 	)
 	if err != nil {
 		if err == sql.ErrNoRows {
-			return nil, nil // Cart not found
+			return nil, nil // Cart not found or is already paid
 		}
 		return nil, fmt.Errorf("failed to get cart by user ID: %w", err)
 	}
@@ -51,9 +52,9 @@ func (r *cartRepository) GetCartByUserID(ctx context.Context, userID string) (*d
 }
 
 func (r *cartRepository) UpdateCart(ctx context.Context, cart *domain.Cart) error {
-	query := `UPDATE carts SET updated_at = $2 WHERE id = $1`
+	query := `UPDATE carts SET is_paid = $2, updated_at = $3 WHERE id = $1`
 	cart.UpdatedAt = time.Now().Format(time.RFC3339)
-	_, err := r.db.ExecContext(ctx, query, cart.ID, cart.UpdatedAt)
+	_, err := r.db.ExecContext(ctx, query, cart.ID, cart.IsPaid, cart.UpdatedAt)
 	if err != nil {
 		return fmt.Errorf("failed to update cart: %w", err)
 	}

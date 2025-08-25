@@ -18,6 +18,25 @@ func NewCartHandler(cartUseCase *usecase.CartUseCase) *CartHandler {
 	return &CartHandler{cartUseCase: cartUseCase}
 }
 
+func (h *CartHandler) PlaceOrder(w http.ResponseWriter, r *http.Request) {
+	userID, ok := r.Context().Value(domain.UserContextKey).(string)
+	if !ok || userID == "" {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	req := usecase.PlaceOrderRequest{UserID: userID}
+
+	resp, err := h.cartUseCase.PlaceOrder(r.Context(), &req)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(resp)
+}
+
 func (h *CartHandler) AddItemToCart(w http.ResponseWriter, r *http.Request) {
 	userID, ok := r.Context().Value(domain.UserContextKey).(string)
 	if !ok || userID == "" {

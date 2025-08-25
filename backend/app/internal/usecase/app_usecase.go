@@ -8,9 +8,9 @@ import (
 
 	"github.com/golang-jwt/jwt/v5" // Added for JWT token generation
 	"github.com/google/uuid"
-	"github.com/mkbagandov/kingsman/backend/app/internal/domain"
-	qrcode "github.com/skip2/go-qrcode" // Added QR code library
-	"golang.org/x/crypto/bcrypt"        // Added for password hashing
+	"github.com/mkbagandov/kingsman/backend/app/internal/domain" // Update with your actual project path
+	qrcode "github.com/skip2/go-qrcode"                          // Added QR code library
+	"golang.org/x/crypto/bcrypt"                                 // Added for password hashing
 )
 
 type UserUseCase struct {
@@ -230,6 +230,39 @@ func (uc *UserUseCase) GetUserProfile(ctx context.Context, userID string) (*GetU
 	return response, nil
 }
 
+type UpdateUserProfileRequest struct {
+	ID          string `json:"id"`
+	Username    string `json:"username"`
+	PhoneNumber string `json:"phone_number"`
+	Email       string `json:"email"`
+}
+
+type UpdateUserProfileResponse struct {
+	Message string `json:"message"`
+}
+
+func (uc *UserUseCase) UpdateUserProfile(ctx context.Context, req *UpdateUserProfileRequest) (*UpdateUserProfileResponse, error) {
+	id, err := strconv.Atoi(req.ID)
+	if err != nil {
+		return nil, fmt.Errorf("invalid user ID format: %w", err)
+	}
+
+	user, err := uc.userRepo.GetUserByID(ctx, id)
+	if err != nil {
+		return nil, fmt.Errorf("user not found: %w", err)
+	}
+
+	user.Username = req.Username
+	user.PhoneNumber = req.PhoneNumber
+	user.Email = req.Email
+
+	if err := uc.userRepo.UpdateUser(ctx, user); err != nil {
+		return nil, fmt.Errorf("failed to update user profile: %w", err)
+	}
+
+	return &UpdateUserProfileResponse{Message: "User profile updated successfully"}, nil
+}
+
 // GetUserQRCode retrieves the QR code string for a user.
 func (uc *UserUseCase) GetUserQRCode(ctx context.Context, userID string) (string, error) {
 	// Convert userID string to int for repository call
@@ -274,13 +307,14 @@ func (uc *UserUseCase) GetUserDiscountCard(ctx context.Context, userID string) (
 	}
 
 	return &GetUserProfileResponse{
-		ID:                  strconv.Itoa(user.ID),
-		Username:            user.Username,
-		PhoneNumber:         user.PhoneNumber,
-		DiscountLevel:       user.DiscountLevel,
-		ProgressToNextLevel: user.ProgressToNextLevel,
-		QRCode:              user.QRCode,
-	}, nil
+			ID:                  strconv.Itoa(user.ID),
+			Username:            user.Username,
+			PhoneNumber:         user.PhoneNumber,
+			DiscountLevel:       user.DiscountLevel,
+			ProgressToNextLevel: user.ProgressToNextLevel,
+			QRCode:              user.QRCode,
+		},
+		nil
 }
 
 // UpdateUserDiscountCard updates the discount card level and progress for a user.
@@ -416,13 +450,36 @@ func NewNotificationUseCase(notificationRepo domain.NotificationRepository) *Not
 }
 
 type CartUseCase struct {
-	cartRepo     domain.CartRepository
-	cartItemRepo domain.CartItemRepository
-	productRepo  domain.ProductRepository
+	cartRepo            domain.CartRepository
+	cartItemRepo        domain.CartItemRepository
+	productRepo         domain.ProductRepository
+	orderRepo           domain.OrderRepository
+	orderItemRepo       domain.OrderItemRepository
+	loyaltyUseCase      *LoyaltyUseCase
+	notificationUseCase *NotificationUseCase
+	userRepo            domain.UserRepository
 }
 
-func NewCartUseCase(cartRepo domain.CartRepository, cartItemRepo domain.CartItemRepository, productRepo domain.ProductRepository) *CartUseCase {
-	return &CartUseCase{cartRepo: cartRepo, cartItemRepo: cartItemRepo, productRepo: productRepo}
+func NewCartUseCase(
+	cartRepo domain.CartRepository,
+	cartItemRepo domain.CartItemRepository,
+	productRepo domain.ProductRepository,
+	orderRepo domain.OrderRepository,
+	orderItemRepo domain.OrderItemRepository,
+	loyaltyUseCase *LoyaltyUseCase,
+	notificationUseCase *NotificationUseCase,
+	userRepo domain.UserRepository,
+) *CartUseCase {
+	return &CartUseCase{
+		cartRepo:            cartRepo,
+		cartItemRepo:        cartItemRepo,
+		productRepo:         productRepo,
+		orderRepo:           orderRepo,
+		orderItemRepo:       orderItemRepo,
+		loyaltyUseCase:      loyaltyUseCase,
+		notificationUseCase: notificationUseCase,
+		userRepo:            userRepo,
+	}
 }
 
 func (uc *CartUseCase) GetCartByUserID(ctx context.Context, userID string) (*domain.Cart, error) {
@@ -433,7 +490,7 @@ func (uc *CartUseCase) GetCartByUserID(ctx context.Context, userID string) (*dom
 
 	// If cart doesn't exist, create one
 	if cart == nil {
-		newCart := &domain.Cart{UserID: userID}
+		newCart := &domain.Cart{UserID: userID, IsPaid: false} // Initialize IsPaid
 		err := uc.cartRepo.CreateCart(ctx, newCart)
 		if err != nil {
 			return nil, fmt.Errorf("failed to create new cart for user: %w", err)
@@ -596,6 +653,180 @@ func (uc *CartUseCase) ClearCart(ctx context.Context, userID string) error {
 	return nil
 }
 
+type PlaceOrderRequest struct {
+	UserID string `json:"user_id"`
+}
+
+type PlaceOrderResponse struct {
+	OrderID int    `json:"order_id"`
+	Message string `json:"message"`
+}
+
+func (uc *CartUseCase) PlaceOrder(ctx context.Context, req *PlaceOrderRequest) (*PlaceOrderResponse, error) {
+	cart, err := uc.cartRepo.GetCartByUserID(ctx, req.UserID)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get user cart: %w", err)
+	}
+	if cart == nil || cart.IsPaid {
+		return nil, fmt.Errorf("cart is empty or already paid")
+	}
+
+	cartItems, err := uc.cartItemRepo.GetCartItemsByCartID(ctx, cart.ID)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get cart items: %w", err)
+	}
+	if len(cartItems) == 0 {
+		return nil, fmt.Errorf("cart is empty")
+	}
+
+	// Calculate total amount
+	var totalAmount float64
+	for _, item := range cartItems {
+		productIDInt, err := strconv.Atoi(item.ProductID)
+		if err != nil {
+			return nil, fmt.Errorf("invalid product ID format: %w", err)
+		}
+		product, err := uc.productRepo.GetProductByID(ctx, productIDInt)
+		if err != nil || product == nil {
+			return nil, fmt.Errorf("product with ID %s not found: %w", item.ProductID, err)
+		}
+		totalAmount += product.Price * float64(item.Quantity)
+	}
+
+	// Create order
+	order := &domain.Order{
+		UserID:        req.UserID,
+		OrderDate:     time.Now().Format(time.RFC3339),
+		TotalAmount:   totalAmount,
+		Status:        "completed", // Assuming successful payment
+		PaymentStatus: "paid",
+		CreatedAt:     time.Now().Format(time.RFC3339),
+		UpdatedAt:     time.Now().Format(time.RFC3339),
+	}
+	if err := uc.orderRepo.CreateOrder(ctx, order); err != nil {
+		return nil, fmt.Errorf("failed to create order: %w", err)
+	}
+
+	// Move cart items to order items
+	for _, item := range cartItems {
+		productIDInt, err := strconv.Atoi(item.ProductID)
+		if err != nil {
+			return nil, fmt.Errorf("invalid product ID format: %w", err)
+		}
+		product, err := uc.productRepo.GetProductByID(ctx, productIDInt)
+		if err != nil || product == nil {
+			return nil, fmt.Errorf("product with ID %s not found: %w", item.ProductID, err)
+		}
+
+		orderItem := &domain.OrderItem{
+			OrderID:   order.ID,
+			ProductID: item.ProductID,
+			Quantity:  item.Quantity,
+			Price:     product.Price, // Store current product price at time of order
+			CreatedAt: time.Now().Format(time.RFC3339),
+			UpdatedAt: time.Now().Format(time.RFC3339),
+		}
+		if err := uc.orderItemRepo.CreateOrderItem(ctx, orderItem); err != nil {
+			return nil, fmt.Errorf("failed to create order item: %w", err)
+		}
+	}
+
+	// Mark cart as paid
+	cart.IsPaid = true
+	if err := uc.cartRepo.UpdateCart(ctx, cart); err != nil {
+		return nil, fmt.Errorf("failed to mark cart as paid: %w", err)
+	}
+
+	// Clear cart items (or delete the cart itself if preferred)
+	// For simplicity, we'll delete the cart items for now
+	for _, item := range cartItems {
+		if err := uc.cartItemRepo.DeleteCartItem(ctx, item.ID); err != nil {
+			return nil, fmt.Errorf("failed to delete cart item after order: %w", err)
+		}
+	}
+
+	// Send notification to user
+	userIDInt, err := strconv.Atoi(req.UserID)
+	if err != nil {
+		return nil, fmt.Errorf("invalid userID format for notification: %w", err)
+	}
+
+	notificationReq := &SendNotificationRequest{
+		UserID:  req.UserID,
+		Type:    "purchase_confirmation",
+		Title:   "Заказ успешно оплачен!",
+		Message: fmt.Sprintf("Ваш заказ #%d на сумму $%.2f успешно оплачен и принят в обработку.", order.ID, totalAmount),
+	}
+	if err := uc.notificationUseCase.SendNotification(ctx, notificationReq); err != nil {
+		return nil, fmt.Errorf("failed to send purchase confirmation notification: %w", err)
+	}
+
+	// Accrue loyalty points (e.g., 1 point per $10 spent)
+	pointsToAccrue := int(totalAmount / 10)
+	if pointsToAccrue > 0 {
+		if err := uc.loyaltyUseCase.AddLoyaltyPoints(ctx, userIDInt, pointsToAccrue, "purchase"); err != nil {
+			return nil, fmt.Errorf("failed to add loyalty points: %w", err)
+		}
+	}
+
+	return &PlaceOrderResponse{OrderID: order.ID, Message: "Order placed successfully and cart marked as paid"}, nil
+}
+
+type OrderUseCase struct {
+	orderRepo     domain.OrderRepository
+	orderItemRepo domain.OrderItemRepository
+	productRepo   domain.ProductRepository // To fetch product details for order items
+}
+
+func NewOrderUseCase(orderRepo domain.OrderRepository, orderItemRepo domain.OrderItemRepository, productRepo domain.ProductRepository) *OrderUseCase {
+	return &OrderUseCase{orderRepo: orderRepo, orderItemRepo: orderItemRepo, productRepo: productRepo}
+}
+
+type GetOrdersResponse struct {
+	Orders []*domain.Order `json:"orders"`
+}
+
+func (uc *OrderUseCase) GetOrdersByUserID(ctx context.Context, userID string) (*GetOrdersResponse, error) {
+	paidStatus := "paid"
+	orders, err := uc.orderRepo.GetOrdersByUserID(ctx, userID, &paidStatus) // Pass 'paid' status
+	if err != nil {
+		return nil, fmt.Errorf("failed to get orders for user: %w", err)
+	}
+
+	// For each order, fetch its items
+	for _, order := range orders {
+		orderItems, err := uc.orderItemRepo.GetOrderItemsByOrderID(ctx, order.ID)
+		if err != nil {
+			return nil, fmt.Errorf("failed to get order items for order %d: %w", order.ID, err)
+		}
+		// Fetch product details for each order item
+		for _, item := range orderItems {
+			productIDInt, err := strconv.Atoi(item.ProductID)
+			if err != nil {
+				return nil, fmt.Errorf("invalid product ID format for order item: %w", err)
+			}
+			_, err = uc.productRepo.GetProductByID(ctx, productIDInt) // Changed product to _
+			if err != nil {
+				// Log error but don't fail the entire order retrieval if product not found
+				fmt.Printf("Warning: Product with ID %s not found for order item %d\n", item.ProductID, item.ID)
+				continue
+			}
+			// Assign the product to the order item for a richer response
+			// This requires a Product field in domain.OrderItem struct, which is not there.
+			// For now, we'll just return the order items as is.
+			// If we want to embed product details, we need to modify domain.OrderItem or create a response struct.
+		}
+		// Assign items to the order
+		var plainOrderItems []domain.OrderItem
+		for _, item := range orderItems {
+			plainOrderItems = append(plainOrderItems, *item)
+		}
+		order.Items = plainOrderItems // Assign the converted slice
+	}
+
+	return &GetOrdersResponse{Orders: orders}, nil
+}
+
 type SendNotificationRequest struct {
 	UserID  string `json:"user_id"`
 	Type    string `json:"type"`
@@ -611,7 +842,6 @@ func (uc *NotificationUseCase) SendNotification(ctx context.Context, req *SendNo
 	}
 
 	notification := &domain.Notification{
-		ID:        0, // ID will be auto-generated by the database
 		UserID:    userID,
 		Type:      req.Type,
 		Title:     req.Title,
