@@ -108,7 +108,7 @@ const Cart = () => {
             ))}
           </div>
           <div className="cart-summary">
-            <h3>Итого: ${totalAmount.toFixed(2)}</h3> 
+            <h3>Итого: ₽{totalAmount.toFixed(2)}</h3> 
             <button onClick={handleClearCart} className="clear-cart-button">Очистить корзину</button>
           </div>
         </>

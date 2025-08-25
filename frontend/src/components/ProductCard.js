@@ -41,7 +41,7 @@ function ProductCard({ product, categories }) {
           <h3 className="product-name">{product.name}</h3>
           {/* <p className="product-description">{product.description}</p> */}
           <div className="product-price-wrapper">
-            <span className="product-price">${product.price.toFixed(2)}</span>
+            <span className="product-price">₽{product.price.toFixed(2)}</span>
           </div>
         </div>
       </Link>

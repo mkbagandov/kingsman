@@ -1,23 +1,335 @@
+/* Mobile Navbar Styles */
+
+/* Burger Menu Button */
+.burger-menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--text-light);
+  font-size: 24px;
+  cursor: pointer;
+  padding: 8px;
+  z-index: 1000;
+  transition: color 0.3s ease, transform 0.2s ease;
+  border-radius: 4px;
+}
+
+.burger-menu-btn:hover {
+  color: var(--accent-gold);
+  transform: scale(1.1);
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.burger-menu-btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--accent-gold);
+}
+
+/* Desktop navigation visibility */
+.desktop-only {
+  display: flex;
+}
+
+/* Mobile Drawer */
+.mobile-drawer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 280px;
+  background-color: var(--primary-dark-blue);
+  box-shadow: 2px 0 15px rgba(0, 0, 0, 0.3);
+  transform: translateX(-100%);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 999;
+  overflow-y: auto;
+  border-right: 2px solid var(--secondary-dark-blue);
+}
+
+.mobile-drawer.open {
+  transform: translateX(0);
+}
+
+.drawer-content {
+  padding: 20px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.drawer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.drawer-logo {
+  color: var(--text-light);
+  font-size: 24px;
+  font-family: var(--font-heading);
+  font-weight: bold;
+  text-decoration: none;
+  letter-spacing: 1px;
+  transition: color 0.3s ease;
+}
+
+.drawer-logo:hover {
+  color: var(--accent-gold);
+}
+
+.close-drawer-btn {
+  background: none;
+  border: none;
+  color: var(--text-light);
+  font-size: 24px;
+  cursor: pointer;
+  padding: 8px;
+  transition: color 0.3s ease, transform 0.2s ease;
+  border-radius: 4px;
+}
+
+.close-drawer-btn:hover {
+  color: var(--accent-gold);
+  transform: scale(1.1);
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.close-drawer-btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--accent-gold);
+}
+
+.drawer-links {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.drawer-links a {
+  color: var(--text-light);
+  text-decoration: none;
+  font-size: 18px;
+  font-family: var(--font-body);
+  padding: 15px 10px;
+  transition: all 0.3s ease;
+  border-radius: 8px;
+  border-left: 3px solid transparent;
+}
+
+.drawer-links a:hover {
+  color: var(--accent-gold);
+  background-color: rgba(255, 255, 255, 0.05);
+  border-left-color: var(--accent-gold);
+  transform: translateX(5px);
+}
+
+.drawer-link-with-icon {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.drawer-login-btn {
+  background-color: var(--secondary-dark-blue);
+  color: var(--text-light);
+  padding: 12px 20px;
+  border-radius: 25px;
+  text-decoration: none;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 20px;
+  transition: all 0.3s ease;
+  border: 2px solid var(--secondary-dark-blue);
+}
+
+.drawer-login-btn:hover {
+  background-color: var(--accent-gold);
+  color: var(--primary-dark-blue);
+  border-color: var(--accent-gold);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(184, 134, 11, 0.3);
+}
+
+/* Mobile Overlay */
+.mobile-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 998;
+  backdrop-filter: blur(2px);
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Mobile Responsive Styles */
+@media (max-width: 768px) {
+  .burger-menu-btn {
+    display: block;
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    order: -1;
+  }
+  
+  .desktop-only {
+    display: none;
+  }
+  
+  .navbar {
+    padding: 15px 20px;
+    position: relative;
+  }
+  
+  .nav-left {
+    gap: 0; /* Remove gap on mobile */
+  }
+  
+  .navbar-logo {
+    font-size: 28px;
+    margin: 0;
+    margin-left: 50px; /* Make room for burger button */
+  }
+  
+  .nav-right {
+    gap: 15px;
+  }
+  
+  .cart-icon,
+  .notification-icon,
+  .profile-icon {
+    padding: 8px;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+  }
+  
+  .cart-icon:hover,
+  .notification-icon:hover,
+  .profile-icon:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: scale(1.1);
+  }
+  
+  .btn-login {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .burger-menu-btn {
+    left: 12px;
+  }
+  
+  .navbar {
+    padding: 12px 15px;
+  }
+  
+  .nav-left {
+    gap: 0; /* No gap on smaller screens */
+  }
+  
+  .navbar-logo {
+    font-size: 24px;
+    margin-left: 45px; /* Adjust for smaller burger button area */
+  }
+  
+  .nav-right {
+    gap: 8px;
+  }
+  
+  .mobile-drawer {
+    width: 260px;
+  }
+  
+  .drawer-content {
+    padding: 15px;
+  }
+  
+  .drawer-links a {
+    font-size: 16px;
+    padding: 12px 8px;
+  }
+}
+
+@media (max-width: 360px) {
+  .burger-menu-btn {
+    left: 10px;
+  }
+  
+  .mobile-drawer {
+    width: 240px;
+  }
+  
+  .nav-left {
+    gap: 0; /* No gap on smallest screens */
+  }
+  
+  .navbar-logo {
+    font-size: 20px;
+    margin-left: 40px;
+  }
+  
+  .nav-right {
+    gap: 6px;
+  }
+  
+  .cart-icon,
+  .notification-icon,
+  .profile-icon {
+    padding: 6px;
+  }
+}
+
+/* Navbar structure adjustments for mobile compatibility */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+}
+
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 20px; /* Reduced from 40px to move navigation closer to logo */
+}
+
 /* Remove or modify conflicting styles */
 /* .navbar is now globally styled in index.css */
 /* .navbar-logo is now globally styled in index.css */
 
 .navbar-links {
-  /* display: flex; (already handled globally) */
-  /* gap: 25px; (already handled globally) */
+  display: flex;
+  gap: 30px;
 }
 
 .navbar-links a {
-  /* color: var(--text-light); (already handled globally) */
-  /* text-decoration: none; (already handled globally) */
-  /* font-family: var(--font-secondary); (already handled globally) */
-  /* font-size: 1em; (already handled globally) */
+  color: var(--text-light);
+  text-decoration: none;
+  font-family: var(--font-body);
+  font-size: 18px;
   padding: 5px 0;
   position: relative;
+  transition: color 0.3s ease;
 }
 
 .navbar-links a:hover {
-  /* color: var(--secondary-beige); (already handled globally) */
+  color: var(--accent-gold);
 }
 
 .navbar-links a::after {
