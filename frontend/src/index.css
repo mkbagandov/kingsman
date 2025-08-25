@@ -339,7 +339,7 @@ code {
   }
 
   .hero-section {
-    padding: 100px 0;
+    padding: 90px 0; /* Slightly reduced vertical padding */
   }
 
   .hero-content {
@@ -347,70 +347,77 @@ code {
   }
 
   .hero-text {
-    padding-right: 40px;
+    padding-right: 30px; /* Reduced space between text and icon */
+    margin: 20px;
   }
 
   .hero-text h1 {
-    font-size: 68px;
+    font-size: 60px; /* Adjusted font size */
+    margin-bottom: 20px;
   }
 
   .hero-text h2 {
-    font-size: 26px;
+    font-size: 24px; /* Adjusted font size */
+    margin-bottom: 30px;
   }
 
   .hero-buttons {
-    gap: 20px;
+    gap: 15px; /* Reduced gap */
   }
 
   .btn-primary, .btn-secondary {
-    padding: 16px 35px;
-    font-size: 18px;
+    padding: 15px 30px; /* Adjusted padding */
+    font-size: 17px;
   }
 
   .hero-icon {
-    width: 200px;
-    height: 200px;
-    font-size: 100px;
+    width: 180px; /* Adjusted size */
+    height: 180px;
+    font-size: 90px; /* Adjusted icon size */
   }
 
   .why-mrg-section {
-    padding: 100px 20px;
+    padding: 90px 20px; /* Slightly reduced vertical padding */
   }
 
   .why-mrg-section h2 {
-    font-size: 44px;
+    font-size: 40px; /* Adjusted font size */
   }
 
   .why-mrg-section p {
-    font-size: 20px;
-    margin-bottom: 70px;
-    max-width: 700px;
+    font-size: 19px; /* Adjusted font size */
+    margin-bottom: 60px;
+    max-width: 650px; /* Adjusted max-width */
   }
 
   .why-mrg-cards {
-    gap: 30px;
+    gap: 25px; /* Adjusted gap */
   }
 
   .info-card {
-    max-width: 300px;
-    padding: 40px;
+    max-width: 280px; /* Adjusted max-width */
+    padding: 35px; /* Adjusted padding */
   }
 
   .info-card .icon {
-    font-size: 60px;
-    margin-bottom: 25px;
+    font-size: 55px; /* Adjusted icon size */
+    margin-bottom: 20px;
   }
 
   .info-card h3 {
-    font-size: 24px;
+    font-size: 22px; /* Adjusted font size */
   }
 
   .info-card p {
-    font-size: 17px;
+    font-size: 16px; /* Adjusted font size */
   }
 }
 
 @media (max-width: 768px) {
+  .container {
+    padding: 0 15px;
+  }
+
   .navbar {
     flex-direction: column;
     padding: 15px;
@@ -419,188 +426,607 @@ code {
   .nav-left {
     flex-direction: column;
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 15px; /* Reduced margin */
   }
 
   .navbar-logo {
     margin-right: 0;
-    margin-bottom: 15px;
-    font-size: 26px;
+    margin-bottom: 10px; /* Reduced margin */
+    font-size: 24px; /* Adjusted font size */
   }
 
   .navbar-links {
     flex-direction: column;
-    gap: 12px;
+    gap: 10px; /* Reduced gap */
   }
 
   .navbar-links a {
-    font-size: 16px;
+    font-size: 15px; /* Adjusted font size */
   }
 
   .auth-links {
     flex-direction: column;
-    gap: 10px;
-    width: 100%; /* Full width on small screens */
+    gap: 8px; /* Reduced gap */
+    width: 100%;
   }
 
   .btn-login, .btn-register {
-    padding: 9px 20px;
-    font-size: 16px;
-    width: 100%; /* Full width on small screens */
+    padding: 8px 18px; /* Adjusted padding */
+    font-size: 15px; /* Adjusted font size */
+    width: 100%;
   }
 
   .hero-section {
-    padding: 80px 0;
+    padding: 70px 0; /* Reduced vertical padding */
+    border-radius: 12px;
+    margin: 10px auto;
   }
 
   .hero-content {
     flex-direction: column;
-    padding: 0 20px;
+    padding: 0 15px; /* Reduced horizontal padding */
   }
 
   .hero-text {
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 25px; /* Reduced margin */
     padding-right: 0;
   }
 
   .hero-text h1 {
-    font-size: 56px;
-    margin-bottom: 20px;
-  }
-
-  .hero-text h2 {
-    font-size: 22px;
-    margin-bottom: 40px;
-  }
-
-  .hero-buttons {
-    flex-direction: column;
-    gap: 15px;
-  }
-
-  .btn-primary, .btn-secondary {
-    padding: 14px 30px;
-    font-size: 17px;
-  }
-
-  .hero-icon {
-    width: 160px;
-    height: 160px;
-    font-size: 80px;
-  }
-
-  .why-mrg-section {
-    padding: 80px 15px;
-  }
-
-  .why-mrg-section h2 {
-    font-size: 38px;
-  }
-
-  .why-mrg-section p {
-    font-size: 19px;
-    margin-bottom: 60px;
-  }
-
-  .why-mrg-cards {
-    gap: 25px;
-  }
-
-  .info-card {
-    max-width: 95%;
-    padding: 35px;
-  }
-
-  .info-card .icon {
-    font-size: 55px;
-    margin-bottom: 20px;
-  }
-
-  .info-card h3 {
-    font-size: 22px;
-  }
-
-  .info-card p {
-    font-size: 17px;
-  }
-}
-
-@media (max-width: 480px) {
-  .navbar {
-    padding: 12px;
-  }
-
-  .navbar-logo {
-    font-size: 22px;
-    margin-bottom: 10px;
-  }
-
-  .navbar-links {
-    gap: 8px;
-  }
-
-  .navbar-links a {
-    font-size: 14px;
-  }
-
-  .auth-links {
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .btn-login, .btn-register {
-    padding: 7px 16px;
-    font-size: 14px;
-  }
-
-  .hero-section {
-    padding: 70px 0;
-  }
-
-  .hero-text h1 {
-    font-size: 44px;
+    font-size: 48px; /* Adjusted font size */
     margin-bottom: 15px;
   }
 
   .hero-text h2 {
-    font-size: 20px;
+    font-size: 20px; /* Adjusted font size */
     margin-bottom: 30px;
   }
 
   .hero-buttons {
-    gap: 10px;
+    flex-direction: column;
+    gap: 12px; /* Reduced gap */
+    width: 100%;
   }
 
   .btn-primary, .btn-secondary {
-    padding: 12px 25px;
-    font-size: 15px;
+    padding: 12px 25px; /* Adjusted padding */
+    font-size: 16px; /* Adjusted font size */
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .hero-icon-container {
+    margin-top: 25px; /* Reduced margin */
   }
 
   .hero-icon {
     width: 140px;
     height: 140px;
-    font-size: 70px;
+    font-size: 70px; /* Adjusted icon size */
   }
 
   .why-mrg-section {
-    padding: 70px 10px;
+    padding: 70px 15px;
   }
 
   .why-mrg-section h2 {
-    font-size: 32px;
+    font-size: 34px; /* Adjusted font size */
   }
 
   .why-mrg-section p {
-    font-size: 17px;
+    font-size: 17px; /* Adjusted font size */
     margin-bottom: 50px;
+    max-width: 600px;
+  }
+
+  .why-mrg-cards {
+    gap: 20px; /* Reduced gap */
   }
 
   .info-card {
-    padding: 30px;
+    max-width: 90%; /* Adjusted max-width */
+    padding: 30px; /* Reduced padding */
+    border-radius: 12px;
   }
+
+  .info-card .icon {
+    font-size: 50px; /* Adjusted icon size */
+    margin-bottom: 18px;
+  }
+
   .info-card h3 {
-    font-size: 21px;
+    font-size: 20px; /* Adjusted font size */
+  }
+
+  .info-card p {
+    font-size: 15px; /* Adjusted font size */
+  }
+
+  .products-grid {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); /* Adjusted minmax for smaller cards */
+    gap: 12px; /* Reduced gap */
+    padding: 12px;
+  }
+
+  .product-filter-form {
+    padding: 12px;
+    margin: 12px auto;
+    gap: 8px;
+  }
+
+  .product-filter-form .form-group {
+    width: 100%;
+  }
+
+  .product-filter-form input[type="number"],
+  .product-filter-form select,
+  .product-filter-form .filter-button {
+    width: 100%;
+    min-width: unset;
+    box-sizing: border-box;
+    padding: 9px;
+    font-size: 0.9em;
+  }
+
+  .product-detail-content {
+    padding: 12px;
+    gap: 18px;
+    margin: 12px auto;
+  }
+
+  .product-detail-image {
+    max-width: 220px;
+  }
+
+  .product-detail-page h1 {
+    font-size: 1.6em;
+    margin-bottom: 12px;
+  }
+
+  .notifications-list {
+    padding: 12px 0;
+    gap: 8px;
+  }
+
+  .user-profile-container {
+    padding: 15px 12px;
+  }
+
+  .profile-header-breadcrumbs {
+    font-size: 0.8em;
+    margin-bottom: 18px;
+  }
+
+  .profile-main-content {
+    gap: 18px;
+  }
+
+  .profile-sidebar,
+  .profile-content-area {
+    gap: 18px;
+  }
+
+  .profile-card {
+    padding: 22px;
+  }
+
+  .profile-avatar-icon {
+    font-size: 70px;
+    padding: 7px;
+    margin-bottom: 12px;
+  }
+
+  .profile-info-card h2 {
+    font-size: 1.6em;
+  }
+
+  .profile-actions {
+    gap: 8px;
+  }
+
+  .btn-follow,
+  .btn-message {
+    width: 100%;
+    padding: 9px 18px;
+    font-size: 0.85em;
+  }
+
+  .profile-details-card .card-title,
+  .profile-loyalty-card .card-title,
+  .profile-discount-card .card-title,
+  .profile-qr-code-card .card-title {
+    font-size: 1.2em;
+    margin-bottom: 12px;
+  }
+
+  .profile-details-card .detail-item {
+    font-size: 0.95em;
+    padding: 9px 0;
+  }
+
+  .profile-qr-code {
+    width: 130px;
+    height: 130px;
+    margin-top: 12px;
+  }
+
+  .discount-qr-container {
+    padding: 18px;
+    gap: 18px;
+  }
+
+  .modal-content {
+    width: 92%;
+    padding: 22px;
+  }
+
+  .modal-header h2 {
+    font-size: 1.6em;
+    margin-bottom: 18px;
+  }
+
+  .modal-close-button {
+    font-size: 1.9em;
+  }
+
+  .form-group label {
+    font-size: 0.9em;
+  }
+
+  .form-group input {
+    padding: 9px;
+    font-size: 0.9em;
+  }
+
+  .modal-actions {
+    gap: 9px;
+  }
+
+  .btn-save,
+  .btn-cancel {
+    width: 100%;
+    padding: 11px;
+    font-size: 0.95em;
+  }
+
+  .auth-page {
+    min-height: calc(100vh - 55px); /* Adjusted for updated navbar height */
+    padding: 12px;
+  }
+
+  .auth-form-container {
+    padding: 28px;
+    max-width: 320px;
+  }
+
+  .auth-form-container h1 {
+    font-size: 1.7em;
+    margin-bottom: 22px;
+  }
+
+  .auth-form-container label {
+    font-size: 0.9em;
+  }
+
+  .auth-form-container input {
+    padding: 9px;
+    font-size: 0.9em;
+  }
+
+  .auth-form-container button[type="submit"] {
+    padding: 11px;
+    font-size: 1em;
+    margin-top: 18px;
+  }
+
+  .home-page {
+    padding: 35px 12px;
+  }
+
+  .home-page h1 {
+    font-size: 2.3em;
+  }
+
+  .home-page p {
+    font-size: 1.05em;
+  }
+
+  .add-to-cart-controls {
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+    align-items: stretch;
+  }
+
+  .quantity-input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 9px;
+    font-size: 0.9em;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0 8px; /* Further reduced padding */
+  }
+
+  .navbar {
+    padding: 8px; /* Further reduced padding */
+  }
+
+  .navbar-logo {
+    font-size: 18px; /* Further reduced font size */
+    margin-bottom: 6px; /* Reduced margin */
+  }
+
+  .navbar-links {
+    gap: 6px; /* Reduced gap */
+  }
+
+  .navbar-links a {
+    font-size: 13px; /* Further reduced font size */
+  }
+
+  .auth-links {
+    gap: 6px; /* Reduced gap */
+  }
+
+  .btn-login, .btn-register {
+    padding: 6px 14px; /* Further reduced padding */
+    font-size: 13px; /* Further reduced font size */
+  }
+
+  .hero-section {
+    padding: 50px 0; /* Further reduced vertical padding */
+    border-radius: 8px;
+    margin: 8px auto;
+  }
+
+  .hero-text h1 {
+    font-size: 36px; /* Further reduced font size */
+    margin-bottom: 8px;
+  }
+
+  .hero-text h2 {
+    font-size: 16px; /* Further reduced font size */
+    margin-bottom: 25px;
+  }
+
+  .hero-buttons {
+    gap: 8px; /* Reduced gap */
+  }
+
+  .btn-primary, .btn-secondary {
+    padding: 10px 20px; /* Reduced padding */
+    font-size: 14px; /* Reduced font size */
+  }
+
+  .hero-icon {
+    width: 100px;
+    height: 100px;
+    font-size: 50px; /* Reduced icon size */
+  }
+
+  .why-mrg-section {
+    padding: 50px 8px; /* Further reduced padding */
+  }
+
+  .why-mrg-section h2 {
+    font-size: 28px; /* Further reduced font size */
+  }
+
+  .why-mrg-section p {
+    font-size: 15px; /* Further reduced font size */
+    margin-bottom: 35px;
+  }
+
+  .info-card {
+    padding: 20px; /* Reduced padding */
+    border-radius: 8px;
+  }
+
+  .info-card .icon {
+    font-size: 40px; /* Reduced icon size */
+    margin-bottom: 12px;
+  }
+
+  .info-card h3 {
+    font-size: 18px; /* Reduced font size */
+  }
+
+  .info-card p {
+    font-size: 14px; /* Reduced font size */
+  }
+
+  .products-grid {
+    grid-template-columns: 1fr; /* Single column on smallest screens */
+    gap: 8px; /* Reduced gap */
+    padding: 8px;
+  }
+
+  .product-filter-form {
+    padding: 8px;
+    margin: 8px auto;
+    gap: 6px;
+  }
+
+  .product-filter-form input[type="number"],
+  .product-filter-form select,
+  .product-filter-form .filter-button {
+    padding: 7px;
+    font-size: 0.85em;
+  }
+
+  .product-detail-content {
+    padding: 8px;
+    gap: 12px;
+    margin: 8px auto;
+  }
+
+  .product-detail-image {
+    max-width: 180px;
+  }
+
+  .product-detail-page h1 {
+    font-size: 1.4em;
+    margin-bottom: 8px;
+  }
+
+  .notifications-list {
+    padding: 8px 0;
+    gap: 6px;
+  }
+
+  .user-profile-container {
+    padding: 12px 10px;
+  }
+
+  .profile-header-breadcrumbs {
+    font-size: 0.65em;
+    margin-bottom: 12px;
+  }
+
+  .profile-main-content {
+    gap: 12px;
+  }
+
+  .profile-sidebar,
+  .profile-content-area {
+    gap: 12px;
+  }
+
+  .profile-card {
+    padding: 18px;
+  }
+
+  .profile-avatar-icon {
+    font-size: 50px;
+    padding: 4px;
+    margin-bottom: 8px;
+  }
+
+  .profile-info-card h2 {
+    font-size: 1.3em;
+  }
+
+  .profile-actions {
+    gap: 6px;
+  }
+
+  .btn-follow,
+  .btn-message {
+    padding: 7px 14px;
+    font-size: 0.75em;
+  }
+
+  .profile-details-card .card-title,
+  .profile-loyalty-card .card-title,
+  .profile-discount-card .card-title,
+  .profile-qr-code-card .card-title {
+    font-size: 1em;
+    margin-bottom: 8px;
+  }
+
+  .profile-details-card .detail-item {
+    font-size: 0.85em;
+    padding: 7px 0;
+  }
+
+  .profile-qr-code {
+    width: 90px;
+    height: 90px;
+    margin-top: 8px;
+  }
+
+  .discount-qr-container {
+    padding: 12px;
+    gap: 12px;
+  }
+
+  .modal-content {
+    width: 96%;
+    padding: 18px;
+  }
+
+  .modal-header h2 {
+    font-size: 1.3em;
+    margin-bottom: 12px;
+  }
+
+  .modal-close-button {
+    font-size: 1.5em;
+  }
+
+  .form-group label {
+    font-size: 0.8em;
+  }
+
+  .form-group input {
+    padding: 6px;
+    font-size: 0.8em;
+  }
+
+  .modal-actions {
+    gap: 6px;
+  }
+
+  .btn-save,
+  .btn-cancel {
+    padding: 9px;
+    font-size: 0.8em;
+  }
+
+  .auth-page {
+    min-height: calc(100vh - 45px); /* Adjusted for even smaller navbar */
+    padding: 8px;
+  }
+
+  .auth-form-container {
+    padding: 20px;
+    max-width: 280px;
+  }
+
+  .auth-form-container h1 {
+    font-size: 1.5em;
+    margin-bottom: 18px;
+  }
+
+  .auth-form-container label {
+    font-size: 0.8em;
+  }
+
+  .auth-form-container input {
+    padding: 7px;
+    font-size: 0.8em;
+  }
+
+  .auth-form-container button[type="submit"] {
+    padding: 9px;
+    font-size: 0.85em;
+    margin-top: 15px;
+  }
+
+  .home-page {
+    padding: 25px 8px;
+  }
+
+  .home-page h1 {
+    font-size: 1.8em;
+  }
+
+  .home-page p {
+    font-size: 0.9em;
+  }
+
+  .add-to-cart-controls {
+    gap: 8px;
+  }
+
+  .quantity-input {
+    padding: 7px;
+    font-size: 0.85em;
   }
 }
 

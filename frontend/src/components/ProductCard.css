@@ -152,15 +152,17 @@
 /* Responsive adjustments for Product Card */
 @media (max-width: 1024px) {
   .product-image-wrapper {
-    height: 180px;
+    height: 170px; /* Slightly adjusted height */
   }
 
   .product-name {
     font-size: 1.2em;
+    margin-bottom: 8px; /* Consistent margin */
   }
 
   .product-price {
     font-size: 1.4em;
+    padding-top: 8px; /* Consistent padding */
   }
 
   .add-to-cart-button {
@@ -171,53 +173,80 @@
 
 @media (max-width: 768px) {
   .product-card {
-    margin-bottom: 20px; /* Space between cards in a column layout */
+    margin-bottom: 20px;
   }
 
   .product-image-wrapper {
-    height: 160px;
+    height: 150px; /* Adjusted height */
+  }
+
+  .product-content {
+    padding: 12px 15px; /* Reduced padding for smaller screens */
   }
 
   .product-name {
-    font-size: 1.1em;
-    margin-bottom: 8px;
+    font-size: 1em; /* Adjusted font size */
+    margin-bottom: 6px;
   }
 
   .product-price {
-    font-size: 1.3em;
-    padding-top: 8px;
+    font-size: 1.2em; /* Adjusted font size */
+    padding-top: 6px;
+  }
+
+  .discount-badge {
+    top: 10px;
+    left: 10px;
+    padding: 5px 10px;
+    font-size: 0.8em;
+  }
+
+  .favorite-icon {
+    top: 10px;
+    right: 10px;
+    font-size: 1.5em;
   }
 
   .add-to-cart-button {
-    font-size: 1em;
+    font-size: 0.9em; /* Adjusted font size */
     padding: 8px 0;
   }
 }
 
 @media (max-width: 480px) {
   .product-image-wrapper {
-    height: 140px;
+    height: 120px; /* Further adjusted height */
+  }
+
+  .product-content {
+    padding: 10px 12px; /* Further reduced padding */
   }
 
   .product-name {
-    font-size: 1em;
+    font-size: 0.9em;
+    margin-bottom: 4px;
   }
 
   .product-price {
-    font-size: 1.2em;
+    font-size: 1.1em;
+    padding-top: 5px;
   }
 
   .discount-badge {
-    font-size: 0.75em;
-    padding: 4px 8px;
+    top: 8px;
+    left: 8px;
+    padding: 3px 6px;
+    font-size: 0.7em;
   }
 
   .favorite-icon {
-    font-size: 1.4em;
+    top: 8px;
+    right: 8px;
+    font-size: 1.3em;
   }
 
   .add-to-cart-button {
-    font-size: 0.95em;
-    padding: 7px 0;
+    font-size: 0.85em; /* Further adjusted font size */
+    padding: 6px 0;
   }
 }

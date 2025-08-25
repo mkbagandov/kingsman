@@ -263,149 +263,231 @@
     }
 
     .cart-container h2 {
-        font-size: 1.8em;
-        margin-bottom: 25px;
+        font-size: 1.7em; /* Slightly adjusted font size */
+        margin-bottom: 20px;
     }
 
     .cart-item {
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 15px 10px;
-        gap: 12px;
+        flex-direction: row; /* Keep items in a row initially for better use of space */
+        align-items: center; /* Center items vertically */
+        justify-content: space-between; /* Space out items */
+        padding: 12px 10px;
+        gap: 10px; /* Reduced gap */
     }
 
     .cart-item-image {
-        width: 70px;
-        height: 70px;
-        margin-right: 0;
-        margin-bottom: 10px;
+        width: 60px; /* Adjusted size */
+        height: 60px;
+        margin-right: 10px; /* Adjusted margin */
+        margin-bottom: 0; /* Remove bottom margin */
     }
 
     .cart-item-details {
+        flex-grow: 1;
         text-align: left;
-        width: 100%;
+        display: flex; /* Ensure it's a flex container */
+        flex-direction: column; /* Stack name and price */
+        justify-content: center;
     }
 
     .cart-item-name {
-        font-size: 1.1em;
+        font-size: 1em;
+        margin-bottom: 4px; /* Reduced margin */
     }
 
     .cart-item-price {
-        font-size: 1em;
+        font-size: 0.95em; /* Adjusted font size */
     }
 
     .cart-item input {
-        width: 60px;
-        padding: 8px;
+        width: 50px; /* Adjusted width */
+        padding: 6px; /* Adjusted padding */
         font-size: 0.9em;
-        margin: 0;
+        margin: 0 8px; /* Adjusted margin */
     }
 
     .cart-item button {
-        padding: 8px 12px;
-        font-size: 0.9em;
+        padding: 7px 10px; /* Adjusted padding */
+        font-size: 0.85em; /* Adjusted font size */
     }
 
     .cart-summary {
-        padding-top: 20px;
-        align-items: center;
+        padding-top: 15px; /* Reduced padding */
+        align-items: flex-end; /* Align right on tablet */
+        gap: 10px;
     }
 
     .cart-summary h3 {
-        font-size: 1.5em;
+        font-size: 1.4em; /* Adjusted font size */
     }
 
     .clear-cart-button,
     .view-orders-button-bottom {
-        width: 100%;
-        font-size: 1em;
-        padding: 12px 20px;
-        margin-left: 0;
-        margin-top: 10px;
+        width: auto; /* Allow buttons to size based on content */
+        font-size: 0.95em;
+        padding: 10px 18px;
+        margin: 5px 0; /* Adjusted vertical margin */
     }
     
     .payment-card {
-        margin-top: 30px;
-        padding: 20px;
+        margin-top: 25px; /* Reduced margin */
+        padding: 18px; /* Reduced padding */
     }
 
     .payment-card h3 {
-        font-size: 1.8em;
-        margin-bottom: 20px;
+        font-size: 1.6em; /* Adjusted font size */
+        margin-bottom: 18px;
+    }
+
+    .payment-card .form-group label {
+        font-size: 1em;
+        margin-bottom: 6px;
     }
 
     .payment-card .form-group input {
         padding: 10px 12px;
+        font-size: 0.95em;
     }
 
     .form-group-row {
-        flex-direction: column;
+        flex-direction: row; /* Keep expiry and CVV in a row on tablet */
         gap: 15px;
+        margin-bottom: 20px;
     }
 
     .pay-button {
-        font-size: 1.1em;
-        padding: 12px 15px;
+        font-size: 1.05em;
+        padding: 12px 18px;
+        margin-top: 20px;
     }
 
     .empty-cart-message-container {
-        font-size: 1em;
-        padding: 30px 20px;
-        margin-top: 30px;
+        padding: 40px 20px; /* Adjusted padding */
+        margin-top: 25px;
         gap: 15px;
     }
 
     .empty-cart-icon {
-        font-size: 3.5em;
+        font-size: 3em; /* Adjusted icon size */
     }
 
     .empty-cart-message-container p {
-        font-size: 1.3em;
+        font-size: 1.2em; /* Adjusted font size */
     }
 }
 
 @media (max-width: 480px) {
+    .cart-container {
+        padding: 12px;
+        margin: 10px auto;
+    }
+
     .cart-container h2 {
-        font-size: 1.6em;
-        margin-bottom: 20px;
+        font-size: 1.5em;
+        margin-bottom: 18px;
+    }
+
+    .cart-item {
+        flex-direction: column; /* Stack items vertically on mobile */
+        align-items: flex-start; /* Align items to the left */
+        padding: 10px;
+        gap: 8px;
     }
 
     .cart-item-image {
         width: 50px;
         height: 50px;
+        margin-right: 0;
+        margin-bottom: 8px; /* Add bottom margin when stacked */
+    }
+
+    .cart-item-details {
+        width: 100%; /* Take full width */
+        text-align: left;
     }
 
     .cart-item-name {
-        font-size: 1em;
+        font-size: 0.95em;
+        margin-bottom: 2px;
     }
 
     .cart-item-price {
-        font-size: 0.9em;
+        font-size: 0.85em;
+    }
+
+    .cart-item input {
+        width: 45px;
+        padding: 5px;
+        font-size: 0.8em;
+        margin: 0 6px;
+    }
+
+    .cart-item button {
+        padding: 6px 8px;
+        font-size: 0.75em;
+    }
+
+    .cart-summary {
+        padding-top: 12px;
+        align-items: center; /* Center buttons on mobile */
+        gap: 8px;
     }
 
     .cart-summary h3 {
-        font-size: 1.3em;
+        font-size: 1.2em;
+    }
+
+    .clear-cart-button,
+    .view-orders-button-bottom {
+        width: 100%; /* Full width for buttons */
+        font-size: 0.9em;
+        padding: 10px 15px;
+        margin: 4px 0;
+    }
+
+    .payment-card {
+        margin-top: 20px;
+        padding: 15px;
     }
 
     .payment-card h3 {
-        font-size: 1.5em;
+        font-size: 1.4em;
+        margin-bottom: 15px;
+    }
+
+    .payment-card .form-group label {
+        font-size: 0.9em;
+        margin-bottom: 4px;
+    }
+
+    .payment-card .form-group input {
+        padding: 8px 10px;
+        font-size: 0.85em;
+    }
+
+    .form-group-row {
+        flex-direction: column; /* Stack expiry and CVV vertically on mobile */
+        gap: 10px;
+        margin-bottom: 15px;
     }
 
     .pay-button {
-        font-size: 1em;
+        font-size: 0.95em;
+        padding: 10px 15px;
+        margin-top: 15px;
     }
 
     .empty-cart-message-container {
-        font-size: 0.9em;
-        padding: 20px 15px;
+        padding: 30px 15px;
+        margin-top: 20px;
         gap: 10px;
     }
 
     .empty-cart-icon {
-        font-size: 3em;
+        font-size: 2.5em;
     }
 
     .empty-cart-message-container p {
-        font-size: 1.1em;
+        font-size: 1em;
     }
 }

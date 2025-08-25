@@ -129,7 +129,7 @@ function ProductCatalog() {
             <label htmlFor="max-price">Макс. Цена:</label>
             <input id="max-price" type="number" value={maxPrice} onChange={(e) => setMaxPrice(e.target.value)} className="filter-input" placeholder="1000" />
           </div>
-          <button type="submit" className="apply-filter-button">Найти</button>
+          <button type="submit" style={{margin: '17px'}} className="apply-filter-button">Найти</button>
         </form>
       )}
 

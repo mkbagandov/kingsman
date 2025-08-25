@@ -38,10 +38,11 @@
 /* Auth links are now globally styled in index.css */
 
 .auth-links {
-  display: flex;
-  gap: 15px; /* Space between the two buttons */
+  /* These styles are now largely handled in index.css for consistency */
 }
 
+/* The order-history-link was moved to Cart.js, so these styles are no longer needed here. */
+/*
 .order-history-link {
   color: var(--text-light);
   text-decoration: none;
@@ -56,6 +57,7 @@
   color: var(--accent-gold);
   text-shadow: 0 0 5px rgba(184, 134, 11, 0.5);
 }
+*/
 
 .profile-icon {
   display: flex;
@@ -81,15 +83,15 @@
   justify-content: center;
   padding: 8px; /* Smaller padding for notification icon */
   border-radius: 50%;
-  background-color: transparent; /* Transparent background by default */
+  background-color: transparent;
   transition: all 0.3s ease;
-  color: var(--text-light); /* Default color from text-light */
+  color: var(--text-light);
 }
 
 .notification-icon:hover {
   background-color: rgba(255, 255, 255, 0.1); /* Subtle background on hover */
   transform: translateY(-2px) scale(1.05);
-  color: var(--accent-gold); /* Accent color on hover */
+  color: var(--accent-gold);
 }
 
 .cart-icon {
@@ -107,14 +109,14 @@
 .cart-icon:hover {
   background-color: rgba(255, 255, 255, 0.1); /* Subtle background on hover */
   transform: translateY(-2px) scale(1.05);
-  color: var(--accent-gold); /* Accent color on hover */
+  color: var(--accent-gold);
 }
 
 .cart-badge {
   position: absolute;
   top: 5px;
   right: 5px;
-  background-color: var(--accent-gold); /* Or any other prominent color */
+  background-color: var(--accent-gold);
   color: white;
   border-radius: 50%;
   padding: 2px 6px;
@@ -128,19 +130,34 @@
 /* Responsive adjustments for Navbar */
 @media (max-width: 768px) {
   .nav-right {
-    flex-direction: column; /* Stack icons vertically */
-    gap: 10px;
-    width: 100%;
+    flex-direction: row; /* Keep icons in a row on smaller screens */
+    gap: 15px; /* Adjust gap between icons */
+    width: auto; /* Allow width to be determined by content */
     align-items: center;
+    margin-top: 10px; /* Add margin to separate from links */
   }
 
   .notification-icon,
-  .profile-icon {
-    margin-left: 0; /* Remove left margin on small screens */
+  .profile-icon,
+  .cart-icon {
+    margin-left: 0; /* Remove left margin for consistent spacing */
+    padding: 8px; /* Ensure consistent padding */
   }
 
   .profile-icon {
-    width: unset; /* Allow profile icon to size naturally */
-    padding: 8px;
+    background-color: transparent; /* Make background transparent on mobile */
+    box-shadow: none; /* Remove shadow on mobile */
+  }
+
+  .profile-icon:hover {
+    background-color: rgba(255, 255, 255, 0.1); /* Subtle hover for mobile profile icon */
+    transform: none; /* Remove transform on hover for mobile */
+    box-shadow: none; /* Remove shadow on hover for mobile */
+  }
+}
+
+@media (max-width: 480px) {
+  .nav-right {
+    gap: 10px; /* Further reduce gap for very small screens */
   }
 }
