@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 // Removed useParams as userID will come from JWT on the backend
 import { getUserProfile, getUserLoyaltyProfile, getUserDiscountCard, getUserQRCode } from '../api/api';
-import { FaUserCircle, FaStar, FaCreditCard, FaQrcode, FaEnvelope, FaPhone, FaAward, FaHistory, FaGlobe, FaGithub, FaTwitter, FaInstagram, FaFacebook, FaTasks } from 'react-icons/fa';
+import { FaUserCircle, FaStar, FaCreditCard, FaQrcode, FaEnvelope, FaPhone, FaAward, FaHistory, FaGlobe, FaGithub, FaTwitter, FaInstagram, FaFacebook, FaTasks, FaExternalLinkAlt } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom'; // Added Link import and useNavigate
 import EditProfileModal from '../components/EditProfileModal'; // Import the EditProfileModal
 
@@ -139,6 +139,22 @@ function UserProfile() {
             <div className="detail-item">
               <span>Адрес</span>
               <span>Москва, Россия</span> {/* Placeholder for address */}
+            </div>
+          </div>
+
+          {/* Loyalty System External Link */}
+          <div className="profile-card profile-loyalty-system-card">
+            <h3 className="card-title"><FaAward /> Система лояльности</h3>
+            <p>Управляйте своими баллами лояльности, отслеживайте статус и получайте эксклюзивные предложения в нашей внешней системе лояльности.</p>
+            <div className="loyalty-system-action">
+              <a 
+                href="https://loya.elcrm.ru/en-us" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="btn-loyalty-system"
+              >
+                <FaExternalLinkAlt /> Перейти в систему лояльности
+              </a>
             </div>
           </div>
 

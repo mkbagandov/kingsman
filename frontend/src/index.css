@@ -635,9 +635,15 @@ code {
   .profile-details-card .card-title,
   .profile-loyalty-card .card-title,
   .profile-discount-card .card-title,
-  .profile-qr-code-card .card-title {
+  .profile-qr-code-card .card-title,
+  .profile-loyalty-system-card .card-title {
     font-size: 1.2em;
     margin-bottom: 12px;
+  }
+
+  .btn-loyalty-system {
+    padding: 12px 25px;
+    font-size: 0.95em;
   }
 
   .profile-details-card .detail-item {
@@ -924,9 +930,20 @@ code {
   .profile-details-card .card-title,
   .profile-loyalty-card .card-title,
   .profile-discount-card .card-title,
-  .profile-qr-code-card .card-title {
+  .profile-qr-code-card .card-title,
+  .profile-loyalty-system-card .card-title {
     font-size: 1em;
     margin-bottom: 8px;
+  }
+
+  .btn-loyalty-system {
+    padding: 10px 20px;
+    font-size: 0.8em;
+  }
+
+  .profile-loyalty-system-card p {
+    font-size: 0.85em;
+    margin-bottom: 15px;
   }
 
   .profile-details-card .detail-item {
@@ -1398,6 +1415,63 @@ code {
 
 .profile-details-card .detail-item span:last-child {
   color: var(--secondary-dark-blue);
+}
+
+/* Loyalty System Card Styles */
+.profile-loyalty-system-card {
+  border-left: 4px solid var(--accent-gold);
+}
+
+.profile-loyalty-system-card .card-title {
+  font-family: var(--font-heading);
+  color: var(--primary-dark-blue);
+  font-size: 1.7em;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.profile-loyalty-system-card p {
+  color: var(--dark-charcoal);
+  font-family: var(--font-body);
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.loyalty-system-action {
+  display: flex;
+  justify-content: center;
+  margin-top: 25px;
+}
+
+.btn-loyalty-system {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 15px 30px;
+  background: linear-gradient(135deg, var(--primary-dark-blue), var(--secondary-dark-blue));
+  color: var(--text-light);
+  text-decoration: none;
+  border-radius: 30px;
+  font-weight: bold;
+  font-family: var(--font-body);
+  font-size: 1.05em;
+  box-shadow: 0 6px 15px rgba(11, 26, 60, 0.3);
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.btn-loyalty-system:hover {
+  background: linear-gradient(135deg, var(--accent-gold), #DAA520);
+  color: var(--primary-dark-blue);
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 8px 20px rgba(184, 134, 11, 0.4);
+  border-color: var(--primary-dark-blue);
+}
+
+.btn-loyalty-system svg {
+  font-size: 1.1em;
 }
 
 .profile-project-card .card-subtitle {
