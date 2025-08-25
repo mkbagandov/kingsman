@@ -4,6 +4,8 @@ import { useDispatch } from 'react-redux'; // Import useDispatch
 import { getProductByID, getCategories } from '../api/api';
 import { FaTag, FaDollarSign, FaBoxes, FaShoppingCart } from 'react-icons/fa'; // Import FaShoppingCart icon
 import { addToCart } from '../redux/cartSlice'; // Import addToCart action
+import { addAlert } from '../redux/alertSlice'; // Import addAlert action
+import { v4 as uuidv4 } from 'uuid'; // Import uuid for unique alert IDs
 import '../components/ProductCard.css'; // Reusing some styles from ProductCard
 
 function ProductDetail() {
@@ -22,16 +24,31 @@ function ProductDetail() {
           getProductByID(productID),
           getCategories()
         ]);
-        setProduct(productRes.data.product);
-        setCategories(categoriesRes.data.categories);
+
+        if (productRes.data.product) {
+          setProduct(productRes.data.product);
+        } else {
+          setProduct(null);
+          dispatch(addAlert({ id: uuidv4(), message: 'Пусто: Продукт не найден.', type: 'info' }));
+        }
+
+        if (categoriesRes.data.categories && categoriesRes.data.categories.length > 0) {
+          setCategories(categoriesRes.data.categories);
+        } else {
+          setCategories([]);
+          dispatch(addAlert({ id: uuidv4(), message: 'Пусто: Категории не найдены.', type: 'info' }));
+        }
+
       } catch (err) {
-        setError(err.response?.data?.error || err.message);
+        const errorMessage = err.response?.data?.error || err.message || 'Неизвестная ошибка при загрузке продукта.';
+        setError(errorMessage);
+        dispatch(addAlert({ id: uuidv4(), message: `Ошибка: ${errorMessage}`, type: 'error' }));
       } finally {
         setLoading(false);
       }
     };
     fetchData();
-  }, [productID]);
+  }, [productID, dispatch]); // Added dispatch to dependencies
 
   const handleAddToCart = () => {
     if (product) {
@@ -41,7 +58,9 @@ function ProductDetail() {
 
   if (loading) return <div>Загрузка информации о продукте...</div>;
   if (error) return <div>Ошибка: {error}</div>;
-  if (!product) return <div>Продукт не найден.</div>;
+  // if (!product) return <div>Продукт не найден.</div>; // Removed as alert handles this
+
+  if (!product) return null; // Render nothing if product is null, alert handles the message
 
   const category = categories.find(cat => cat.id === product.category_id);
   const categoryName = category ? category.name : 'Неизвестно';

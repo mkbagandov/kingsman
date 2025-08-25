@@ -12,11 +12,13 @@ import Notifications from './pages/Notifications';
 import ProductDetail from './pages/ProductDetail';
 import CartPage from './pages/CartPage'; // Import CartPage
 import OrderHistoryPage from './pages/OrderHistoryPage'; // Import OrderHistoryPage
+import AlertDisplay from './components/AlertDisplay'; // Import AlertDisplay
 
 function App() {
   return (
     <Router>
       <Navbar />
+      <AlertDisplay /> {/* Render AlertDisplay here */}
       <div className="container" style={{ padding: '20px' }}>
         <Routes>
           <Route path="/" element={<Home />} />

@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux'; // Import useDispatch
 import { getProductCatalog, getCategories } from '../api/api';
 import ProductCard from '../components/ProductCard';
 import './ProductCatalog.css';
 import { FaFilter, FaSort, FaHeart } from 'react-icons/fa'; // Import icons
+import { addAlert } from '../redux/alertSlice'; // Import addAlert action
+import { v4 as uuidv4 } from 'uuid'; // Import uuid for unique alert IDs
 
 function ProductCatalog() {
   const [products, setProducts] = useState([]);
@@ -13,6 +16,7 @@ function ProductCatalog() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showFilter, setShowFilter] = useState(false); // State to toggle filter form visibility
+  const dispatch = useDispatch(); // Initialize useDispatch
 
   useEffect(() => {
     fetchProducts();
@@ -29,9 +33,16 @@ function ProductCatalog() {
         ...(maxPrice && { max_price: parseFloat(maxPrice) }),
       };
       const response = await getProductCatalog(params);
-      setProducts(response.data.products);
+      if (response.data.products && response.data.products.length > 0) {
+        setProducts(response.data.products);
+      } else {
+        setProducts([]);
+        dispatch(addAlert({ id: uuidv4(), message: 'Пусто: Продукты не найдены.', type: 'info' }));
+      }
     } catch (err) {
-      setError(err.response?.data?.error || err.message);
+      const errorMessage = err.response?.data?.error || err.message || 'Неизвестная ошибка при загрузке продуктов.';
+      setError(errorMessage);
+      dispatch(addAlert({ id: uuidv4(), message: `Ошибка: ${errorMessage}`, type: 'error' }));
     } finally {
       setLoading(false);
     }
@@ -40,9 +51,16 @@ function ProductCatalog() {
   const fetchCategories = async () => {
     try {
       const response = await getCategories();
-      setCategories(response.data.categories); 
+      if (response.data.categories && response.data.categories.length > 0) {
+        setCategories(response.data.categories);
+      } else {
+        setCategories([]);
+        dispatch(addAlert({ id: uuidv4(), message: 'Пусто: Категории не найдены.', type: 'info' }));
+      }
     } catch (err) {
       console.error("Error fetching categories:", err);
+      const errorMessage = err.response?.data?.error || err.message || 'Неизвестная ошибка при загрузке категорий.';
+      dispatch(addAlert({ id: uuidv4(), message: `Ошибка: ${errorMessage}`, type: 'error' }));
     }
   };
 

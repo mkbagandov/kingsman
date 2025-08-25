@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'; // Import useState
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchCart, updateCart, removeFromCart, clearUserCart, processPayment } from '../redux/cartSlice'; // Import processPayment
 import { Link } from 'react-router-dom'; // Import Link
+import { addAlert } from '../redux/alertSlice'; // Import addAlert action
+import { v4 as uuidv4 } from 'uuid'; // Import uuid for unique alert IDs
 import './Cart.css';
 
 const Cart = () => {
@@ -15,7 +17,19 @@ const Cart = () => {
   });
 
   useEffect(() => {
-    dispatch(fetchCart());
+    // Dispatch fetchCart and handle potential errors for displaying alerts
+    const fetchCartData = async () => {
+      try {
+        const result = await dispatch(fetchCart()).unwrap();
+        if (!result || !result.cartItems || result.cartItems.length === 0) {
+          dispatch(addAlert({ id: uuidv4(), message: 'Пусто: Корзина пуста.', type: 'info' }));
+        }
+      } catch (err) {
+        const errorMessage = err.message || 'Неизвестная ошибка при загрузке корзины.';
+        dispatch(addAlert({ id: uuidv4(), message: `Ошибка: ${errorMessage}`, type: 'error' }));
+      }
+    };
+    fetchCartData();
   }, [dispatch]);
 
   const handleUpdateQuantity = (productID, quantity) => {
@@ -43,9 +57,10 @@ const Cart = () => {
     // For this test implementation, we just dispatch the processPayment thunk.
     try {
       await dispatch(processPayment()).unwrap();
-      alert('Заказ успешно оплачен!'); // Success notification
+      dispatch(addAlert({ id: uuidv4(), message: 'Заказ успешно оплачен!', type: 'success' }));
     } catch (err) {
-      alert(`Ошибка при оплате: ${err.message || 'Неизвестная ошибка'}`); // Error notification
+      const errorMessage = err.message || 'Неизвестная ошибка при оплате.';
+      dispatch(addAlert({ id: uuidv4(), message: `Ошибка при оплате: ${errorMessage}`, type: 'error' }));
     }
   };
 
@@ -66,7 +81,7 @@ const Cart = () => {
 
   return (
     <div className="cart-container">
-      <h2>Ваша корзина</h2> {/* Added back the cart title */}
+ {/* Added back the cart title */}
       {cartItems.length > 0 ? (
         <>
           <div className="cart-items">
@@ -138,7 +153,6 @@ const Cart = () => {
         </>
       ) : (
         <div className="empty-cart-message">
-          <p>Ваша корзина пуста.</p>
         </div>
       )}
 

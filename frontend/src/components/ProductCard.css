@@ -1,124 +1,223 @@
 .product-card {
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: var(--background-light);
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  transition: transform 0.2s ease-in-out;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative; /* For absolute positioning of the cart button */
 }
 
 .product-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-8px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
 }
 
-.product-image-container {
-  width: 100%;
-  height: 200px; /* Fixed height for images */
-  background-color: #f0f0f0; /* Placeholder background */
+.product-link {
+  text-decoration: none;
+  color: inherit;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.product-image-wrapper {
+  width: 100%;
+  height: 220px; /* Slightly larger image area */
+  position: relative;
   overflow: hidden;
-  position: relative; /* Needed for absolute positioning of discount and heart */
-}
-
-.discount-badge {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  background-color: #e74c3c; /* Red color for discount */
-  color: white;
-  padding: 5px 10px;
-  border-radius: 5px;
-  font-size: 0.8em;
-  font-weight: bold;
-  z-index: 10; /* Ensure it's above the image */
-}
-
-.favorite-icon {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  color: #ccc; /* Light grey by default */
-  font-size: 1.5em;
-  cursor: pointer;
-  z-index: 10;
-  transition: color 0.2s ease-in-out;
-}
-
-.favorite-icon:hover {
-  color: #e74c3c; /* Red on hover */
+  border-bottom: 1px solid var(--border-color);
 }
 
 .product-image {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.product-placeholder-image {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background-color: var(--background-gray-light);
+  color: var(--text-light-gray);
+  text-align: center;
+  font-size: 0.9em;
 }
 
 .product-placeholder-icon {
-  font-size: 4em; /* Large icon for placeholder */
-  color: #cccccc;
+  font-size: 3em; /* Larger icon for placeholder */
+  margin-bottom: 8px;
+  color: var(--text-gray);
 }
 
-.product-info {
-  padding: 15px;
+.product-card:hover .product-image {
+  transform: scale(1.05);
+}
+
+.discount-badge {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  background-color: var(--accent-red);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.85em;
+  font-weight: 600;
+  z-index: 10;
+  letter-spacing: 0.5px;
+}
+
+.favorite-icon {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  color: var(--text-light-gray);
+  font-size: 1.6em;
+  cursor: pointer;
+  z-index: 10;
+  transition: color 0.3s ease, transform 0.2s ease;
+}
+
+.favorite-icon:hover {
+  color: var(--accent-red);
+  transform: scale(1.1);
+}
+
+.product-content {
+  padding: 15px 20px;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* Pushes details to bottom */
+  justify-content: space-between;
 }
 
 .product-name {
-  font-size: 1.25em;
-  font-weight: bold;
-  margin-bottom: 5px;
-  color: var(--primary-blue);
-}
-
-.product-description {
-  font-size: 0.9em;
-  color: #666;
+  font-size: 1.4em;
+  font-weight: 700;
   margin-bottom: 10px;
-  line-height: 1.4;
-  flex-grow: 1; /* Allows description to take available space */
+  color: var(--primary-dark-blue);
+  line-height: 1.3;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap; /* Keep name on a single line */
 }
 
-.product-details p {
-  display: flex;
-  align-items: center;
-  font-size: 0.9em;
-  color: #333;
-  margin-bottom: 5px;
+.product-price-wrapper {
+  margin-top: auto; /* Pushes price to the bottom of the content area */
+  text-align: right;
 }
 
-.product-details p .icon {
-  margin-right: 8px;
-  color: var(--primary-blue);
-}
-
-.product-price .icon {
-  color: green; /* Specific color for price icon */
+.product-price {
+  font-size: 1.6em;
+  font-weight: 800;
+  color: var(--accent-gold);
+  display: block; /* Ensures price takes full width */
+  padding-top: 10px; /* Space above price */
 }
 
 .add-to-cart-button {
-    background-color: var(--primary-blue);
-    color: black;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 0 0 8px 8px; /* Rounded bottom corners */
-    cursor: pointer;
-    font-size: 1em;
-    font-weight: bold;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px; /* Space between icon and text */
-    transition: background-color 0.2s ease-in-out;
+  background-color: var(--primary-dark-blue); /* Dark blue for button */
+  color: white;
+  border: none;
+  padding: 12px 0;
+  border-radius: 0 0 12px 12px; /* Match card border-radius */
+  cursor: pointer;
+  font-size: 1.2em;
+  font-weight: 600;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: background-color 0.3s ease;
+  outline: none; /* Remove focus outline */
 }
 
 .add-to-cart-button:hover {
-    background-color: #0056b3;
+  background-color: var(--accent-gold); /* Gold on hover */
+  color: var(--primary-dark-blue);
+}
+
+.add-to-cart-button svg {
+  font-size: 1.3em;
+}
+
+/* Responsive adjustments for Product Card */
+@media (max-width: 1024px) {
+  .product-image-wrapper {
+    height: 180px;
+  }
+
+  .product-name {
+    font-size: 1.2em;
+  }
+
+  .product-price {
+    font-size: 1.4em;
+  }
+
+  .add-to-cart-button {
+    font-size: 1.1em;
+    padding: 10px 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .product-card {
+    margin-bottom: 20px; /* Space between cards in a column layout */
+  }
+
+  .product-image-wrapper {
+    height: 160px;
+  }
+
+  .product-name {
+    font-size: 1.1em;
+    margin-bottom: 8px;
+  }
+
+  .product-price {
+    font-size: 1.3em;
+    padding-top: 8px;
+  }
+
+  .add-to-cart-button {
+    font-size: 1em;
+    padding: 8px 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .product-image-wrapper {
+    height: 140px;
+  }
+
+  .product-name {
+    font-size: 1em;
+  }
+
+  .product-price {
+    font-size: 1.2em;
+  }
+
+  .discount-badge {
+    font-size: 0.75em;
+    padding: 4px 8px;
+  }
+
+  .favorite-icon {
+    font-size: 1.4em;
+  }
+
+  .add-to-cart-button {
+    font-size: 0.95em;
+    padding: 7px 0;
+  }
 }
