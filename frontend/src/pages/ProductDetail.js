@@ -29,14 +29,14 @@ function ProductDetail() {
           setProduct(productRes.data.product);
         } else {
           setProduct(null);
-          dispatch(addAlert({ id: uuidv4(), message: 'Пусто: Продукт не найден.', type: 'info' }));
+          dispatch(addAlert({ id: uuidv4(), message: 'Пусто: Продукт не найден.', type: 'success' })); // Changed to success
         }
 
         if (categoriesRes.data.categories && categoriesRes.data.categories.length > 0) {
           setCategories(categoriesRes.data.categories);
         } else {
           setCategories([]);
-          dispatch(addAlert({ id: uuidv4(), message: 'Пусто: Категории не найдены.', type: 'info' }));
+          dispatch(addAlert({ id: uuidv4(), message: 'Пусто: Категории не найдены.', type: 'success' })); // Changed to success
         }
 
       } catch (err) {

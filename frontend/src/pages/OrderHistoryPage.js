@@ -44,9 +44,11 @@ const OrderHistoryPage = () => {
             })
           );
           setOrders(ordersWithProductDetails);
-        } else {
+        } else if (orders.length === 0) {
           setOrders([]);
-          dispatch(addAlert({ id: uuidv4(), message: 'Пусто: Заказы не найдены.', type: 'info' }));
+          dispatch(addAlert({ id: uuidv4(), message: 'Пусто: Заказы не найдены.', type: 'success' })); // Changed to success
+        } else {
+          setOrders(orders);
         }
 
       } catch (err) {

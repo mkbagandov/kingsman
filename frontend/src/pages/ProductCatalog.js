@@ -37,7 +37,7 @@ function ProductCatalog() {
         setProducts(response.data.products);
       } else {
         setProducts([]);
-        dispatch(addAlert({ id: uuidv4(), message: 'Пусто: Продукты не найдены.', type: 'info' }));
+        dispatch(addAlert({ id: uuidv4(), message: 'Пусто: Продукты не найдены.', type: 'success' })); // Changed to success
       }
     } catch (err) {
       const errorMessage = err.response?.data?.error || err.message || 'Неизвестная ошибка при загрузке продуктов.';
@@ -55,7 +55,7 @@ function ProductCatalog() {
         setCategories(response.data.categories);
       } else {
         setCategories([]);
-        dispatch(addAlert({ id: uuidv4(), message: 'Пусто: Категории не найдены.', type: 'info' }));
+        dispatch(addAlert({ id: uuidv4(), message: 'Пусто: Категории не найдены.', type: 'success' })); // Changed to success
       }
     } catch (err) {
       console.error("Error fetching categories:", err);

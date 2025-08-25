@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { FaHeart, FaShoppingCart, FaImage } from 'react-icons/fa'; // Added FaImage icon
 import { addToCart } from '../redux/cartSlice';
+import { addAlert } from '../redux/alertSlice'; // Added addAlert import
+import { v4 as uuidv4 } from 'uuid'; // Added uuidv4 import
 import './ProductCard.css';
 
 function ProductCard({ product, categories }) {
@@ -17,6 +19,7 @@ function ProductCard({ product, categories }) {
   const handleAddToCart = (e) => {
     e.preventDefault();
     dispatch(addToCart({ productID: product.id.toString(), quantity: 1 }));
+    dispatch(addAlert({ id: uuidv4(), message: 'Товар добавлен в корзину!', type: 'success' }));
   };
 
   return (

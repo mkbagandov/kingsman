@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:8080'; // Assuming backend runs on 8080
+const API_BASE_URL = 'http://192.168.1.86:8080'; // Assuming backend runs on 8080
 
 // Helper functions for token management
 export const setAuthToken = (token) => {

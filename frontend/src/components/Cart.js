@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'; // Import Link
 import { addAlert } from '../redux/alertSlice'; // Import addAlert action
 import { v4 as uuidv4 } from 'uuid'; // Import uuid for unique alert IDs
 import './Cart.css';
+import { FaShoppingCart } from 'react-icons/fa'; // Import FaShoppingCart for the empty cart icon
 
 const Cart = () => {
   const dispatch = useDispatch();
@@ -22,7 +23,7 @@ const Cart = () => {
       try {
         const result = await dispatch(fetchCart()).unwrap();
         if (!result || !result.cartItems || result.cartItems.length === 0) {
-          dispatch(addAlert({ id: uuidv4(), message: 'Пусто: Корзина пуста.', type: 'info' }));
+          dispatch(addAlert({ id: uuidv4(), message: 'Пусто: Корзина пуста.', type: 'success' })); // Changed to success
         }
       } catch (err) {
         const errorMessage = err.message || 'Неизвестная ошибка при загрузке корзины.';
@@ -110,54 +111,61 @@ const Cart = () => {
             <h3>Итого: ${totalAmount.toFixed(2)}</h3> 
             <button onClick={handleClearCart} className="clear-cart-button">Очистить корзину</button>
           </div>
-
-          <div className="payment-section">
-            <h3>Оплата</h3>
-            <div className="form-group">
-              <label htmlFor="cardNumber">Номер карты:</label>
-              <input
-                type="text"
-                id="cardNumber"
-                name="cardNumber"
-                value={paymentInfo.cardNumber}
-                onChange={handlePaymentInfoChange}
-                placeholder="XXXX XXXX XXXX XXXX"
-              />
-            </div>
-            <div className="form-group-row">
-              <div className="form-group">
-                <label htmlFor="expiryDate">Срок действия:</label>
-                <input
-                  type="text"
-                  id="expiryDate"
-                  name="expiryDate"
-                  value={paymentInfo.expiryDate}
-                  onChange={handlePaymentInfoChange}
-                  placeholder="MM/YY"
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="cvv">CVV:</label>
-                <input
-                  type="text"
-                  id="cvv"
-                  name="cvv"
-                  value={paymentInfo.cvv}
-                  onChange={handlePaymentInfoChange}
-                  placeholder="123"
-                />
-              </div>
-            </div>
-            <button onClick={handleProcessPayment} className="pay-button">Оплатить</button>
-          </div>
         </>
       ) : (
-        <div className="empty-cart-message">
+        <div className="empty-cart-message-container">
+          <FaShoppingCart className="empty-cart-icon" />
+          <p>Ваша корзина пуста.</p>
         </div>
       )}
 
       {isAuthenticated && (
         <Link to="/orders" className="view-orders-button-bottom">История заказов</Link>
+      )}
+
+      {cartItems.length > 0 && (
+        <div className="payment-card">
+          <h3>Оплата заказа</h3>
+          <div className="form-group">
+            <label htmlFor="cardNumber">Номер карты</label>
+            <input
+              type="text"
+              id="cardNumber"
+              name="cardNumber"
+              value={paymentInfo.cardNumber}
+              onChange={handlePaymentInfoChange}
+              placeholder="XXXX XXXX XXXX XXXX"
+              maxLength="19" // Max length for credit card numbers (16 digits + 3 spaces)
+            />
+          </div>
+          <div className="form-group-row">
+            <div className="form-group">
+              <label htmlFor="expiryDate">Срок действия</label>
+              <input
+                type="text"
+                id="expiryDate"
+                name="expiryDate"
+                value={paymentInfo.expiryDate}
+                onChange={handlePaymentInfoChange}
+                placeholder="ММ/ГГ"
+                maxLength="5" // MM/YY format
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="cvv">CVV</label>
+              <input
+                type="text"
+                id="cvv"
+                name="cvv"
+                value={paymentInfo.cvv}
+                onChange={handlePaymentInfoChange}
+                placeholder="123"
+                maxLength="3" // Standard CVV length
+              />
+            </div>
+          </div>
+          <button onClick={handleProcessPayment} className="pay-button">Оплатить</button>
+        </div>
       )}
     </div>
   );
