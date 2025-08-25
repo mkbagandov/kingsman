@@ -119,7 +119,6 @@ function UserProfile() {
           {/* Current Loyalty Profile (Moved or adapted) */}
           {loyaltyProfile && (
             <div className="profile-card profile-loyalty-card">
-              <h3 className="card-title">Информация о лояльности <FaStar /></h3>
               <p>Текущие баллы: {loyaltyProfile.current_points}</p>
               <p>Статус лояльности: {loyaltyProfile.loyalty_status}</p>
               {loyaltyProfile.current_tier && (
