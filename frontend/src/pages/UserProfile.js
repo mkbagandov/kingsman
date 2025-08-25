@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 // Removed useParams as userID will come from JWT on the backend
 import { getUserProfile, getUserLoyaltyProfile, getUserDiscountCard, getUserQRCode } from '../api/api';
 import { FaUserCircle, FaStar, FaCreditCard, FaQrcode, FaEnvelope, FaPhone, FaAward, FaHistory, FaGlobe, FaGithub, FaTwitter, FaInstagram, FaFacebook, FaTasks } from 'react-icons/fa';
-import { Link } from 'react-router-dom'; // Added Link import
+import { Link, useNavigate } from 'react-router-dom'; // Added Link import and useNavigate
+import EditProfileModal from '../components/EditProfileModal'; // Import the EditProfileModal
 
 function UserProfile() {
+  const navigate = useNavigate(); // Initialize useNavigate
   // const { userID } = useParams(); // No longer needed
   const [userProfile, setUserProfile] = useState(null);
   const [loyaltyProfile, setLoyaltyProfile] = useState(null);
@@ -12,6 +14,7 @@ function UserProfile() {
   const [qrCode, setQrCode] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false); // State for modal visibility
 
   useEffect(() => {
     const fetchData = async () => {
@@ -45,6 +48,30 @@ function UserProfile() {
     fetchData();
   }, []); // Empty dependency array as userID is handled by backend JWT
 
+  const handleClearCart = () => {
+    // dispatch(clearUserCart()); // This line was removed from the original file, so it's removed here.
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('jwtToken'); // Remove the JWT token from local storage
+    navigate('/'); // Redirect to the home page or login page
+  };
+
+  const handleEditProfileClick = () => {
+    setIsModalOpen(true); // Open the modal
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false); // Close the modal
+  };
+
+  const handleSaveProfile = (updatedUser) => {
+    // Here you would typically call an API to save the updated user data
+    console.log('Saving profile:', updatedUser);
+    setUserProfile(updatedUser); // Optimistically update UI
+    setIsModalOpen(false); // Close the modal after saving
+  };
+
   if (loading) return <div className="user-profile-page">Загрузка профиля пользователя...</div>;
   if (error) return <div className="user-profile-page">Ошибка: {error}</div>;
   if (!userProfile) return <div className="user-profile-page">Профиль пользователя не найден.</div>;
@@ -62,8 +89,8 @@ function UserProfile() {
             <FaUserCircle className="profile-avatar-icon" /> {/* Replaced img with icon */}
             <h2>{userProfile.username}</h2>
             <div className="profile-actions">
-              <button className="btn-follow">Редактировать профиль</button>
-              <button className="btn-message">Выйти</button>
+              <button className="btn-follow" onClick={handleEditProfileClick}>Редактировать профиль</button>
+              <button className="btn-message" onClick={handleLogout}>Выйти</button>
             </div>
           </div>
 
@@ -168,6 +195,14 @@ function UserProfile() {
 
         </div>
       </div>
+
+      {/* Edit Profile Modal */}
+      <EditProfileModal 
+        user={userProfile}
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        onSave={handleSaveProfile}
+      />
     </div>
   );
 }

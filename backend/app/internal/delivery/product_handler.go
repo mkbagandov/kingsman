@@ -46,7 +46,7 @@ func (h *ProductHandler) GetProductCatalog(w http.ResponseWriter, r *http.Reques
 		maxPrice = &p
 	}
 
-	limit := 10 // Default limit
+	limit := 100 // Default limit
 	if limitStr != "" {
 		l, err := strconv.Atoi(limitStr)
 		if err != nil || l <= 0 {
