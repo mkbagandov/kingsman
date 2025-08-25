@@ -243,24 +243,6 @@ curl -X POST http://localhost:8080/cart/add \
 - 🏷️ **Скидочная карта** — персональная карта клиента
 - 📱 **QR-код** — для быстрой идентификации
 
-## 🖼️ Скриншоты
-
-<div align="center">
-
-### Главная страница
-![Главная страница](docs/images/homepage.png)
-
-### Каталог товаров
-![Каталог](docs/images/catalog.png)
-
-### Мобильное меню
-![Мобильное меню](docs/images/mobile-menu.png)
-
-### Профиль пользователя
-![Профиль](docs/images/profile.png)
-
-</div>
-
 ## 🗄️ Структура базы данных
 
 <details>
@@ -312,29 +294,6 @@ CREATE TABLE loyalty_profiles (
 
 Мы приветствуем участие в развитии проекта! Вот как вы можете помочь:
 
-### Как внести свой вклад
-
-1. **Fork** проекта
-2. Создайте **feature branch** (`git checkout -b feature/AmazingFeature`)
-3. **Commit** ваши изменения (`git commit -m 'Add some AmazingFeature'`)
-4. **Push** в branch (`git push origin feature/AmazingFeature`)
-5. Откройте **Pull Request**
-
-### Правила разработки
-
-- 📝 **Код-стиль**: следуйте принятым в проекте конвенциям
-- ✅ **Тестирование**: добавляйте тесты для новой функциональности
-- 📖 **Документация**: обновляйте документацию при необходимости
-- 🔄 **Маленькие PR**: предпочитайте небольшие, фокусированные изменения
-
-### Отчет об ошибках
-
-Если вы нашли ошибку, пожалуйста:
-
-1. Проверьте, что подобная ошибка еще не была зарегистрирована
-2. Создайте новый **Issue** с подробным описанием
-3. Приложите шаги для воспроизведения
-4. Укажите версию и окружение
 
 ## 🛡️ Безопасность
 
@@ -344,44 +303,3 @@ CREATE TABLE loyalty_profiles (
 - 🔑 **Переменные окружения** для секретов
 - 📝 **Валидация входных данных**
 
-## 📄 Лицензия
-
-Этот проект лицензирован под **MIT License** - см. файл [LICENSE](LICENSE) для деталей.
-
-```
-MIT License
-
-Copyright (c) 2024 MR.KINGSMAN
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-```
-
----
-
-<div align="center">
-
-**[⬆ Наверх](#-mrkingsman)**
-
-Сделано с ❤️ командой MR.KINGSMAN
-
-[![GitHub](https://img.shields.io/badge/GitHub-Repository-black?style=flat&logo=github)](https://github.com/username/kingsman)
-[![Documentation](https://img.shields.io/badge/Docs-Documentation-blue?style=flat&logo=gitbook)](docs/)
-[![API Reference](https://img.shields.io/badge/API-Reference-green?style=flat&logo=swagger)](docs/api.md)
-
-</div>
